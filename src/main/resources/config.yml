@@ -1,0 +1,40 @@
+#
+#   _______    ___           **         __________     ___     ___     _________
+#  |  ____|   |  |           __       /   ___    |    |   |   |  |    |___  ___/
+#  | |____    |  |          |  |     |   (__)    |    |   |___|  |       |  |
+#  | _____|   |  |          |  |     \________   |    |    ___   |       |  |
+#  | |        |  |______    |  |      _______)   |    |   |  |   |       |  |
+#  |_|        \________/    |__|     (__________/     |___|  |___|       |__|
+#
+#   _________   ________          ____         **     __            _______
+#  |___  ___/  |  ( )   \        / __ \        __    |  |         /  ______/
+#     |  |     |  ___  _/       / /__\ \      |  |   |  |         |  \______
+#     |  |     |  |  \  \      / _____  \     |  |   |  |         \_______  \
+#     |  |     |  |   \  \    / /      \ \    |  |   |  |______    ______/  |
+#     |__|     |__|    \__\  /_/        \_\   |__|   \________/   |_________/
+#
+
+# Change message prefix, Set as '' to not have a prefix
+prefix: '&7[&bFlight-Trails&7] '
+
+# /flytrail Messages
+trails-enabled: '&7You have &aEnabled&7 your flight trail.'
+trails-disabled: '&7You have &cDisabled&7 your flight trail.'
+
+#/ftreload Message
+reload: '&7Successfully reloaded FlightTrails'
+
+# Command No permission
+cmd-permission: '&7You do not have permission to use this command.'
+
+# Color No Permission
+color-permission: '&7You do have permission to use this color.'
+
+# Message when you change your Trail Color
+color-change: '&7You have changed your trail color.'
+
+# Should Sounds be enabled?
+sound-enabled: true
+# If clicked sound is enabled, which sound.
+# List of sounds: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+click-sound: 'ENTITY_ARROW_HIT_PLAYER'
