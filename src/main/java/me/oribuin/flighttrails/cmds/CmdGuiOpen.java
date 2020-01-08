@@ -14,9 +14,9 @@ public class CmdGuiOpen implements CommandExecutor {
     public FlightTrails plugin;
     public FlyHandler flyHandler;
 
-    public CmdGuiOpen(FlyHandler flyHandler, FlightTrails instance) {
-        this.flyHandler = flyHandler;
+    public CmdGuiOpen(FlightTrails instance, FlyHandler flyHandler) {
         this.plugin = instance;
+        this.flyHandler = flyHandler;
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -29,7 +29,7 @@ public class CmdGuiOpen implements CommandExecutor {
                 player.sendMessage(ColorU.cl(config.getString("prefix") + "cmd-permission"));
             }
 
-            ColorSelector colorSelector = ColorSelector.getInstance(flyHandler, plugin);
+            ColorSelector colorSelector = ColorSelector.getInstance(plugin, flyHandler);
 
             colorSelector.guiItems();
             colorSelector.onInventory(player);

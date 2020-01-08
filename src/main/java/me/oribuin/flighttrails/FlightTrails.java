@@ -19,10 +19,10 @@ public class FlightTrails extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
 
         FlyHandler flyHandler = new FlyHandler();
-        ColorSelector menu = ColorSelector.getInstance(flyHandler, this);
+        ColorSelector menu = ColorSelector.getInstance(this, flyHandler);
         getCommand("ft").setExecutor(new CmdToggleTrail(flyHandler, this));
 
-        getCommand("ftcolor").setExecutor(new CmdGuiOpen(flyHandler, this));
+        getCommand("ftcolor").setExecutor(new CmdGuiOpen( this, flyHandler));
         getCommand("ftreload").setExecutor(new CmdReload(this));
 
         pm.registerEvents(menu, this);

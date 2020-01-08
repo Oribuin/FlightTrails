@@ -29,19 +29,19 @@ public class ColorSelector implements Listener {
     private Inventory inv;
     public static Map<UUID, Particle.DustOptions> dustOptionsMap = new HashMap<>();
 
-    FlyHandler flyHandler;
-    FlightTrails plugin;
+    public FlightTrails plugin;
+    public FlyHandler flyHandler;
     FileConfiguration config;
 
-    public ColorSelector(FlyHandler flyHandler, FlightTrails instance) {
-        this.flyHandler = flyHandler;
+    public ColorSelector(FlightTrails instance, FlyHandler flyHandler) {
         this.plugin = instance;
+        this.flyHandler = flyHandler;
         config = plugin.getConfig();
     }
 
-    public static ColorSelector getInstance(FlyHandler flyHandler, FlightTrails instance) {
+    public static ColorSelector getInstance(FlightTrails flightTrails, FlyHandler flyHandler) {
         if (INSTANCE == null) {
-            INSTANCE = new ColorSelector(flyHandler, instance);
+            INSTANCE = new ColorSelector(flightTrails, flyHandler);
         }
         return INSTANCE;
     }

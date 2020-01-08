@@ -1,7 +1,6 @@
 Gotta do the following:
 - Clicking a color auto enables trails
 - Item will glow if you have it selected
-- Server Reload support
 - A config to change GUI & Messages
 - Add a command to change flight colors
 - Make enable/disable easier to use
