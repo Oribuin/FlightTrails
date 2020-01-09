@@ -34,7 +34,83 @@ color-permission: '&7You do have permission to use this color.'
 color-change: '&7You have changed your trail color.'
 
 # Should Sounds be enabled?
+# Default: true
 sound-enabled: true
 # If clicked sound is enabled, which sound.
 # List of sounds: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+# Default: 'ENTITY_ARROW_HIT_PLAYER'
 click-sound: 'ENTITY_ARROW_HIT_PLAYER'
+
+# The size of the particle effect
+# Default: 2
+particle-size: 2
+#
+# Customize how you want your GUI To look.
+# List of Materials: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+
+# Default: 36
+gui-size: 36
+gui-name: '&8Select a Color'
+# This lore is a Global Lore and will be applied to every color
+color-lore:
+  - '&a'
+  - '&bLeft&7 click to select'
+
+# Slot Numbers start at 0
+red:
+  material: 'RED_DYE'
+  name: '&cRed'
+  slot: 10
+orange:
+  material: 'ORANGE_DYE'
+  name: '&6Orange'
+  slot: 11
+yellow:
+  material: 'YELLOW_DYE'
+  name: '&eYellow'
+  slot: 12
+lime:
+  material: 'LIME_DYE'
+  name: '&aLime'
+  slot: 13
+green:
+  material: 'GREEN_DYE'
+  name: '&2Green'
+  slot: 14
+aqua:
+  material: 'LIGHT_BLUE_DYE'
+  name: '&aAqua'
+  slot: 15
+cyan:
+  material: 'CYAN_DYE'
+  name: '&3Teal'
+  slot: 16
+blue:
+  material: 'BLUE_DYE'
+  name: '&9Blue'
+  slot: 19
+purple:
+  material: 'PURPLE_DYE'
+  name: '&5Purple'
+  slot: 20
+pink:
+  material: 'PINK_DYE'
+  name: '&dPink'
+  slot: 21
+white:
+  material: 'WHITE_DYE'
+  name: '&rWhite'
+  slot: 22
+light-gray:
+  material: 'LIGHT_GRAY_DYE'
+  name: '&7Light Gray'
+  slot: 23
+gray:
+  material: 'GRAY_DYE'
+  name: '&8Gray'
+  slot: 24
+black:
+  material: 'BLACK_DYE'
+  name: '&8&lBlack'
+  slot: 25
+# That's the end of the config :)

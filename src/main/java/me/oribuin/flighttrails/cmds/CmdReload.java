@@ -2,6 +2,7 @@ package me.oribuin.flighttrails.cmds;
 
 import me.oribuin.flighttrails.FlightTrails;
 import me.oribuin.flighttrails.persist.ColorU;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,10 +27,10 @@ public class CmdReload implements CommandExecutor {
                 player.sendMessage(ColorU.cl(config.getString("settings.prefix") + " " + config.getString("flight.reload")));
             }
 
-            plugin.saveConfig();
             plugin.reloadConfig();
-            plugin.saveConfig();
+            config = plugin.getConfig();
 
+            Bukkit.getConsoleSender().sendMessage(ColorU.cl(config.getString("prefix") + " &fReloaded " + plugin.getDescription().getName() + " (&b" + plugin.getDescription().getVersion() + "&f)"));
             player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("reload")));
         }
 

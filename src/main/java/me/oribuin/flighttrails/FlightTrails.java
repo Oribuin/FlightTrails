@@ -31,11 +31,11 @@ public class FlightTrails extends JavaPlugin {
         this.saveDefaultConfig();
 
         this.getServer().getConsoleSender().sendMessage(ColorU.cl(
-                "\n\n&9******************\n" +
-                        "\n&bPlugin: &f" + this.getDescription().getName() +
-                        "\n&bAuthor: &f" + this.getDescription().getAuthors() +
-                        "\n&bVersion: &f" + this.getDescription().getVersion() +
-                        "\n\n&9******************"
+                "\n\n&e******************\n" +
+                        "\n&6Plugin: &f" + this.getDescription().getName() +
+                        "\n&6Author: &f" + this.getDescription().getAuthors() +
+                        "\n&6Version: &f" + this.getDescription().getVersion() +
+                        "\n\n&e******************"
         ));
     }
 
