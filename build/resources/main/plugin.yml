@@ -1,13 +1,14 @@
 name: Flight-Trails
 main: me.oribuin.flighttrails.FlightTrails
-version: 1.0.0
+version: 1.0
 author: Oribuin
 api-version: "1.14"
 description: Flight trails plugin created as a stand alone plugin from github.com/Oribuin/Skyblock-Core/
+website: https://github.com/Oribuin/FlightTrails/
 commands:
-  ft:
+  ftrail:
     description: Toggle flight particles.
-    usage: /ft
+    usage: /ftrail
     aliases:
       - flytrail
 
@@ -19,8 +20,12 @@ commands:
       - trailcolor
 
   ftreload:
-    description: Reload FlightTrailss config.yml
+    description: Reload FlightTrails config.yml
     usage: /ftreload
+
+  ftset:
+    description: Set your personal rgb color for trails
+    usage: /ftset <0-255> <0-255> <0-255>
 
 permissions:
   flytrails.*:
@@ -43,6 +48,7 @@ permissions:
       - flytrails.color.lightgray
       - flytrails.color.gray
       - flytrails.color.black
+      - flytrails.color.custom
     default: op
 
   flytrails.color.*:
@@ -62,3 +68,5 @@ permissions:
       - flytrails.color.lightgray
       - flytrails.color.gray
       - flytrails.color.black
+      - flytrails.color.custom
+    default: op

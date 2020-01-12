@@ -1,13 +1,12 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
 group 'me.oribuin.flighttrails'
-version '1.0.0'
+version '1.0'
 
 sourceCompatibility = 1.8
 
@@ -16,6 +15,7 @@ repositories {
     flatDir {
         dirs 'dependencies'
     }
+
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
         content {
@@ -24,7 +24,6 @@ repositories {
         }
     }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    mavenLocal()
 }
 
 dependencies {
@@ -35,11 +34,11 @@ shadowJar {
     mergeServiceFiles()
     exclude 'META-INF/*.DSA'
     exclude 'META-INF/*.RSA'
-    archiveName 'FlightTrails.jar'
+    archiveName 'FlightTrails-' + project.property("version") + '.jar'
 }
 
 processResources {
-    from (sourceSets.main.resources.srcDirs) {
+    from(sourceSets.main.resources.srcDirs) {
         include '**/*.yml'
         filter ReplaceTokens, tokens: ["version": project.property("version")]
     }

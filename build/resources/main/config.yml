@@ -20,12 +20,29 @@ prefix: '&7[&bFlight-Trails&7] '
 # /flytrail Messages
 trails-enabled: '&7You have &aEnabled&7 your flight trail.'
 trails-disabled: '&7You have &cDisabled&7 your flight trail.'
-
 #/ftreload Message
-reload: '&7Successfully reloaded FlightTrails'
+reload: '&7Successfully reloaded FlightTrails.'
 
 # Command No permission
 cmd-permission: '&7You do not have permission to use this command.'
+
+# Invalid Arguments
+invalid-args: '&7You have provided invalid args.'
+
+# Incorrect Number
+invalid-int: '&7Please choose a number between 0-255'
+
+# Custom Color Message
+# Placeholders:
+# {r} Red
+# {g} Green
+# {b} Blue
+# Example: /ftset {r} {g} {b}
+custom-color-message: '&7Your trail has been set to (&c{r}&7, &a{g}&7, &b{b}&7).'
+##################################################
+# The following below requires a server restart. #
+# I am working on fixing this.                   #
+##################################################
 
 # Color No Permission
 color-permission: '&7You do have permission to use this color.'
@@ -50,7 +67,8 @@ particle-size: 2
 
 # Default: 36
 gui-size: 36
-gui-name: '&8Select a Color'
+# PlaceholderAPI Does not work on GUI Name currently.
+gui-name: '&8Select a color!'
 # This lore is a Global Lore and will be applied to every color
 color-lore:
   - '&a'

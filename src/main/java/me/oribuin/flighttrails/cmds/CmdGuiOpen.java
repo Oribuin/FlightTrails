@@ -25,8 +25,9 @@ public class CmdGuiOpen implements CommandExecutor {
 
             FileConfiguration config = plugin.getConfig();
 
-            if (!player.hasPermission("flytrails.fly.gui")) {
-                player.sendMessage(ColorU.cl(config.getString("prefix") + "cmd-permission"));
+            if (!player.hasPermission("flytrails.color")) {
+                player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("cmd-permission")));
+                return true;
             }
 
             ColorSelector colorSelector = ColorSelector.getInstance(plugin, flyHandler);
@@ -36,5 +37,4 @@ public class CmdGuiOpen implements CommandExecutor {
         }
         return true;
     }
-
 }

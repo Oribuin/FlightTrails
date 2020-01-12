@@ -1,6 +1,7 @@
 package me.oribuin.flighttrails.cmds;
 
 import me.oribuin.flighttrails.FlightTrails;
+import me.oribuin.flighttrails.menus.ColorSelector;
 import me.oribuin.flighttrails.persist.ColorU;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -8,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 public class CmdReload implements CommandExecutor {
     FlightTrails plugin;
@@ -24,7 +26,8 @@ public class CmdReload implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!player.hasPermission("flytrails.reload")) {
-                player.sendMessage(ColorU.cl(config.getString("settings.prefix") + " " + config.getString("flight.reload")));
+                player.sendMessage(ColorU.cl(config.getString("prefix") + " " + config.getString("cmd-permission")));
+                return true;
             }
 
             plugin.reloadConfig();
@@ -33,7 +36,6 @@ public class CmdReload implements CommandExecutor {
             Bukkit.getConsoleSender().sendMessage(ColorU.cl(config.getString("prefix") + " &fReloaded " + plugin.getDescription().getName() + " (&b" + plugin.getDescription().getVersion() + "&f)"));
             player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("reload")));
         }
-
         return true;
     }
 }

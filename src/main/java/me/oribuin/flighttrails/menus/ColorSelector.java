@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,7 +19,7 @@ import java.util.*;
 
 public class ColorSelector implements Listener {
     private static ColorSelector INSTANCE;
-    private Inventory inv;
+    public static Inventory inv;
     public static Map<UUID, Particle.DustOptions> dustOptionsMap = new HashMap<>();
 
     public FlightTrails plugin;
@@ -106,6 +105,7 @@ public class ColorSelector implements Listener {
 
     public void onInventory(Player player) {
         player.openInventory(inv);
+        player.updateInventory();
     }
 
     @EventHandler
@@ -240,7 +240,7 @@ public class ColorSelector implements Listener {
                 flyHandler.trailToggle(player.getUniqueId());
             }
 
-            if (config.getBoolean("sound-enabled")) {
+            if (config.getBoolean("sound-enabled", true)) {
                 playSound(player);
             }
 

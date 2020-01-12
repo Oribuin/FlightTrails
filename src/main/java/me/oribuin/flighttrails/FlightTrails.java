@@ -2,6 +2,7 @@ package me.oribuin.flighttrails;
 
 import me.oribuin.flighttrails.cmds.CmdReload;
 import me.oribuin.flighttrails.cmds.CmdGuiOpen;
+import me.oribuin.flighttrails.cmds.CmdSetColor;
 import me.oribuin.flighttrails.cmds.CmdToggleTrail;
 import me.oribuin.flighttrails.handlers.FlyHandler;
 import me.oribuin.flighttrails.listeners.MainEvents;
@@ -20,13 +21,14 @@ public class FlightTrails extends JavaPlugin {
 
         FlyHandler flyHandler = new FlyHandler();
         ColorSelector menu = ColorSelector.getInstance(this, flyHandler);
-        getCommand("ft").setExecutor(new CmdToggleTrail(flyHandler, this));
 
+        getCommand("ftrail").setExecutor(new CmdToggleTrail(flyHandler, this));
         getCommand("ftcolor").setExecutor(new CmdGuiOpen( this, flyHandler));
         getCommand("ftreload").setExecutor(new CmdReload(this));
+        getCommand("ftset").setExecutor(new CmdSetColor(flyHandler, this));
 
         pm.registerEvents(menu, this);
-        pm.registerEvents(new MainEvents(flyHandler), this);
+        pm.registerEvents(new MainEvents(this, flyHandler), this);
 
         this.saveDefaultConfig();
 
