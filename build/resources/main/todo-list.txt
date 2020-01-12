@@ -1,12 +1,15 @@
-Gotta do the following:
-- Clicking a color auto enables trails (Done)
+FlightTrails To-Do List:
+
+Done:
+- Clicking a color auto enables trails
+- A config to change GUI & Messages
+- Add a command to change flight colors
+- Custom RGB Color option
+- Add custom colors outside of default rainbow colors
+
+To-Do:
 - Item will glow if you have it selected
-- A config to change GUI & Messages (Done)
-- Add a command to change flight colors (Done)
-- Make enable/disable easier to use
-- Custom RGB Color option (Done)
-- Add custom colors outside of default rainbow colors (Done)
 - Add Rainbow cycling
 - Add placeholderapi Support
 - Add SuperVanish/Essentials Support
-- Add PlayerParticles hook to disable visibility cause idk how tf to do that
+- Add PlayerParticles hook to disable visibility cause I have no clue how nicole did it in the first place...

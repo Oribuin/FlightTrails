@@ -48,7 +48,9 @@ public class CmdSetColor implements CommandExecutor {
             int g = Integer.parseInt(args[1]);
             int b = Integer.parseInt(args[2]);
 
-            if (r > 255 || r < 0) {
+            if (r > 255 || r < 0
+                    || g > 255 || g < 0
+                    || b > 255 || b < 0) {
                 player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("invalid-int")));
                 return true;
             }
