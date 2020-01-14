@@ -30,7 +30,7 @@ cmd-permission: '&7You do not have permission to use this command.'
 invalid-args: '&7You have provided invalid args.'
 
 # Incorrect Number
-invalid-int: '&7Please choose a number between 0-255'
+invalid-int: '&7Please choose a number between 0-255.'
 
 # Custom Color Message
 # Placeholders:
@@ -39,6 +39,7 @@ invalid-int: '&7Please choose a number between 0-255'
 # {b} Blue
 # Example: /ftset {r} {g} {b}
 custom-color-message: '&7Your trail has been set to (&c{r}&7, &a{g}&7, &b{b}&7).'
+
 ##################################################
 # The following below requires a server restart. #
 # I am working on fixing this.                   #
@@ -72,7 +73,7 @@ gui-name: '&8Select a color!'
 # This lore is a Global Lore and will be applied to every color
 color-lore:
   - '&a'
-  - '&bLeft&7 click to select'
+  - '&bLeft&7 click to select.'
 
 # Slot Numbers start at 0
 red:

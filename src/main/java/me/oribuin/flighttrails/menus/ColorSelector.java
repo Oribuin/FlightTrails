@@ -232,17 +232,14 @@ public class ColorSelector implements Listener {
                 }
             }
 
-            if (color != null) {
+            if (color != null)
                 dustOptionsMap.put(player.getUniqueId(), color);
-            }
 
-            if (!flyHandler.trailIsToggled(player.getUniqueId())) {
+            if (!flyHandler.trailIsToggled(player.getUniqueId()))
                 flyHandler.trailToggle(player.getUniqueId());
-            }
 
-            if (config.getBoolean("sound-enabled", true)) {
+            if (config.getBoolean("sound-enabled", true))
                 playSound(player);
-            }
 
             player.closeInventory();
 

@@ -62,11 +62,10 @@ public class CmdSetColor implements CommandExecutor {
             }
 
             player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("custom-color-message")
-                    .replaceAll("\\{r}", args[0])
-                    .replaceAll("\\{g}", args[1])
-                    .replaceAll("\\{b}", args[2])
+                    .replaceAll("\\{r}", "" + color.getColor().getRed())
+                    .replaceAll("\\{g}", "" + color.getColor().getGreen())
+                    .replaceAll("\\{b}", "" + color.getColor().getBlue())
             ));
-
         }
         return true;
     }

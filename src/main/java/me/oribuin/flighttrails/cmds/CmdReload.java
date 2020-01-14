@@ -1,7 +1,6 @@
 package me.oribuin.flighttrails.cmds;
 
 import me.oribuin.flighttrails.FlightTrails;
-import me.oribuin.flighttrails.menus.ColorSelector;
 import me.oribuin.flighttrails.persist.ColorU;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -9,7 +8,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 public class CmdReload implements CommandExecutor {
     FlightTrails plugin;
