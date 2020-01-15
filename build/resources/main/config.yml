@@ -13,6 +13,10 @@
 #     |  |     |  |   \  \    / /      \ \    |  |   |  |______    ______/  |
 #     |__|     |__|    \__\  /_/        \_\   |__|   \________/   |_________/
 #
+# Developer Note:
+# The plugin doesn't yet automatically update the config on new Jar File.
+# You may try to add in stuff yourself, You can grab the new config from here:
+# https://github.com/Oribuin/FlightTrails/blob/master/src/main/resources/config.yml
 
 # Change message prefix, Set as '' to not have a prefix
 prefix: '&7[&bFlight-Trails&7] '
@@ -61,6 +65,7 @@ color-permission: '&7You do have permission to use this color.'
 gui-color-message: true
 
 # Message when you change your Trail Color
+# This will be if "gui-color-message" is true
 color-change: '&7You have changed your trail color.'
 
 # Should Sounds be enabled?

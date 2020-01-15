@@ -162,7 +162,6 @@ public class ColorSelector implements Listener {
                     player.sendMessage(noPerm);
                     return;
                 }
-
                 color = particleColor(255, 0, 0);
             }
 
@@ -171,13 +170,12 @@ public class ColorSelector implements Listener {
                     player.sendMessage(noPerm);
                     return;
                 }
-
                 color = particleColor(255, 128, 0);
             }
 
             if (itemType == Material.valueOf(config.getString("yellow.material"))) {
 
-                if (player.hasPermission("flytrails.color.yellow")) {
+                if (!player.hasPermission("flytrails.color.yellow")) {
                     player.sendMessage(noPerm);
                     return;
                 }
@@ -186,7 +184,7 @@ public class ColorSelector implements Listener {
 
             if (itemType == Material.valueOf(config.getString("lime.material"))) {
 
-                if (player.hasPermission("flytrails.color.lime")) {
+                if (!player.hasPermission("flytrails.color.lime")) {
                     player.sendMessage(noPerm);
                     return;
                 }
@@ -195,7 +193,7 @@ public class ColorSelector implements Listener {
 
             if (itemType == Material.valueOf(config.getString("green.material"))) {
 
-                if (player.hasPermission("flytrails.color.green")) {
+                if (!player.hasPermission("flytrails.color.green")) {
                     player.sendMessage(noPerm);
                     return;
                 }
@@ -204,7 +202,7 @@ public class ColorSelector implements Listener {
 
             if (itemType == Material.valueOf(config.getString("aqua.material"))) {
 
-                if (player.hasPermission("flytrails.color.lightblue")) {
+                if (!player.hasPermission("flytrails.color.lightblue")) {
                     player.sendMessage(noPerm);
                     return;
                 }
@@ -213,7 +211,7 @@ public class ColorSelector implements Listener {
 
             if (itemType == Material.valueOf(config.getString("cyan.material"))) {
 
-                if (player.hasPermission("flytrails.color.cyan")) {
+                if (!player.hasPermission("flytrails.color.cyan")) {
                     player.sendMessage(noPerm);
                     return;
                 }
@@ -222,59 +220,58 @@ public class ColorSelector implements Listener {
 
             if (itemType == Material.valueOf(config.getString("blue.material"))) {
 
-                if (player.hasPermission("flytrails.color.blue")) {
+                if (!player.hasPermission("flytrails.color.blue")) {
                     player.sendMessage(noPerm);
                     return;
                 }
-
                 color = particleColor(0, 0, 255);
             }
 
             if (itemType == Material.valueOf(config.getString("purple.material"))) {
 
-                if (player.hasPermission("flytrails.color.purple")) {
+                if (!player.hasPermission("flytrails.color.purple")) {
                     player.sendMessage(noPerm);
                     return;
                 }
-
                 color = particleColor(128, 0, 255);
             }
 
             if (itemType == Material.valueOf(config.getString("pink.material"))) {
 
-                if (player.hasPermission("flytrails.color.pink")) {
+                if (!player.hasPermission("flytrails.color.pink")) {
                     player.sendMessage(noPerm);
                     return;
                 }
-
                 color = particleColor(255, 77, 255);
             }
+
             if (itemType == Material.valueOf(config.getString("white.material"))) {
 
-                if (player.hasPermission("flytrails.color.white")) {
+                if (!player.hasPermission("flytrails.color.white")) {
                     player.sendMessage(noPerm);
                     return;
                 }
-
                 color = particleColor(255, 255, 255);
             }
+
             if (itemType == Material.valueOf(config.getString("light-gray.material"))) {
 
-                if (player.hasPermission("flytrails.color.lightgray")) {
+                if (!player.hasPermission("flytrails.color.lightgray")) {
                     player.sendMessage(noPerm);
                     return;
                 }
-
                 color = particleColor(211, 211, 211);
             }
+
             if (itemType == Material.valueOf(config.getString("gray.material"))) {
 
-                if (player.hasPermission("flytrails.color.gray")) {
+                if (!player.hasPermission("flytrails.color.gray")) {
                     player.sendMessage(noPerm);
                     return;
                 }
                 color = particleColor(169, 169, 169);
             }
+
             if (itemType == Material.valueOf(config.getString("black.material"))) {
                 if (!player.hasPermission("flytrails.color.black")) {
                     player.sendMessage(noPerm);
