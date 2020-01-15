@@ -52,7 +52,7 @@ public class MainEvents implements Listener {
             }
 
             // If the user is flying, spawn the particle.
-            if (!player.isFlying()) {
+            if (plugin.getConfig().getBoolean("flight-trail") && !player.isFlying()) {
                 if (color != null) {
                     player.getLocation().getWorld().spawnParticle(Particle.REDSTONE, loc, 1, color);
                 }
@@ -90,7 +90,7 @@ public class MainEvents implements Listener {
             // If the color isn't null.
             if (color != null) {
                 // If the user is flying, display the particles.
-                if (player.isFlying()) {
+                if (plugin.getConfig().getBoolean("flight-trail") && player.isFlying()) {
                     player.getLocation().getWorld().spawnParticle(Particle.REDSTONE, loc, 1, color);
 
                     // If the elytra trails are enabled, spawn particles

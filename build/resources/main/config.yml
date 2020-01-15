@@ -44,6 +44,11 @@ invalid-int: '&7Please choose a number between 0-255.'
 # Example: /ftset {r} {g} {b}
 custom-color-message: '&7Your trail has been set to (&c{r}&7, &a{g}&7, &b{b}&7).'
 
+# Should there be particles on general flying?
+# This is for people who would like to just have elytra trails.
+# Default: true
+flight-trail: true
+
 # Should particles enable on elytra glide?
 # Default: true
 elytra-trail: true
