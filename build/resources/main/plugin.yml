@@ -1,6 +1,6 @@
 name: Flight-Trails
 main: me.oribuin.flighttrails.FlightTrails
-version: 1.0
+version: 1.0.1
 author: Oribuin
 api-version: "1.14"
 description: Flight trails plugin created as a stand alone plugin from github.com/Oribuin/Skyblock-Core/

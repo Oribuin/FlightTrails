@@ -25,14 +25,21 @@ public class CmdGuiOpen implements CommandExecutor {
 
             FileConfiguration config = plugin.getConfig();
 
+            /*
+             If you does not have permission
+             return No Permission Message
+            */
             if (!player.hasPermission("flytrails.color")) {
                 player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("cmd-permission")));
                 return true;
             }
 
+            // Get the ColorSelector Instance.
             ColorSelector colorSelector = ColorSelector.getInstance(plugin, flyHandler);
 
+            // Initialize Items
             colorSelector.guiItems();
+            // Open Inventory
             colorSelector.onInventory(player);
         }
         return true;

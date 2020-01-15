@@ -40,6 +40,14 @@ invalid-int: '&7Please choose a number between 0-255.'
 # Example: /ftset {r} {g} {b}
 custom-color-message: '&7Your trail has been set to (&c{r}&7, &a{g}&7, &b{b}&7).'
 
+# Should particles enable on elytra glide?
+# Default: true
+elytra-trail: true
+
+# Should trails disable on vanish?
+# Default: true
+vanish-hook: true
+
 ##################################################
 # The following below requires a server restart. #
 # I am working on fixing this.                   #
@@ -47,6 +55,10 @@ custom-color-message: '&7Your trail has been set to (&c{r}&7, &a{g}&7, &b{b}&7).
 
 # Color No Permission
 color-permission: '&7You do have permission to use this color.'
+
+# Should there be a message when you change the color through the GUI?
+# Default: true
+gui-color-message: true
 
 # Message when you change your Trail Color
 color-change: '&7You have changed your trail color.'

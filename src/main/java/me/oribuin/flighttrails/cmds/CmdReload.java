@@ -23,15 +23,22 @@ public class CmdReload implements CommandExecutor {
 
             Player player = (Player) sender;
 
+            /*
+             If you does not have permission
+             return No Permission Message
+            */
             if (!player.hasPermission("flytrails.reload")) {
                 player.sendMessage(ColorU.cl(config.getString("prefix") + " " + config.getString("cmd-permission")));
                 return true;
             }
-
-            plugin.reloadConfig();
+            // Get the config
             config = plugin.getConfig();
+            // Reload Config
+            plugin.reloadConfig();
 
+            // Notify Console plugin was reloaded
             Bukkit.getConsoleSender().sendMessage(ColorU.cl(config.getString("prefix") + " &fReloaded " + plugin.getDescription().getName() + " (&b" + plugin.getDescription().getVersion() + "&f)"));
+            // Tell the player it was reloaded.
             player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("reload")));
         }
         return true;

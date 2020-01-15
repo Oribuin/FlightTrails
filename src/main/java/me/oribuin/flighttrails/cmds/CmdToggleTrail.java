@@ -13,13 +13,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class CmdToggleTrail implements CommandExecutor {
-
-    public FlyHandler flyHandler;
     FlightTrails plugin;
+    FlyHandler flyHandler;
 
-    public CmdToggleTrail(FlyHandler flyHandler, FlightTrails instance) {
-        this.flyHandler = flyHandler;
+    public CmdToggleTrail(FlightTrails instance, FlyHandler flyHandler) {
         this.plugin = instance;
+        this.flyHandler = flyHandler;
     }
 
 
@@ -34,23 +33,29 @@ public class CmdToggleTrail implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             FileConfiguration config = plugin.getConfig();
-
+            /*
+             If you does not have permission
+             return No Permission Message
+            */
             if (!player.hasPermission("flytrails.fly")) {
                 player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("cmd-permission")));
                 return true;
             }
 
+            // If they have trails disabled, Enable them
             if (!flyHandler.trailIsToggled(player.getUniqueId())) {
                 player.sendMessage(ColorU.cl(config.getString("prefix") + config.get("trails-enabled")));
             } else {
+                // If they have trails enabled, disable them.
                 player.sendMessage(ColorU.cl(config.getString("prefix") + config.get("trails-disabled")));
             }
 
-
+            // This is for future stuff.
             if (color != null) {
                 ColorSelector.dustOptionsMap.put(player.getUniqueId(), color);
             }
 
+            // Toggle Trails.
             flyHandler.trailToggle(player.getUniqueId());
         }
         return true;

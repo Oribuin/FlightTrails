@@ -2,6 +2,7 @@ package me.oribuin.flighttrails.listeners;
 
 import me.oribuin.flighttrails.FlightTrails;
 import me.oribuin.flighttrails.handlers.FlyHandler;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -27,16 +28,31 @@ public class MainEvents implements Listener {
         Player player = event.getPlayer();
         Location loc = event.getPlayer().getLocation();
 
+        // If the user has flight trails enabled and they have the flight trails permission.
         if (flyHandler.trailIsToggled(player.getUniqueId()) && player.hasPermission("flytrails.fly")) {
-            /*
-            if (plugin.getConfig().getBoolean("vanish-hook", true)) {
-                if (!player.canSee(player))
-                    return;
-            }
-             */
+            // Get the dustOptionsMap
+            Particle.DustOptions color = dustOptionsMap.get(player.getUniqueId());
 
+            // If vanish-hook is enabled, Get all online players.
+            if (plugin.getConfig().getBoolean("vanish-hook", true)) {
+                for (Player pl : player.getServer().getOnlinePlayers()) {
+                    // If the user is in spectator mode, don't display particles.
+                    if (player.getGameMode() == GameMode.SPECTATOR)
+                        return;
+
+                    // If the user has the metadata "Vanished" Don't display particles.
+                    for (MetadataValue meta : player.getMetadata("vanished")) {
+                        if (meta.asBoolean())
+                            return;
+                    }
+
+                    // If  the user can't see the user, disable particles.
+                    if (!pl.canSee(player)) return;
+                }
+            }
+
+            // If the user is flying, spawn the particle.
             if (!player.isFlying()) {
-                Particle.DustOptions color = dustOptionsMap.get(player.getUniqueId());
                 if (color != null) {
                     player.getLocation().getWorld().spawnParticle(Particle.REDSTONE, loc, 1, color);
                 }
@@ -48,32 +64,40 @@ public class MainEvents implements Listener {
     public void onMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         Location loc = player.getLocation();
+        Particle.DustOptions color = dustOptionsMap.get(player.getUniqueId());
+
+        // If the user has flight trails enabled and has permission.
         if (flyHandler.trailIsToggled(player.getUniqueId()) && player.hasPermission("flytrails.fly")) {
 
-            /*
+            // If vanish-hook is enabled, Get all online players.
             if (plugin.getConfig().getBoolean("vanish-hook", true)) {
-                if (!player.canSee(player))
-                    return;
-            }
-             */
+                for (Player pl : player.getServer().getOnlinePlayers()) {
 
-            if (player.isFlying()) {
-                Particle.DustOptions color = dustOptionsMap.get(player.getUniqueId());
-                if (color != null) {
+                    // If the user is in spectator mode, don't display particles.
+                    if (player.getGameMode() == GameMode.SPECTATOR)
+                        return;
+
+                    // If the user has the meta data "vanished" Don't display particles.
+                    for (MetadataValue meta : player.getMetadata("vanished")) {
+                        if (meta.asBoolean())
+                            return;
+                    }
+                    // If  the user can't see the user, disable particles.
+                    if (!pl.canSee(player)) return;
+                }
+            }
+
+            // If the color isn't null.
+            if (color != null) {
+                // If the user is flying, display the particles.
+                if (player.isFlying()) {
+                    player.getLocation().getWorld().spawnParticle(Particle.REDSTONE, loc, 1, color);
+
+                    // If the elytra trails are enabled, spawn particles
+                } else if (plugin.getConfig().getBoolean("elytra-trail", true) && player.isGliding()) {
                     player.getLocation().getWorld().spawnParticle(Particle.REDSTONE, loc, 1, color);
                 }
             }
         }
-    }
-
-    private boolean canSee(Player player, Player target) {
-        if (player == null || target == null)
-            return true;
-
-        for (MetadataValue meta : player.getMetadata("vanished"))
-            if (meta.asBoolean())
-                return false;
-
-        return player.canSee(target);
     }
 }

@@ -22,10 +22,10 @@ public class FlightTrails extends JavaPlugin {
         FlyHandler flyHandler = new FlyHandler();
         ColorSelector menu = ColorSelector.getInstance(this, flyHandler);
 
-        getCommand("ftrail").setExecutor(new CmdToggleTrail(flyHandler, this));
+        getCommand("ftrail").setExecutor(new CmdToggleTrail(this, flyHandler));
         getCommand("ftcolor").setExecutor(new CmdGuiOpen( this, flyHandler));
         getCommand("ftreload").setExecutor(new CmdReload(this));
-        getCommand("ftset").setExecutor(new CmdSetColor(flyHandler, this));
+        getCommand("ftset").setExecutor(new CmdSetColor(this, flyHandler));
 
         pm.registerEvents(menu, this);
         pm.registerEvents(new MainEvents(this, flyHandler), this);

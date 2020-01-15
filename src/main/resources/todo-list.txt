@@ -6,10 +6,12 @@ Done:
 - Add a command to change flight colors
 - Custom RGB Color option
 - Add custom colors outside of default rainbow colors
+- Add Vanish Support
+- Added elytra support
+- Added toggle for GUI Color Change Message
+- Commented everything
 
 To-Do:
 - Item will glow if you have it selected
 - Add Rainbow cycling
-- Add placeholderapi Support
-- Add Vanish Support
-- Add PlayerParticles hook to disable visibility cause I have no clue how nicole did it in the first place...
+- Add auto style color select if no color selected on trail enable
