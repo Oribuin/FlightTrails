@@ -81,5 +81,15 @@
       <option name="name" value="maven5" />
       <option name="url" value="http://repo.citizensnpcs.co/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven4" />
+      <option name="name" value="maven4" />
+      <option name="url" value="file:/$PROJECT_DIR$/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven4" />
+      <option name="name" value="maven4" />
+      <option name="url" value="https://repo.codemc.org/repository/maven-public" />
+    </remote-repository>
   </component>
 </project>

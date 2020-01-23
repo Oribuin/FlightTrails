@@ -17,30 +17,27 @@ public class CmdReload implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        FileConfiguration config = plugin.getConfig();
+
         if (sender instanceof Player) {
-
-            FileConfiguration config = plugin.getConfig();
-
             Player player = (Player) sender;
 
-            /*
-             If you does not have permission
-             return No Permission Message
-            */
             if (!player.hasPermission("flytrails.reload")) {
                 player.sendMessage(ColorU.cl(config.getString("prefix") + " " + config.getString("cmd-permission")));
                 return true;
             }
-            // Get the config
-            config = plugin.getConfig();
-            // Reload Config
-            plugin.reloadConfig();
 
-            // Notify Console plugin was reloaded
-            Bukkit.getConsoleSender().sendMessage(ColorU.cl(config.getString("prefix") + " &fReloaded " + plugin.getDescription().getName() + " (&b" + plugin.getDescription().getVersion() + "&f)"));
             // Tell the player it was reloaded.
             player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("reload")));
         }
+
+        // Get the config
+        config = plugin.getConfig();
+        // Reload Config
+        plugin.reloadConfig();
+
+        // Notify Console plugin was reloaded
+        Bukkit.getConsoleSender().sendMessage(ColorU.cl(config.getString("prefix") + " &fReloaded " + plugin.getDescription().getName() + " (&b" + plugin.getDescription().getVersion() + "&f)"));
         return true;
     }
 }

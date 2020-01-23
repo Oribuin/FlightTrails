@@ -2,22 +2,17 @@ name: Flight-Trails
 main: me.oribuin.flighttrails.FlightTrails
 version: @version@
 author: Oribuin
-api-version: "1.14"
-description: Flight trails plugin created as a stand alone plugin from github.com/Oribuin/Skyblock-Core/
+api-version: "1.13"
+description: A light weight flight particle color trail plugin | EULA Friendly | Perfect for ranks.
 website: https://github.com/Oribuin/FlightTrails/
+softdepend:
+  - PlaceholderAPI
 commands:
   ftrail:
     description: Toggle flight particles.
     usage: /ftrail
     aliases:
       - flytrail
-
-  ftcolor:
-    description: Select your Flight Trail Color
-    usage: /ftcolor
-    aliases:
-      - flycolor
-      - trailcolor
 
   ftreload:
     description: Reload FlightTrails config.yml
@@ -27,46 +22,17 @@ commands:
     description: Set your personal rgb color for trails
     usage: /ftset <0-255> <0-255> <0-255>
 
+  ftoset:
+    description: Set another user's rgb color for trails.
+    usage: /ftoset <Player> <0-255> <0-255> <0-255>
+
+
 permissions:
   flytrails.*:
     description: All permissions for Flight-Trails plugin.
     children:
       - flytrails.fly
       - flytrails.reload
-      - flytrails.fly.color
-      - flytrails.color.red
-      - flytrails.color.orange
-      - flytrails.color.yellow
-      - flytrails.color.lime
-      - flytrails.color.green
-      - flytrails.color.lightblue
-      - flytrails.color.cyan
-      - flytrails.color.blue
-      - flytrails.color.purple
-      - flytrails.color.pink
-      - flytrails.color.white
-      - flytrails.color.lightgray
-      - flytrails.color.gray
-      - flytrails.color.black
-      - flytrails.color.custom
-    default: op
-
-  flytrails.color.*:
-    description: All colours available in Flight Trails
-    children:
-      - flytrails.color.red
-      - flytrails.color.orange
-      - flytrails.color.yellow
-      - flytrails.color.lime
-      - flytrails.color.green
-      - flytrails.color.lightblue
-      - flytrails.color.cyan
-      - flytrails.color.blue
-      - flytrails.color.purple
-      - flytrails.color.pink
-      - flytrails.color.white
-      - flytrails.color.lightgray
-      - flytrails.color.gray
-      - flytrails.color.black
-      - flytrails.color.custom
+      - flytrails.color
+      - flytrails.color.other
     default: op

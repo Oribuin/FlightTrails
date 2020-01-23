@@ -28,10 +28,14 @@ trails-disabled: '&7You have &cDisabled&7 your flight trail.'
 reload: '&7Successfully reloaded FlightTrails.'
 
 # Command No permission
-cmd-permission: '&7You do not have permission to use this command.'
+no-permission: '&7You do not have permission to use this command.'
 
 # Invalid Arguments
-invalid-args: '&7You have provided invalid args.'
+# PlaceholderS:
+# {usage} Command Usage
+# Example: "&7You have provided invalid args. (&b{usage}&7)
+# Would be "You have provided invalid args (/ftset <0-255> <0-255> <0-255>)
+invalid-args: '&7You have provided invalid args. (&b{usage}&7)'
 
 # Incorrect Number
 invalid-int: '&7Please choose a number between 0-255.'
@@ -57,101 +61,40 @@ elytra-trail: true
 # Default: true
 vanish-hook: true
 
-##################################################
-# The following below requires a server restart. #
-# I am working on fixing this.                   #
-##################################################
-
-# Color No Permission
-color-permission: '&7You do have permission to use this color.'
-
-# Should there be a message when you change the color through the GUI?
+# Should the user be told if their color was manually changed?
 # Default: true
-gui-color-message: true
+sudo-tellplayer: true
 
-# Message when you change your Trail Color
-# This will be if "gui-color-message" is true
-color-change: '&7You have changed your trail color.'
+# Placeholders:
+# {mentioned} The player sudo'd
+# {player} The command sender's name
+# {r} Red
+# {g} Green
+# {b} Blue
+# This message is sent to the player who's trail color was changed.
+player-sudo-message: '&b{player} &7has changed your trail color. (&c{r}&7, &a{g}&7, &b{b}&7).'
+# This message is sent to the command sender who's trail color was changed.
+sender-sudo-message: '&7You have changed &b{mentioned}&7''s trail color. (&c{r}&7, &a{g}&7, &b{b}&7).'
 
-# Should Sounds be enabled?
-# Default: true
-sound-enabled: true
-# If clicked sound is enabled, which sound.
-# List of sounds: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
-# Default: 'ENTITY_ARROW_HIT_PLAYER'
-click-sound: 'ENTITY_ARROW_HIT_PLAYER'
+# The message sent when the user mentioned does not exist.
+invalid-user: '&7This player does not exist.'
+
+# The message sent when the command can only be accessed by a player.
+player-only: '&7Only a player can execute this command.'
 
 # The size of the particle effect
 # Default: 2
 particle-size: 2
+
+# The amount of particles spawned.
+# Default: 1
+particle-count: 1
+
+# FlightTrails Hook Info
 #
-# Customize how you want your GUI To look.
-# List of Materials: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+# PlaceholderAPI:
+# %flighttrails_toggled% - [True/False] - Tells if flighttrails is toggled or not.
 
-# Default: 36
-gui-size: 36
-# PlaceholderAPI Does not work on GUI Name currently.
-gui-name: '&8Select a color!'
-# This lore is a Global Lore and will be applied to every color
-color-lore:
-  - '&a'
-  - '&bLeft&7 click to select.'
-
-# Slot Numbers start at 0
-red:
-  material: 'RED_DYE'
-  name: '&cRed'
-  slot: 10
-orange:
-  material: 'ORANGE_DYE'
-  name: '&6Orange'
-  slot: 11
-yellow:
-  material: 'YELLOW_DYE'
-  name: '&eYellow'
-  slot: 12
-lime:
-  material: 'LIME_DYE'
-  name: '&aLime'
-  slot: 13
-green:
-  material: 'GREEN_DYE'
-  name: '&2Green'
-  slot: 14
-aqua:
-  material: 'LIGHT_BLUE_DYE'
-  name: '&aAqua'
-  slot: 15
-cyan:
-  material: 'CYAN_DYE'
-  name: '&3Teal'
-  slot: 16
-blue:
-  material: 'BLUE_DYE'
-  name: '&9Blue'
-  slot: 19
-purple:
-  material: 'PURPLE_DYE'
-  name: '&5Purple'
-  slot: 20
-pink:
-  material: 'PINK_DYE'
-  name: '&dPink'
-  slot: 21
-white:
-  material: 'WHITE_DYE'
-  name: '&rWhite'
-  slot: 22
-light-gray:
-  material: 'LIGHT_GRAY_DYE'
-  name: '&7Light Gray'
-  slot: 23
-gray:
-  material: 'GRAY_DYE'
-  name: '&8Gray'
-  slot: 24
-black:
-  material: 'BLACK_DYE'
-  name: '&8&lBlack'
-  slot: 25
 # That's the end of the config :)
+# Made with <3 from Oribuin
+# DM Me if you have any issues or questions.

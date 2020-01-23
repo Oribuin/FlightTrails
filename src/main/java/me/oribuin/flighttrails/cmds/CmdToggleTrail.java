@@ -2,7 +2,6 @@ package me.oribuin.flighttrails.cmds;
 
 import me.oribuin.flighttrails.FlightTrails;
 import me.oribuin.flighttrails.handlers.FlyHandler;
-import me.oribuin.flighttrails.menus.ColorSelector;
 import me.oribuin.flighttrails.persist.ColorU;
 import org.bukkit.Color;
 import org.bukkit.Particle;
@@ -10,11 +9,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.util.UUID;
 
 public class CmdToggleTrail implements CommandExecutor {
     FlightTrails plugin;
     FlyHandler flyHandler;
+
 
     public CmdToggleTrail(FlightTrails instance, FlyHandler flyHandler) {
         this.plugin = instance;
@@ -31,6 +35,7 @@ public class CmdToggleTrail implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (sender instanceof Player) {
+
             Player player = (Player) sender;
             FileConfiguration config = plugin.getConfig();
             /*
@@ -44,19 +49,15 @@ public class CmdToggleTrail implements CommandExecutor {
 
             // If they have trails disabled, Enable them
             if (!flyHandler.trailIsToggled(player.getUniqueId())) {
-                player.sendMessage(ColorU.cl(config.getString("prefix") + config.get("trails-enabled")));
+                player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("trails-enabled")));
             } else {
                 // If they have trails enabled, disable them.
-                player.sendMessage(ColorU.cl(config.getString("prefix") + config.get("trails-disabled")));
+                player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("trails-disabled")));
             }
 
-            // This is for future stuff.
-            if (color != null) {
-                ColorSelector.dustOptionsMap.put(player.getUniqueId(), color);
-            }
-
-            // Toggle Trails.
             flyHandler.trailToggle(player.getUniqueId());
+        } else {
+            sender.sendMessage(ColorU.cl(plugin.getConfig().getString("prefix") + plugin.getConfig().getString("player-only")));
         }
         return true;
     }
