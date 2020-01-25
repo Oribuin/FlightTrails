@@ -1,4 +1,4 @@
-package me.oribuin.flighttrails.hooks;
+package xyz.oribuin.flighttrails.hooks;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

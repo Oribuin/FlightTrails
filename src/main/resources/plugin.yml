@@ -1,5 +1,5 @@
 name: Flight-Trails
-main: me.oribuin.flighttrails.FlightTrails
+main: xyz.oribuin.flighttrails.FlightTrails
 version: @version@
 author: Oribuin
 api-version: "1.13"

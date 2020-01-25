@@ -1,14 +1,8 @@
-package me.oribuin.flighttrails.hooks;
+package xyz.oribuin.flighttrails.hooks;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.oribuin.flighttrails.FlightTrails;
-import me.oribuin.flighttrails.cmds.CmdSetColor;
-import me.oribuin.flighttrails.handlers.FlyHandler;
+import xyz.oribuin.flighttrails.FlightTrails;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public class PlaceholderAPIHook {

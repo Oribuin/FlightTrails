@@ -1,23 +1,18 @@
-package me.oribuin.flighttrails.listeners;
+package xyz.oribuin.flighttrails.listeners;
 
-import me.oribuin.flighttrails.FlightTrails;
-import me.oribuin.flighttrails.cmds.CmdSetColor;
-import me.oribuin.flighttrails.handlers.FlyHandler;
-import me.oribuin.flighttrails.persist.Data;
+import xyz.oribuin.flighttrails.FlightTrails;
+import xyz.oribuin.flighttrails.handlers.FlyHandler;
+import xyz.oribuin.flighttrails.persist.Data;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.metadata.MetadataValue;
-
-import java.io.File;
 
 
 public class MainEvents implements Listener {

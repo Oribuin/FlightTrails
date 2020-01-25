@@ -1,7 +1,7 @@
-package me.oribuin.flighttrails.cmds;
+package xyz.oribuin.flighttrails.cmds;
 
-import me.oribuin.flighttrails.FlightTrails;
-import me.oribuin.flighttrails.persist.ColorU;
+import xyz.oribuin.flighttrails.FlightTrails;
+import xyz.oribuin.flighttrails.persist.ColorU;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

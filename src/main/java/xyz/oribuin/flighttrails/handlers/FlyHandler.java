@@ -1,4 +1,4 @@
-package me.oribuin.flighttrails.handlers;
+package xyz.oribuin.flighttrails.handlers;
 
 import java.util.HashSet;
 import java.util.Set;

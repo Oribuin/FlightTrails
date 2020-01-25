@@ -1,9 +1,9 @@
-package me.oribuin.flighttrails.hooks;
+package xyz.oribuin.flighttrails.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.oribuin.flighttrails.FlightTrails;
-import me.oribuin.flighttrails.cmds.CmdSetColor;
-import me.oribuin.flighttrails.handlers.FlyHandler;
+import xyz.oribuin.flighttrails.FlightTrails;
+import xyz.oribuin.flighttrails.cmds.CmdSetColor;
+import xyz.oribuin.flighttrails.handlers.FlyHandler;
 import org.bukkit.entity.Player;
 
 public class TrailsPlaceholderExpansion extends PlaceholderExpansion {

@@ -1,4 +1,4 @@
-package me.oribuin.flighttrails.persist;
+package xyz.oribuin.flighttrails.persist;
 
 import org.bukkit.ChatColor;
 

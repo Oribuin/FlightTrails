@@ -1,20 +1,16 @@
-package me.oribuin.flighttrails.cmds;
+package xyz.oribuin.flighttrails.cmds;
 
-import me.oribuin.flighttrails.FlightTrails;
-import me.oribuin.flighttrails.handlers.FlyHandler;
-import me.oribuin.flighttrails.persist.ColorU;
-import me.oribuin.flighttrails.persist.Data;
+import xyz.oribuin.flighttrails.FlightTrails;
+import xyz.oribuin.flighttrails.handlers.FlyHandler;
+import xyz.oribuin.flighttrails.persist.ColorU;
+import xyz.oribuin.flighttrails.persist.Data;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
-import java.io.File;
-import java.util.*;
 
 public class CmdSetColor implements CommandExecutor {
     FlightTrails plugin;

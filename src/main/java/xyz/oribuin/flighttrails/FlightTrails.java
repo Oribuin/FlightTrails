@@ -1,23 +1,19 @@
-package me.oribuin.flighttrails;
+package xyz.oribuin.flighttrails;
 
-import me.oribuin.flighttrails.cmds.CmdReload;
-import me.oribuin.flighttrails.cmds.CmdSetColor;
-import me.oribuin.flighttrails.cmds.CmdSetColorOther;
-import me.oribuin.flighttrails.cmds.CmdToggleTrail;
-import me.oribuin.flighttrails.handlers.FlyHandler;
-import me.oribuin.flighttrails.hooks.Metrics;
-import me.oribuin.flighttrails.hooks.PlaceholderAPIHook;
-import me.oribuin.flighttrails.hooks.TrailsPlaceholderExpansion;
-import me.oribuin.flighttrails.listeners.MainEvents;
-import me.oribuin.flighttrails.persist.ColorU;
-import me.oribuin.flighttrails.persist.Data;
+import xyz.oribuin.flighttrails.cmds.CmdReload;
+import xyz.oribuin.flighttrails.cmds.CmdSetColor;
+import xyz.oribuin.flighttrails.cmds.CmdSetColorOther;
+import xyz.oribuin.flighttrails.cmds.CmdToggleTrail;
+import xyz.oribuin.flighttrails.handlers.FlyHandler;
+import xyz.oribuin.flighttrails.hooks.Metrics;
+import xyz.oribuin.flighttrails.hooks.PlaceholderAPIHook;
+import xyz.oribuin.flighttrails.hooks.TrailsPlaceholderExpansion;
+import xyz.oribuin.flighttrails.listeners.MainEvents;
+import xyz.oribuin.flighttrails.persist.ColorU;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public class FlightTrails extends JavaPlugin {
     public final FileConfiguration config = this.getConfig();
@@ -48,7 +44,7 @@ public class FlightTrails extends JavaPlugin {
          */
 
         int pluginId = 6324;
-        me.oribuin.flighttrails.hooks.Metrics metrics = new Metrics(this, pluginId);
+        Metrics metrics = new Metrics(this, pluginId);
 
         /*
          * Command Registering
