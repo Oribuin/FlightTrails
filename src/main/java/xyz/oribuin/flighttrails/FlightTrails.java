@@ -85,6 +85,7 @@ public class FlightTrails extends JavaPlugin {
                         "\n&6Plugin: &f" + this.getDescription().getName() +
                         "\n&6Author: &f" + this.getDescription().getAuthors() +
                         "\n&6Version: &f" + this.getDescription().getVersion() +
+                        "\n&6Website: &f" + this.getDescription().getWebsite() +
                         "\n\n&e******************"
         ));
     }

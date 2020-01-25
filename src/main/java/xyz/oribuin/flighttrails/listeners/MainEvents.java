@@ -64,9 +64,10 @@ public class MainEvents implements Listener {
 
             // If the user is flying, spawn the particle.
             if (plugin.getConfig().getBoolean("flight-trail") && !player.isFlying()) {
-                if (color != null)
+                if (color != null) {
                     color = particleColor(Data.dustOptionsMap.get(player.getUniqueId()).getColor().getRed(), Data.dustOptionsMap.get(player.getUniqueId()).getColor().getGreen(), Data.dustOptionsMap.get(player.getUniqueId()).getColor().getBlue());
                     player.getLocation().getWorld().spawnParticle(Particle.REDSTONE, loc, plugin.getConfig().getInt("particle-count"), color);
+                }
             }
         }
     }

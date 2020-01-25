@@ -4,7 +4,7 @@ version: @version@
 author: Oribuin
 api-version: "1.13"
 description: A light weight flight particle color trail plugin | EULA Friendly | Perfect for ranks.
-website: https://github.com/Oribuin/FlightTrails/
+website: http://oribuin.xyz/
 softdepend:
   - PlaceholderAPI
 commands:

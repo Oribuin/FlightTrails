@@ -1,10 +1,10 @@
 name: Flight-Trails
-main: me.oribuin.flighttrails.FlightTrails
-version: 1.0.2
+main: xyz.oribuin.flighttrails.FlightTrails
+version: 1.0.3
 author: Oribuin
 api-version: "1.13"
 description: A light weight flight particle color trail plugin | EULA Friendly | Perfect for ranks.
-website: https://github.com/Oribuin/FlightTrails/
+website: http://oribuin.xyz/
 softdepend:
   - PlaceholderAPI
 commands:
