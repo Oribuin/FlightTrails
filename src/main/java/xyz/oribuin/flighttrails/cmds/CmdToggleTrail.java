@@ -2,7 +2,7 @@ package xyz.oribuin.flighttrails.cmds;
 
 import xyz.oribuin.flighttrails.FlightTrails;
 import xyz.oribuin.flighttrails.handlers.FlyHandler;
-import xyz.oribuin.flighttrails.persist.ColorU;
+import xyz.oribuin.flighttrails.persist.Chat;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
@@ -39,21 +39,21 @@ public class CmdToggleTrail implements CommandExecutor {
              return No Permission Message
             */
             if (!player.hasPermission("flytrails.fly")) {
-                player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("cmd-permission")));
+                player.sendMessage(Chat.cl(config.getString("prefix") + config.getString("no-permission")));
                 return true;
             }
 
             // If they have trails disabled, Enable them
             if (!flyHandler.trailIsToggled(player.getUniqueId())) {
-                player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("trails-enabled")));
+                player.sendMessage(Chat.cl(config.getString("prefix") + config.getString("trails-enabled")));
             } else {
                 // If they have trails enabled, disable them.
-                player.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("trails-disabled")));
+                player.sendMessage(Chat.cl(config.getString("prefix") + config.getString("trails-disabled")));
             }
 
             flyHandler.trailToggle(player.getUniqueId());
         } else {
-            sender.sendMessage(ColorU.cl(plugin.getConfig().getString("prefix") + plugin.getConfig().getString("player-only")));
+            sender.sendMessage(Chat.cl(plugin.getConfig().getString("prefix") + plugin.getConfig().getString("player-only")));
         }
         return true;
     }

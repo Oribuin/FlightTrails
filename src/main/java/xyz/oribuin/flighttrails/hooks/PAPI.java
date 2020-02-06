@@ -5,13 +5,13 @@ import xyz.oribuin.flighttrails.FlightTrails;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class PlaceholderAPIHook {
+public class PAPI {
 
     FlightTrails plugin;
 
     private static Boolean enabled;
 
-    public PlaceholderAPIHook(FlightTrails plugin) {
+    public PAPI(FlightTrails plugin) {
         this.plugin = plugin;
     }
 
@@ -21,7 +21,7 @@ public class PlaceholderAPIHook {
         return enabled = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
     }
 
-    public static String applyPlaceholders(Player player, String text) {
+    public static String applyPl(Player player, String text) {
         if (enabled())
             return PlaceholderAPI.setPlaceholders(player, text);
         return text;

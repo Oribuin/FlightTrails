@@ -2,7 +2,9 @@
   <dictionary name="epics">
     <words>
       <w>mplayer</w>
+      <w>oribuin</w>
       <w>pplayer</w>
+      <w>redstone</w>
     </words>
   </dictionary>
 </component>

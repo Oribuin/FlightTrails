@@ -2,8 +2,7 @@ package xyz.oribuin.flighttrails.cmds;
 
 import xyz.oribuin.flighttrails.FlightTrails;
 import xyz.oribuin.flighttrails.handlers.FlyHandler;
-import xyz.oribuin.flighttrails.persist.ColorU;
-import xyz.oribuin.flighttrails.persist.Data;
+import xyz.oribuin.flighttrails.persist.Chat;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
@@ -11,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import xyz.oribuin.flighttrails.persist.Data;
 
 public class CmdSetColorOther implements CommandExecutor {
 
@@ -45,13 +45,18 @@ public class CmdSetColorOther implements CommandExecutor {
                 Player player = (Player) sender;
 
                 if (!player.hasPermission("flytrails.color.other") && !player.hasPermission("flytrails.color")) {
-                    sender.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("no-permission")));
+                    sender.sendMessage(Chat.cl(config.getString("prefix") + config.getString("no-permission")));
                     return true;
                 }
             }
 
+            if (config.getString("particle-effect") == null || !config.getString("particle-effect").toUpperCase().equals("REDSTONE")) {
+                sender.sendMessage(Chat.cl(config.getString("color-disabled")));
+                return true;
+            }
+
             if (args.length < 4) {
-                sender.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("invalid-args").replaceAll("\\{usage}", command.getUsage())));
+                sender.sendMessage(Chat.cl(config.getString("prefix") + config.getString("invalid-args").replaceAll("\\{usage}", command.getUsage())));
                 return true;
             }
 
@@ -59,7 +64,7 @@ public class CmdSetColorOther implements CommandExecutor {
             Player pplayer = sender.getServer().getPlayer(mplayer);
 
             if (pplayer == null) {
-                sender.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("invalid-user")));
+                sender.sendMessage(Chat.cl(config.getString("prefix") + config.getString("invalid-user")));
                 return true;
             }
 
@@ -71,7 +76,7 @@ public class CmdSetColorOther implements CommandExecutor {
             if (r > 255 || r < 0
                     || g > 255 || g < 0
                     || b > 255 || b < 0) {
-                sender.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("invalid-int")));
+                sender.sendMessage(Chat.cl(config.getString("prefix") + config.getString("invalid-int")));
                 return true;
             }
 
@@ -82,14 +87,18 @@ public class CmdSetColorOther implements CommandExecutor {
                 flyHandler.trailToggle(pplayer.getUniqueId());
 
             if (color != null) {
+                /*
                 if (Data.dustOptionsMap.get(pplayer.getUniqueId()) != null) {
-                    Data.dustOptionsMap.remove(pplayer.getUniqueId());
+                    Data.removeUserData(plugin, pplayer);
                 }
+
+                 */
+
                 Data.dustOptionsMap.put(pplayer.getUniqueId(), color);
             }
 
             if (sender.getName().equals(pplayer.getName())) {
-                sender.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("custom-color-message")
+                sender.sendMessage(Chat.cl(config.getString("prefix") + config.getString("custom-color-message")
                         .replaceAll("\\{player}", sender.getName())
                         .replaceAll("\\{r}", "" + color.getColor().getRed())
                         .replaceAll("\\{g}", "" + color.getColor().getGreen())
@@ -101,7 +110,7 @@ public class CmdSetColorOther implements CommandExecutor {
             // tell the player if sudo-tellplayer is true
             if (config.getBoolean("sudo-tellplayer", true)) {
                 // Tell the player the color they just set.
-                pplayer.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("player-sudo-message")
+                pplayer.sendMessage(Chat.cl(config.getString("prefix") + config.getString("player-sudo-message")
                         .replaceAll("\\{mentioned}", pplayer.getName())
                         .replaceAll("\\{player}", sender.getName())
                         .replaceAll("\\{r}", "" + color.getColor().getRed())
@@ -110,7 +119,7 @@ public class CmdSetColorOther implements CommandExecutor {
                 ));
             }
 
-            sender.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("sender-sudo-message")
+            sender.sendMessage(Chat.cl(config.getString("prefix") + config.getString("sender-sudo-message")
                     .replaceAll("\\{mentioned}", pplayer.getName())
                     .replaceAll("\\{player}", sender.getName())
                     .replaceAll("\\{r}", "" + color.getColor().getRed())
@@ -120,7 +129,7 @@ public class CmdSetColorOther implements CommandExecutor {
 
             command.tabComplete(sender, command.getName(), tabComplete);
         } catch (NumberFormatException exception) {
-            sender.sendMessage(ColorU.cl(config.getString("prefix") + config.getString("invalid-int")));
+            sender.sendMessage(Chat.cl(config.getString("prefix") + config.getString("invalid-int")));
             return true;
         }
         return true;
