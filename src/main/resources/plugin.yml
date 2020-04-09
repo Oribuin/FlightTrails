@@ -1,4 +1,4 @@
-name: Flight-Trails
+name: FlightTrails
 main: xyz.oribuin.flighttrails.FlightTrails
 version: @version@
 author: Oribuin
@@ -8,31 +8,6 @@ website: http://oribuin.xyz/
 softdepend:
   - PlaceholderAPI
 commands:
-  ftrail:
-    description: Toggle flight particles.
-    usage: /ftrail
-    aliases:
-      - flytrail
-
-  ftreload:
-    description: Reload FlightTrails config.yml
-    usage: /ftreload
-
-  ftset:
-    description: Set your personal rgb color for trails
-    usage: /ftset <0-255> <0-255> <0-255>
-
-  ftoset:
-    description: Set another user's rgb color for trails.
-    usage: /ftoset <Player> <0-255> <0-255> <0-255>
-
-
-permissions:
-  flytrails.*:
-    description: All permissions for Flight-Trails plugin.
-    children:
-      - flytrails.fly
-      - flytrails.reload
-      - flytrails.color
-      - flytrails.color.other
-    default: op
+  trails:
+    description: Main command
+    usage: /trails

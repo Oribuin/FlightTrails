@@ -1,0 +1,9 @@
+
+prefix: '&b«&aFlightTrails&b» '
+# » Command Messages «
+trails-enabled: '&aYou have enabled Flight Trails.'
+trails-disabled: '&cYou have disabled Flight Trails.'
+
+# » Misc «
+reload: '&bYou have reloaded FlightTrails (%version%)'
+invalid-permission: '&cYou do not have permission to execute this command.'
