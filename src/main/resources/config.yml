@@ -2,9 +2,17 @@
 # » FlightTrails by Oribuin «
 #
 # Add customizable flight trails
+
+conditions:
+  creative-fly: true
+  elytra: true
+
+disabled-worlds:
+  - 'disabled-world1'
+  - 'disabled-world2'
+
 particle-settings:
-  particle: 'REDSTONE'
-  count: 5
+  count: 2
   size: 1.0
 
 # Do not change this number

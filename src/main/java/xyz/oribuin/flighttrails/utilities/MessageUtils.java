@@ -29,17 +29,17 @@ public class MessageUtils {
     public String getMessage(String msgTile) {
         switch (msgTile) {
             case "invalidPermission":
-                return Color.msg(getMsgs().getString("invalid-permission"));
+                return Color.msg(prefix() + getMsgs().getString("invalid-permission"));
             case "reload":
-                return Color.msg(getMsgs().getString("reload").replaceAll("%version%", FlightTrails.getInstance().getDescription().getVersion()));
+                return Color.msg(prefix() + getMsgs().getString("reload").replaceAll("%version%", FlightTrails.getInstance().getDescription().getVersion()));
             case "trailsEnabled":
-                return Color.msg(getMsgs().getString("trails-enabled"));
+                return Color.msg(prefix() + getMsgs().getString("trails-enabled"));
             case "trailsDisabled":
-                return Color.msg(getMsgs().getString("trails-disabled"));
+                return Color.msg(prefix() + getMsgs().getString("trails-disabled"));
 
         }
 
-        return prefix() + msgTile;
+        return msgTile;
     }
 
     public String getUsage(String command) {

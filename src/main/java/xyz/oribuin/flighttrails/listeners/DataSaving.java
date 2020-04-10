@@ -44,6 +44,9 @@ public class DataSaving implements Listener {
         if (dataConfig.get(player.getUniqueId() + ".enabled") == null)
             dataConfig.set(player.getUniqueId() + ".enabled", false);
 
+        if (dataConfig.get(player.getUniqueId()  + ".particle") == null)
+            dataConfig.set(player.getUniqueId() + ".particle", "FALLING_DUST");
+
         if (dataConfig.get(player.getUniqueId() + ".item") == null)
             dataConfig.set(player.getUniqueId() + ".item", "BLUE_CONCRETE");
 
