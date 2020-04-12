@@ -14,6 +14,17 @@ disabled-worlds:
 particle-settings:
   count: 2
   size: 1.0
+  # The default settings when a player's data is first generated.
+  default:
+    enabled: true
+    particle: 'REDSTONE'
+    block: 'BLUE_CONCRETE'
+    item: 'BLUE_CONCRETE'
+    color:
+      ==: Color
+      RED: 0
+      BLUE: 0
+      GREEN: 0
 
 # Do not change this number
 file-version: '1.0.5'

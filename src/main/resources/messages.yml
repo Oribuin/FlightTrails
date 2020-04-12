@@ -4,6 +4,16 @@ prefix: '&b«&aFlightTrails&b» '
 trails-enabled: '&aYou have enabled Flight Trails.'
 trails-disabled: '&cYou have disabled Flight Trails.'
 
+set-command:
+  # Set Particle Command
+  particle: '&bYour particle was changed into %particle%.'
+  block: '&bYour block was changed into %block%.'
+
+  invalid-particle: '&cThat is not a valid particle effect.'
+  invalid-block: '&cThat is not a valid particle effect.'
+  required-particle: '&cYou do not have the right particles to do this.'
+
+
 # » Misc «
 reload: '&bYou have reloaded FlightTrails (%version%)'
 invalid-permission: '&cYou do not have permission to execute this command.'

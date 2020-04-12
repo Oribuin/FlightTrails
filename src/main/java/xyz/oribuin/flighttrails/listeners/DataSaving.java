@@ -16,13 +16,12 @@ import java.io.IOException;
 public class DataSaving implements Listener {
 
     private FlightTrails plugin = FlightTrails.getInstance();
+    private final File file = new File(plugin.getDataFolder(), "data.yml");
+    private final FileConfiguration data = getDataConfig();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-
-        File file = new File(plugin.getDataFolder(), "data.yml");
-        FileConfiguration dataConfig = YamlConfiguration.loadConfiguration(file);
 
         try {
             if (!file.exists()) {
@@ -38,24 +37,27 @@ public class DataSaving implements Listener {
     }
 
     public void checkData(Player player) throws IOException {
-        File file = new File(plugin.getDataFolder(), "data.yml");
-        FileConfiguration dataConfig = YamlConfiguration.loadConfiguration(file);
+        FileConfiguration config = plugin.getConfig();
 
-        if (dataConfig.get(player.getUniqueId() + ".enabled") == null)
-            dataConfig.set(player.getUniqueId() + ".enabled", false);
+        if (data.get(player.getUniqueId() + ".enabled") == null)
+            data.set(player.getUniqueId() + ".enabled", config.getBoolean("particle-settings.default.enabled"));
 
-        if (dataConfig.get(player.getUniqueId()  + ".particle") == null)
-            dataConfig.set(player.getUniqueId() + ".particle", "FALLING_DUST");
+        if (data.get(player.getUniqueId()  + ".particle") == null)
+            data.set(player.getUniqueId() + ".particle", config.getString("particle-settings.default.particle"));
 
-        if (dataConfig.get(player.getUniqueId() + ".item") == null)
-            dataConfig.set(player.getUniqueId() + ".item", "BLUE_CONCRETE");
+        if (data.get(player.getUniqueId() + ".item") == null)
+            data.set(player.getUniqueId() + ".item", config.getString("particle-settings.default.item"));
 
-        if (dataConfig.get(player.getUniqueId() + ".block") == null)
-            dataConfig.set(player.getUniqueId() + ".block", "BLUE_CONCRETE");
+        if (data.get(player.getUniqueId() + ".block") == null)
+            data.set(player.getUniqueId() + ".block", config.getString("particle-settings.default.block"));
 
-        if (dataConfig.get(player.getUniqueId() + ".color") == null)
-            dataConfig.set(player.getUniqueId() + ".color", Color.fromRGB(0, 0, 0));
+        if (data.get(player.getUniqueId() + ".color") == null)
+            data.set(player.getUniqueId() + ".color", config.getColor("particle-settings.default.color"));
 
-        dataConfig.save(file);
+        data.save(file);
+    }
+
+    private FileConfiguration getDataConfig() {
+        return YamlConfiguration.loadConfiguration(file);
     }
 }

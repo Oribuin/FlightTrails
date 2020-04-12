@@ -21,6 +21,8 @@ import java.nio.file.Paths;
 public class FlightTrails extends JavaPlugin {
 
     private static FlightTrails instance;
+    private final File file = new File(getDataFolder(), "data.yml");
+    private final FileConfiguration data = getDataConfig();
 
     public static FlightTrails getInstance() {
         return instance;
@@ -35,12 +37,6 @@ public class FlightTrails extends JavaPlugin {
 
         getCommand("trails").setExecutor(new CmdTrails());
         getServer().getPluginManager().registerEvents(new DataSaving(), this);
-
-        try {
-            updateConfig();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         this.saveDefaultConfig();
         createFile("messages.yml");
@@ -83,51 +79,29 @@ public class FlightTrails extends JavaPlugin {
         return YamlConfiguration.loadConfiguration(new File(getDataFolder(), "data.yml"));
     }
 
-    private void updateConfig() throws IOException {
-        FileConfiguration msgConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "messages.yml"));
-
-        if (getConfig().get("file-version") == null || !getConfig().getString("file-version").equals(getDescription().getVersion())) {
-            System.out.println("» ------------- «");
-            System.out.println(" ");
-            System.out.println("Updated Configuration File");
-            System.out.println("Restart the server to set all the changes");
-            System.out.println(" ");
-            System.out.println("» ------------- «");
-
-            if (getConfig().getDefaults() != null)
-                getConfig().setDefaults(getConfig().getDefaults());
-
-            if (msgConfig.getDefaults() != null)
-                msgConfig.setDefaults(msgConfig.getDefaults());
-
-            msgConfig.save(new File(getDataFolder(), "messages.yml"));
-            saveConfig();
-
-        }
-    }
-
 
     public void spawnParticles(Player player) {
 
         // Particle Type
-        Particle particle = Particle.valueOf(getDataConfig().getString(player.getUniqueId() + ".particle"));
+        Particle particle = Particle.valueOf(data.getString(player.getUniqueId() + ".particle"));
         // Particle Settings
         int particleCount = getConfig().getInt("particle-settings.count");
         int particleSize = getConfig().getInt("particle-settings.size");
 
         // Particle Data
-        Particle.DustOptions color = new Particle.DustOptions(getDataConfig().getColor(player.getUniqueId() + ".color"), particleSize);
-        ItemStack itemStack = getDataConfig().getItemStack(player.getUniqueId() + ".item");
-        BlockData blockData = Material.valueOf(getDataConfig().getString(player.getUniqueId() + ".block")).createBlockData();
+        Particle.DustOptions color = new Particle.DustOptions(data.getColor(player.getUniqueId() + ".color"), particleSize);
+        ItemStack itemStack = data.getItemStack(player.getUniqueId() + ".item");
+        BlockData blockData = Material.valueOf(data.getString(player.getUniqueId() + ".block")).createBlockData();
 
         // I feel like this is not the right way to do it, Deal with it
         switch (particle) {
             case REDSTONE:
                 player.getWorld().spawnParticle(particle, player.getLocation(), particleCount, 0, 0, 0, color);
                 break;
-            case FALLING_DUST:
             case BLOCK_CRACK:
             case BLOCK_DUST:
+                break;
+            case FALLING_DUST:
                 player.getWorld().spawnParticle(particle, player.getLocation(), particleCount, 0, 0, 0, blockData);
                 break;
             case ITEM_CRACK:

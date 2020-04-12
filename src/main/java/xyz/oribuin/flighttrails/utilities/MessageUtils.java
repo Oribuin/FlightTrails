@@ -36,12 +36,30 @@ public class MessageUtils {
                 return Color.msg(prefix() + getMsgs().getString("trails-enabled"));
             case "trailsDisabled":
                 return Color.msg(prefix() + getMsgs().getString("trails-disabled"));
-
+            case "invalidParticle":
+                return Color.msg(prefix() + getMsgs().getString("set-command.invalid-particle"));
+            case "invalidBlock":
+                return Color.msg(prefix() + getMsgs().getString("set-command.invalid-block"));
+            case "requiredParticle":
+                return Color.msg(prefix() + getMsgs().getString("set-command.required-particle"));
         }
 
         return msgTile;
     }
 
+    public String getSetType(String type, String arg) {
+        switch (type) {
+            case "particle":
+                return Color.msg(prefix() + getMsgs().getString("set-command.particle").replace("%particle%", arg));
+            case "block":
+                return Color.msg(prefix() + getMsgs().getString("set-command.block").replace("%block%", arg));
+            case "item":
+                return Color.msg(prefix() + getMsgs().getString("set-command.block").replace("%item%", arg));
+            case "color":
+                return Color.msg(prefix() + getMsgs().getString("set-command.block").replace("%color%", arg));
+        }
+        return type;
+    }
     public String getUsage(String command) {
         return Color.msg(prefix() + getMsgs().getString("invalid-args").replaceAll("%usage%", FlightTrails.getInstance().getCommand(command).getUsage()));
     }
