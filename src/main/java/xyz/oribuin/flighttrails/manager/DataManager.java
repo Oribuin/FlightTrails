@@ -34,6 +34,7 @@ public class DataManager extends Manager implements Listener {
     public DataManager(FlightTrails plugin) {
         super(plugin);
         this.playerData = new HashMap<>();
+        Bukkit.getPluginManager().registerEvents(this, this.plugin);
     }
 
     @Override
