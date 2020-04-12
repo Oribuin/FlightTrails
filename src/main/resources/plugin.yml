@@ -1,13 +1,12 @@
 name: FlightTrails
 main: xyz.oribuin.flighttrails.FlightTrails
 version: @version@
-author: Oribuin
-api-version: "1.13"
+authors: [Oribuin, Esophose]
+api-version: '1.13'
 description: A light weight flight particle color trail plugin | EULA Friendly | Perfect for ranks.
-website: http://oribuin.xyz/
-softdepend:
-  - PlaceholderAPI
+website: https://oribuin.xyz/
+softdepend: [PlaceholderAPI]
 commands:
   trails:
-    description: Main command
-    usage: /trails
+    description: Main FlightTrails command
+    usage: /trails [set/reload] [particle/item/block/color] [value]

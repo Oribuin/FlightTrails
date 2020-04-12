@@ -20,11 +20,7 @@ particle-settings:
     particle: 'REDSTONE'
     block: 'BLUE_CONCRETE'
     item: 'BLUE_CONCRETE'
-    color:
-      ==: Color
-      RED: 0
-      BLUE: 0
-      GREEN: 0
+    color: 'BLACK'
 
 # Do not change this number
-file-version: '1.0.5'
+file-version: '1.1.0'

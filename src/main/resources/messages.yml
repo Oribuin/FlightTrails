@@ -1,19 +1,24 @@
-
 prefix: '&b«&aFlightTrails&b» '
 # » Command Messages «
 trails-enabled: '&aYou have enabled Flight Trails.'
 trails-disabled: '&cYou have disabled Flight Trails.'
 
+# » Set Command Messages «
 set-command:
-  # Set Particle Command
-  particle: '&bYour particle was changed into %particle%.'
-  block: '&bYour block was changed into %block%.'
-
+  particle: '&bYour particle was changed to %particle%.'
+  item: '&bYour item was changed to %item%.'
+  block: '&bYour block was changed to %block%.'
+  color: '&bYour color was changed to %color%.'
+  no-type: '&cYou did not provide a type to set.'
+  no-value: '&cYou did not provide a value to set.'
   invalid-particle: '&cThat is not a valid particle effect.'
-  invalid-block: '&cThat is not a valid particle effect.'
+  invalid-item: '&cThat is not a valid item.'
+  invalid-block: '&cThat is not a valid block.'
+  invalid-color: '&cThat is not a valid color.'
   required-particle: '&cYou do not have the right particles to do this.'
 
-
-# » Misc «
+# » Misc Messages «
 reload: '&bYou have reloaded FlightTrails (%version%)'
 invalid-permission: '&cYou do not have permission to execute this command.'
+player-only: '&cOnly a player can execute this command.'
+unknown-command: '&cAn unknown command was entered.'
