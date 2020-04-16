@@ -3,10 +3,33 @@ main: xyz.oribuin.flighttrails.FlightTrails
 version: @version@
 authors: [Oribuin, Esophose]
 api-version: '1.13'
-description: A light weight flight particle color trail plugin | EULA Friendly | Perfect for ranks.
+description: Customize your flying with EULA friendly Flight Trails
 website: https://oribuin.xyz/
 softdepend: [PlaceholderAPI]
 commands:
   trails:
     description: Main FlightTrails command
     usage: /trails [set/reload] [particle/item/block/color] [value]
+
+permissions:
+  flighttrails.*:
+    description: All permissions
+    default: op
+    children:
+      - flighttrails.use
+      - flighttrails.toggle
+      - flighttrails.reload
+      - flighttrails.set
+      - flighttrails.set.particle
+      - flighttrails.set.block
+      - flighttrails.set.item
+      - flighttrails.set.color
+  flighttrails.set.*:
+    description: All set command permissions
+    default: op
+    children:
+      - flighttrails.set
+      - flighttrails.set.particle
+      - flighttrails.set.block
+      - flighttrails.set.item
+      - flighttrails.set.color

@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.google.common.xml.XmlEscapers;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.data.BlockData;
@@ -203,10 +206,10 @@ public class CommandManager extends Manager implements TabExecutor {
                 }
 
                 if (args.length == 1) {
-                    messageManager.sendMessage(sender, "no-type");
+                    messageManager.sendMessage(sender, "set-command.no-type");
                     break;
                 } else if (args.length == 2) {
-                    messageManager.sendMessage(sender, "no-value");
+                    messageManager.sendMessage(sender, "set-command.no-value");
                     break;
                 }
 
@@ -245,11 +248,13 @@ public class CommandManager extends Manager implements TabExecutor {
             List<String> commands = new ArrayList<>();
             if (sender.hasPermission("flighttrails.reload"))
                 commands.add("reload");
-            commands.add("set");
+            if (sender.hasPermission("flighttrails.set"))
+                commands.add("set");
             StringUtil.copyPartialMatches(subCommandName, commands, suggestions);
         } else if (args.length == 2 && args[0].equalsIgnoreCase("set")) {
             List<String> options = Arrays.asList("particle", "item", "block", "color");
             StringUtil.copyPartialMatches(args[1].toLowerCase(), options, suggestions);
+
         } else if (args.length > 2 && args[0].equalsIgnoreCase("set")) {
             String value = args[2].toLowerCase();
             String type = args[1].toLowerCase();
@@ -271,6 +276,7 @@ public class CommandManager extends Manager implements TabExecutor {
                     StringUtil.copyPartialMatches(value, colors, suggestions);
                     break;
             }
+
         }
 
         return suggestions;
