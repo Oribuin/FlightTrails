@@ -21,8 +21,7 @@ public class ConfigManager extends Manager {
         PARTICLE_DEFAULT_PARTICLE("particle-settings.default.particle"),
         PARTICLE_DEFAULT_BLOCK("particle-settings.default.block"),
         PARTICLE_DEFAULT_ITEM("particle-settings.default.item"),
-        PARTICLE_DEFAULT_COLOR("particle-settings.default.color"),
-        FILE_VERSION("file-version");
+        PARTICLE_DEFAULT_COLOR("particle-settings.default.color"); 
 
         private final String key;
         private Object value = null;

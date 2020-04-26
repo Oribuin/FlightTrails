@@ -134,7 +134,7 @@ public class CommandManager extends Manager implements TabExecutor {
             return;
         }
 
-        Material material = Material.getMaterial(blockValue);
+        Material material = Material.getMaterial(blockValue.toUpperCase());
         if (material == null) {
             messageManager.sendMessage(player, "set-command.invalid-block");
             return;
@@ -219,10 +219,10 @@ public class CommandManager extends Manager implements TabExecutor {
                         this.onSetParticle(player, args[2]);
                         break;
                     case "item":
-                        this.onSetItem(player, args[2]);
+                        this.onSetItem(player, args[2].toUpperCase());
                         break;
                     case "block":
-                        this.onSetBlock(player, args[2]);
+                        this.onSetBlock(player, args[2].toUpperCase());
                         break;
                     case "color":
                         this.onSetColor(player, args[2]);
