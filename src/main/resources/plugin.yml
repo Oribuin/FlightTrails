@@ -1,6 +1,6 @@
 name: FlightTrails
 main: xyz.oribuin.flighttrails.FlightTrails
-version: @version@
+version: '@version@'
 authors: [Oribuin, Esophose]
 api-version: '1.13'
 description: Customize your flying with EULA friendly Flight Trails

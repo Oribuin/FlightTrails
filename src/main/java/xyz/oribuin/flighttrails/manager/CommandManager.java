@@ -61,6 +61,7 @@ public class CommandManager extends Manager implements TabExecutor {
         }
 
         PlayerData playerData = dataManager.getPlayerData(player, false);
+
         boolean enabled = !playerData.isEnabled();
         dataManager.updatePlayerData(player, enabled);
         if (enabled) {
@@ -255,7 +256,7 @@ public class CommandManager extends Manager implements TabExecutor {
             List<String> options = Arrays.asList("particle", "item", "block", "color");
             StringUtil.copyPartialMatches(args[1].toLowerCase(), options, suggestions);
 
-        } else if (args.length > 2 && args[0].equalsIgnoreCase("set")) {
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("set")) {
             String value = args[2].toLowerCase();
             String type = args[1].toLowerCase();
             switch (type) {

@@ -1,11 +1,15 @@
 package xyz.oribuin.flighttrails;
 
 import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Team;
 import xyz.oribuin.flighttrails.data.PlayerData;
+import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook;
+import xyz.oribuin.flighttrails.hook.PlaceholderExpansion;
 import xyz.oribuin.flighttrails.manager.CommandManager;
 import xyz.oribuin.flighttrails.manager.ConfigManager;
 import xyz.oribuin.flighttrails.manager.ConfigManager.Setting;
@@ -14,6 +18,7 @@ import xyz.oribuin.flighttrails.manager.MessageManager;
 
 public class FlightTrails extends JavaPlugin {
 
+    private static FlightTrails instance;
     private CommandManager commandManager;
     private ConfigManager configManager;
     private DataManager dataManager;
@@ -21,6 +26,7 @@ public class FlightTrails extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         this.commandManager = new CommandManager(this);
         this.configManager = new ConfigManager(this);
         this.dataManager = new DataManager(this);
@@ -28,27 +34,30 @@ public class FlightTrails extends JavaPlugin {
 
         this.reload();
 
-        // Add this once you actually start using PlaceholderAPI
-//        if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
-//            Bukkit.getConsoleSender().sendMessage("[FlightTrails] No PlaceholderAPI, Placeholders will not work.");
+        if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            Bukkit.getConsoleSender().sendMessage("[FlightTrails] No PlaceholderAPI, Placeholders will not work.");
+        }
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            List<String> disabledWorlds = Setting.DISABLED_WORLDS.getStringList();
-            for (PlayerData playerData : this.dataManager.getAllPlayerData()) {
-                Player player = playerData.getPlayer();
-                if (!player.hasPermission("flighttrails.use")
-                        || player.hasMetadata("vanished")
-                        || !playerData.isEnabled()
-                        || disabledWorlds.contains(player.getWorld().getName())) {
-                    continue;
-                }
+        if (PlaceholderAPIHook.enabled())
+            new PlaceholderExpansion(this).register();
 
-                if ((Setting.CREATIVE_FLY_ENABLED.getBoolean() && player.isFlying())
-                        || (Setting.ELYTRA_ENABLED.getBoolean() && player.isGliding())) {
-                    this.spawnParticles(playerData);
-                }
-            }
-        }, 0, 1);
+            Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+                        List<String> disabledWorlds = Setting.DISABLED_WORLDS.getStringList();
+                        for (PlayerData playerData : this.dataManager.getAllPlayerData()) {
+                            Player player = playerData.getPlayer();
+                            if (!player.hasPermission("flighttrails.use")
+                                    || player.hasMetadata("vanished")
+                                    || !playerData.isEnabled()
+                                    || disabledWorlds.contains(player.getWorld().getName())) {
+                                continue;
+                            }
+
+                            if ((Setting.CREATIVE_FLY_ENABLED.getBoolean() && player.isFlying())
+                                    || (Setting.ELYTRA_ENABLED.getBoolean() && player.isGliding())) {
+                                this.spawnParticles(playerData);
+                            }
+                        }
+                    }, 0, 1);
     }
 
     public void spawnParticles(PlayerData playerData) {
@@ -96,6 +105,10 @@ public class FlightTrails extends JavaPlugin {
 
     public MessageManager getMessageManager() {
         return this.messageManager;
+    }
+
+    public static FlightTrails getInstance() {
+        return instance;
     }
 
 }
