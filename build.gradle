@@ -29,7 +29,6 @@ dependencies {
 
 shadowJar {
     mergeServiceFiles()
-    minimize()
     relocate('dev.esophose.guiframework', 'xyz.oribuin.flighttrails.libs.guiframework')
     archiveName 'FlightTrails-' + project.property("version") + ".jar"
 }

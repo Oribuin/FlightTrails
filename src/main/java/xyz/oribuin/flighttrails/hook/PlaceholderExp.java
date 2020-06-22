@@ -1,14 +1,15 @@
 package xyz.oribuin.flighttrails.hook;
 
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import xyz.oribuin.flighttrails.FlightTrails;
 import xyz.oribuin.flighttrails.data.PlayerData;
 
-public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.PlaceholderExpansion {
+public class PlaceholderExp extends PlaceholderExpansion {
 
-    private FlightTrails plugin;
+    private final FlightTrails plugin;
 
-    public PlaceholderExpansion(FlightTrails plugin) {
+    public PlaceholderExp(FlightTrails plugin) {
         this.plugin = plugin;
     }
 

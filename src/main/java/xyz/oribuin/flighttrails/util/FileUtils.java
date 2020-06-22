@@ -1,11 +1,12 @@
 package xyz.oribuin.flighttrails.util;
 
+import org.bukkit.plugin.Plugin;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import org.bukkit.plugin.Plugin;
 
 public final class FileUtils {
 

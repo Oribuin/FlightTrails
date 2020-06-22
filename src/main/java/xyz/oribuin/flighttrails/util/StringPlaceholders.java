@@ -17,20 +17,6 @@ public final class StringPlaceholders {
         this.placeholders = new HashMap<>();
     }
 
-    public void addPlaceholder(String placeholder, Object value) {
-        this.placeholders.put(placeholder, objectToString(value));
-    }
-
-    public String apply(String string) {
-        for (String key : this.placeholders.keySet())
-            string = string.replaceAll(Pattern.quote('%' + key + '%'), Matcher.quoteReplacement(this.placeholders.get(key)));
-        return string;
-    }
-
-    public Map<String, String> getPlaceholders() {
-        return Collections.unmodifiableMap(this.placeholders);
-    }
-
     public static Builder builder() {
         return new Builder();
     }
@@ -49,6 +35,20 @@ public final class StringPlaceholders {
 
     private static String objectToString(Object object) {
         return object != null ? object.toString() : "null";
+    }
+
+    public void addPlaceholder(String placeholder, Object value) {
+        this.placeholders.put(placeholder, objectToString(value));
+    }
+
+    public String apply(String string) {
+        for (String key : this.placeholders.keySet())
+            string = string.replaceAll(Pattern.quote('%' + key + '%'), Matcher.quoteReplacement(this.placeholders.get(key)));
+        return string;
+    }
+
+    public Map<String, String> getPlaceholders() {
+        return Collections.unmodifiableMap(this.placeholders);
     }
 
     public static class Builder {

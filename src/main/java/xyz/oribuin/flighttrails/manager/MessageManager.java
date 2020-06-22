@@ -1,6 +1,5 @@
 package xyz.oribuin.flighttrails.manager;
 
-import java.io.File;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -8,6 +7,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import xyz.oribuin.flighttrails.FlightTrails;
 import xyz.oribuin.flighttrails.util.FileUtils;
 import xyz.oribuin.flighttrails.util.StringPlaceholders;
+
+import java.io.File;
+import java.util.List;
 
 public class MessageManager extends Manager {
 
@@ -30,7 +32,8 @@ public class MessageManager extends Manager {
     }
 
     public void sendMessage(CommandSender sender, String messageId, StringPlaceholders placeholders) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.messageConfig.getString("prefix") + placeholders.apply(this.messageConfig.getString(messageId))));
-    }
 
+        if (!this.messageConfig.getString(messageId).isEmpty())
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.messageConfig.getString("prefix") + placeholders.apply(this.messageConfig.getString(messageId))));
+    }
 }
