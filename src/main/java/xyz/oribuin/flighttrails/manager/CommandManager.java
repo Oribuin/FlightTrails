@@ -109,7 +109,7 @@ public class CommandManager extends Manager implements TabExecutor {
         }
 
         // Check if player has permission for the particle
-        if (!player.hasPermission("flighttrails.particle." + particle.name().toLowerCase()) && !player.hasPermission("flighttrails.particle.*")) {
+        if (!player.hasPermission("flighttrails.particle." + particle.name().toLowerCase())) {
             messageManager.sendMessage(player, "invalid-permission");
             return;
         }
@@ -228,7 +228,7 @@ public class CommandManager extends Manager implements TabExecutor {
             messageManager.sendMessage(player, "invalid-permission");
             return;
         }
-        
+
         // Update player data
         dataManager.updatePlayerData(player, color);
 
@@ -247,7 +247,36 @@ public class CommandManager extends Manager implements TabExecutor {
         MessageManager messageManager = this.plugin.getMessageManager();
 
         // If the args.length == 0 or first argument equals toggle
-        if (args.length == 0 || args.length == 1 && args[0].equalsIgnoreCase("toggle")) {
+        if (args.length <= 2 && args[0].equalsIgnoreCase("toggle")) {
+
+            if (args.length == 2) {
+
+                Player mentioned = Bukkit.getPlayer(args[1]);
+
+                if (!sender.hasPermission("flighttrails.toggle.other")) {
+                    messageManager.sendMessage(sender, "invalid-permission");
+                    return true;
+                }
+
+                // Check if mentioned is null, offline, vanished
+                if (mentioned == null || !mentioned.isOnline() || mentioned.hasMetadata("vanished")) {
+                    // Send invalid player
+                    messageManager.sendMessage(sender, "invalid-player");
+                    return true;
+                }
+
+                PlayerData playerData = this.plugin.getDataManager().getPlayerData(mentioned, false);
+                this.onToggleCommand(mentioned, playerData == null);
+
+                if (playerData == null)
+                    return true;
+
+                if (playerData.isEnabled())
+                    messageManager.sendMessage(sender, "toggled-other-disabled", StringPlaceholders.single("player", mentioned.getName()));
+                else
+                    messageManager.sendMessage(sender, "toggled-other-enabled", StringPlaceholders.single("player", mentioned.getName()));
+                return true;
+            }
 
             // Check if sender is a player
             if (!(sender instanceof Player)) {
@@ -277,7 +306,7 @@ public class CommandManager extends Manager implements TabExecutor {
                 break;
 
 
-                // If the first argument = "set"
+            // If the first argument = "set"
             case "set":
 
                 // If the argument length == 1 and no type or value was defined, send message
@@ -359,7 +388,7 @@ public class CommandManager extends Manager implements TabExecutor {
 
                 break;
 
-                // If the argument was invalid, send unknown command message
+            // If the argument was invalid, send unknown command message
             default:
                 messageManager.sendMessage(sender, "unknown-command");
                 break;
@@ -400,8 +429,18 @@ public class CommandManager extends Manager implements TabExecutor {
 
         } else if (args.length == 2 && args[0].equalsIgnoreCase("set") && sender.hasPermission("flighttrails.set")) {
 
-            // Define trails set command options
-            List<String> options = Arrays.asList("particle", "item", "block", "color");
+            List<String> options = new ArrayList<>();
+            if (sender.hasPermission("flighttrails.set.particle"))
+                options.add("particle");
+
+            if (sender.hasPermission("flighttrails.set.item"))
+                options.add("item");
+
+            if (sender.hasPermission("flighttrails.set.block"))
+                options.add("block");
+
+            if (sender.hasPermission("flighttrails.set.color"))
+                options.add("color");
 
             // Add to the TabComplete
             StringUtil.copyPartialMatches(args[1].toLowerCase(), options, suggestions);
@@ -414,14 +453,6 @@ public class CommandManager extends Manager implements TabExecutor {
 
             switch (type) {
 
-                /*
-                 * If the second argument is particle
-                 * Stream Particle Values
-                 * Check if player has permission
-                 * Map the names
-                 * Transform names toLowerCase
-                 * Collect
-                 */
                 case "particle":
                     List<String> particles = Arrays.stream(Particle.values())
                             .filter(particle -> sender.hasPermission("flighttrails.particle." + particle.name().toLowerCase()))
@@ -452,15 +483,6 @@ public class CommandManager extends Manager implements TabExecutor {
                     break;
 
 
-                /*
-                 * If the second argument is color
-                 * Stream TrailColor Values
-                 * Check if player has permission
-                 * Map the names
-                 * Transform names toLowerCase
-                 * Collect
-                 */
-
                 case "color":
                     List<String> colors = Arrays.stream(TrailColor.values())
                             .filter(color -> sender.hasPermission("flighttrails.color." + color.name().toLowerCase()) || sender.hasPermission("flighttrails.color.*"))
@@ -474,7 +496,7 @@ public class CommandManager extends Manager implements TabExecutor {
 
             }
 
-        } else if (args.length == 4 && args[0].equalsIgnoreCase("set")) {
+        } else if (args.length == 4 && args[0].equalsIgnoreCase("set") && sender.hasPermission("flighttrails.set.other") || sender.hasPermission("flighttrails.toggle.other")) {
             // If the argument length is longer than 3
 
             // Get a new Array List

@@ -4,8 +4,12 @@
 prefix: '{#9494ed}FlightTrails {#cbcbd3}» '
 
 # » Command Messages «
-trails-enabled: '&bYou have enabled Flight Trails.'
-trails-disabled: '&cYou have disabled Flight Trails.'
+trails-enabled: '&bYou have enabled your Flight Trails.'
+trails-disabled: '&cYou have disabled your Flight Trails.'
+
+# /trails toggle <player>
+toggled-other-enabled: '&bYou have enabled %player''s Flight Trails'
+toggled-other-disabled: '&bYou have disabled %player''s Flight Trails'
 
 # » Set Command Messages «
 set-command:

@@ -24,6 +24,7 @@ permissions:
       - flighttrails.set.block
       - flighttrails.set.item
       - flighttrails.set.color
+
   flighttrails.set.*:
     description: All set command permissions
     default: op
@@ -33,3 +34,5 @@ permissions:
       - flighttrails.set.block
       - flighttrails.set.item
       - flighttrails.set.color
+
+  flighttrails.particle.*

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import xyz.oribuin.flighttrails.FlightTrails;
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook;
 import xyz.oribuin.flighttrails.util.FileUtils;
+import xyz.oribuin.flighttrails.util.NMSUtil;
 import xyz.oribuin.flighttrails.util.StringPlaceholders;
 
 import java.io.File;
@@ -38,12 +39,19 @@ public class MessageManager extends Manager {
     }
 
     public void sendMessage(CommandSender sender, String messageId, StringPlaceholders placeholders) {
-        final String msg = this.messageConfig.getString("prefix") + placeholders.apply(this.messageConfig.getString(messageId));
 
-        if (Bukkit.getServer().getClass().getPackage().getName().contains("1.16")) {
-            sender.spigot().sendMessage(TextComponent.fromLegacyText((this.parseColors(this.parsePlaceholders(sender, msg)))));
-        } else {
-            sender.sendMessage(this.parseColors(this.parsePlaceholders(sender, msg)));
+        if (this.messageConfig.getString(messageId) == null) {
+            throw new NullPointerException("Invalid Messages.yml Value: " + messageId);
+        }
+
+        if (!this.messageConfig.getString(messageId).isEmpty()) {
+            final String msg = this.messageConfig.getString("prefix") + placeholders.apply(this.messageConfig.getString(messageId));
+
+            if (NMSUtil.getVersionNumber() >= 16) {
+                sender.spigot().sendMessage(TextComponent.fromLegacyText((this.parseColors(this.parsePlaceholders(sender, msg)))));
+            } else {
+                sender.sendMessage(this.parseColors(this.parsePlaceholders(sender, msg)));
+            }
         }
     }
 
@@ -52,7 +60,7 @@ public class MessageManager extends Manager {
     private String parseColors(String message) {
         String parsed = message;
 
-        if (Bukkit.getServer().getClass().getPackage().getName().contains("1.16")) {
+        if (NMSUtil.getVersionNumber() >= 16) {
             Matcher matcher = HEX_PATTERN.matcher(parsed);
             while(matcher.find()) {
                 String hexString = matcher.group();
@@ -61,6 +69,7 @@ public class MessageManager extends Manager {
                 String before = parsed.substring(0, matcher.start());
                 String after = parsed.substring(matcher.end());
                 parsed = before + hexColor + after;
+                matcher = HEX_PATTERN.matcher(parsed);
             }
         }
 
