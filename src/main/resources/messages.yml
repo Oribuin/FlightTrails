@@ -1,8 +1,10 @@
 # Change any message of these to '' to disable the message
+# For 1.16 Users: Use {#HEX} for hex codes0
 
-prefix: '&bFlightTrails &f» '
+prefix: '{#9494ed}FlightTrails {#cbcbd3}» '
+
 # » Command Messages «
-trails-enabled: '&aYou have enabled Flight Trails.'
+trails-enabled: '&bYou have enabled Flight Trails.'
 trails-disabled: '&cYou have disabled Flight Trails.'
 
 # » Set Command Messages «

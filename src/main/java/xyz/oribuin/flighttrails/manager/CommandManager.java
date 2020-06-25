@@ -109,7 +109,7 @@ public class CommandManager extends Manager implements TabExecutor {
         }
 
         // Check if player has permission for the particle
-        if (!player.hasPermission("flighttrails.color." + particle.name().toLowerCase())) {
+        if (!player.hasPermission("flighttrails.particle." + particle.name().toLowerCase()) && !player.hasPermission("flighttrails.particle.*")) {
             messageManager.sendMessage(player, "invalid-permission");
             return;
         }
@@ -224,7 +224,7 @@ public class CommandManager extends Manager implements TabExecutor {
         }
 
         // Check if player has permission for the trail color
-        if (!player.hasPermission("flighttrails.color." + color.name().toLowerCase())) {
+        if (!player.hasPermission("flighttrails.color." + particle.name().toLowerCase()) && !player.hasPermission("flighttrails.color.*")) {
             messageManager.sendMessage(player, "invalid-permission");
             return;
         }
@@ -463,7 +463,7 @@ public class CommandManager extends Manager implements TabExecutor {
 
                 case "color":
                     List<String> colors = Arrays.stream(TrailColor.values())
-                            .filter(color -> sender.hasPermission("flighttrails.color." + color.name().toLowerCase()))
+                            .filter(color -> sender.hasPermission("flighttrails.color." + color.name().toLowerCase()) || sender.hasPermission("flighttrails.color.*"))
                             .map(Enum::name)
                             .map(String::toLowerCase)
                             .collect(Collectors.toList());

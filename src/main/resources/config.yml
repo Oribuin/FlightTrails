@@ -15,6 +15,7 @@ disabled-worlds:
 particle-settings:
   count: 2
   size: 1.0
+
   # Set as 'LEGACY' for feet particles
   # Set as 'FANCY' for dual particles
   elytra-style: 'FANCY'

@@ -53,7 +53,7 @@ public final class StringPlaceholders {
 
     public static class Builder {
 
-        private StringPlaceholders stringPlaceholders;
+        private final StringPlaceholders stringPlaceholders;
 
         private Builder() {
             this.stringPlaceholders = new StringPlaceholders();

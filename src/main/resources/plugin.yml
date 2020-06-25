@@ -9,7 +9,7 @@ softdepend: [PlaceholderAPI]
 commands:
   trails:
     description: Main FlightTrails command
-    usage: /trails [set/reload] [particle/item/block/color] [value]
+    usage: /trails [set/reload/toggle] [particle/item/block/color] [value] [player]
 
 permissions:
   flighttrails.*:
