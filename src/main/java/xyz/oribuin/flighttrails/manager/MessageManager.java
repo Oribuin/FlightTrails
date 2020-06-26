@@ -2,7 +2,6 @@ package xyz.oribuin.flighttrails.manager;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -62,12 +61,15 @@ public class MessageManager extends Manager {
 
         if (NMSUtil.getVersionNumber() >= 16) {
             Matcher matcher = HEX_PATTERN.matcher(parsed);
+
             while(matcher.find()) {
                 String hexString = matcher.group();
                 hexString = hexString.substring(1, hexString.length() - 1);
-                ChatColor hexColor = ChatColor.of(hexString);
-                String before = parsed.substring(0, matcher.start());
-                String after = parsed.substring(matcher.end());
+
+                final ChatColor hexColor = ChatColor.of(hexString);
+                final String before = parsed.substring(0, matcher.start());
+                final String after = parsed.substring(matcher.end());
+
                 parsed = before + hexColor + after;
                 matcher = HEX_PATTERN.matcher(parsed);
             }

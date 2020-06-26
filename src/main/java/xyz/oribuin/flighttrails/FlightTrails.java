@@ -48,7 +48,7 @@ public class FlightTrails extends JavaPlugin {
         // Reload manages
         this.reload();
 
-        // Warn PlayerParticles not being enabled.
+        // Warn PlaceholderAPI not being enabled.
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             Bukkit.getConsoleSender().sendMessage("[FlightTrails] No PlaceholderAPI, Placeholders will not work.");
         }
@@ -194,14 +194,6 @@ public class FlightTrails extends JavaPlugin {
         this.configManager.reload();
         this.dataManager.reload();
         this.messageManager.reload();
-    }
-
-    public CommandManager getCommandManager() {
-        return this.commandManager;
-    }
-
-    public ConfigManager getConfigManager() {
-        return this.configManager;
     }
 
     public DataManager getDataManager() {

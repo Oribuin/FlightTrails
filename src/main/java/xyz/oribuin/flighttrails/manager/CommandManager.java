@@ -224,7 +224,7 @@ public class CommandManager extends Manager implements TabExecutor {
         }
 
         // Check if player has permission for the trail color
-        if (!player.hasPermission("flighttrails.color." + particle.name().toLowerCase()) && !player.hasPermission("flighttrails.color.*")) {
+        if (!player.hasPermission("flighttrails.color." + particle.name().toLowerCase())) {
             messageManager.sendMessage(player, "invalid-permission");
             return;
         }
