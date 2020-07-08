@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public final class StringPlaceholders {
 
-    private Map<String, String> placeholders;
+    private final Map<String, String> placeholders;
 
     public StringPlaceholders() {
         this.placeholders = new HashMap<>();

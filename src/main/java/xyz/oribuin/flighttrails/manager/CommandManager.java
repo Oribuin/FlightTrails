@@ -246,38 +246,7 @@ public class CommandManager extends Manager implements TabExecutor {
         // Instantiate the MessageManager
         MessageManager messageManager = this.plugin.getMessageManager();
 
-        // If the args.length == 0 or first argument equals toggle
-        if (args.length <= 2 && args[0].equalsIgnoreCase("toggle")) {
-
-            if (args.length == 2) {
-
-                Player mentioned = Bukkit.getPlayer(args[1]);
-
-                if (!sender.hasPermission("flighttrails.toggle.other")) {
-                    messageManager.sendMessage(sender, "invalid-permission");
-                    return true;
-                }
-
-                // Check if mentioned is null, offline, vanished
-                if (mentioned == null || !mentioned.isOnline() || mentioned.hasMetadata("vanished")) {
-                    // Send invalid player
-                    messageManager.sendMessage(sender, "invalid-player");
-                    return true;
-                }
-
-                PlayerData playerData = this.plugin.getDataManager().getPlayerData(mentioned, false);
-                this.onToggleCommand(mentioned, playerData == null);
-
-                if (playerData == null)
-                    return true;
-
-                if (playerData.isEnabled())
-                    messageManager.sendMessage(sender, "toggled-other-disabled", StringPlaceholders.single("player", mentioned.getName()));
-                else
-                    messageManager.sendMessage(sender, "toggled-other-enabled", StringPlaceholders.single("player", mentioned.getName()));
-                return true;
-            }
-
+        if (args.length == 0 || args.length == 1 && args[0].equalsIgnoreCase("toggle")) {
             // Check if sender is a player
             if (!(sender instanceof Player)) {
                 messageManager.sendMessage(sender, "player-only");
@@ -297,6 +266,36 @@ public class CommandManager extends Manager implements TabExecutor {
             this.onToggleCommand(player, this.plugin.getDataManager().getPlayerData(player, false) == null);
             return true;
         }
+
+        // If the args.length == 2 and first argument equals toggle
+        if (args.length == 2 && args[0].equalsIgnoreCase("toggle")) {
+            Player mentioned = Bukkit.getPlayer(args[1]);
+
+            if (!sender.hasPermission("flighttrails.toggle.other")) {
+                messageManager.sendMessage(sender, "invalid-permission");
+                return true;
+            }
+
+            // Check if mentioned is null, offline, vanished
+            if (mentioned == null || !mentioned.isOnline() || mentioned.hasMetadata("vanished")) {
+                // Send invalid player
+                messageManager.sendMessage(sender, "invalid-player");
+                return true;
+            }
+
+            PlayerData playerData = this.plugin.getDataManager().getPlayerData(mentioned, false);
+            this.onToggleCommand(mentioned, playerData == null);
+
+            if (playerData == null)
+                return true;
+
+            if (!playerData.isEnabled() && !sender.equals(mentioned))
+                messageManager.sendMessage(sender, "toggled-other-disabled", StringPlaceholders.single("player", mentioned.getName()));
+            else
+                messageManager.sendMessage(sender, "toggled-other-enabled", StringPlaceholders.single("player", mentioned.getName()));
+            return true;
+        }
+
 
         switch (args[0].toLowerCase()) {
 
@@ -427,23 +426,34 @@ public class CommandManager extends Manager implements TabExecutor {
             // Add to the TabComplete
             StringUtil.copyPartialMatches(subCommandName, commands, suggestions);
 
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("set") && sender.hasPermission("flighttrails.set")) {
+        } else if (args.length == 2) {
 
             List<String> options = new ArrayList<>();
-            if (sender.hasPermission("flighttrails.set.particle"))
-                options.add("particle");
+            if (args[0].equalsIgnoreCase("set") && sender.hasPermission("flighttrails.set")) {
+                if (sender.hasPermission("flighttrails.set.particle"))
+                    options.add("particle");
 
-            if (sender.hasPermission("flighttrails.set.item"))
-                options.add("item");
+                if (sender.hasPermission("flighttrails.set.item"))
+                    options.add("item");
 
-            if (sender.hasPermission("flighttrails.set.block"))
-                options.add("block");
+                if (sender.hasPermission("flighttrails.set.block"))
+                    options.add("block");
 
-            if (sender.hasPermission("flighttrails.set.color"))
-                options.add("color");
+                if (sender.hasPermission("flighttrails.set.color"))
+                    options.add("color");
 
-            // Add to the TabComplete
-            StringUtil.copyPartialMatches(args[1].toLowerCase(), options, suggestions);
+                StringUtil.copyPartialMatches(args[1].toLowerCase(), options, suggestions);
+            } else if (args[0].equalsIgnoreCase("toggle")) {
+                if (sender.hasPermission("flighttrails.toggle.other")) {
+                    // Get a new Array List
+                    List<String> players = new ArrayList<>();
+
+                    // Add all players that aren't vanished into ArrayList
+                    Bukkit.getOnlinePlayers().stream().filter(player -> !player.hasMetadata("vanished")).forEachOrdered(player -> players.add(player.getName()));
+
+                    StringUtil.copyPartialMatches(args[1].toLowerCase(), players, suggestions);
+                }
+            }
 
         } else if (args.length == 3 && args[0].equalsIgnoreCase("set") && sender.hasPermission("flighttrails.set")) {
 
@@ -496,7 +506,7 @@ public class CommandManager extends Manager implements TabExecutor {
 
             }
 
-        } else if (args.length == 4 && args[0].equalsIgnoreCase("set") && sender.hasPermission("flighttrails.set.other") || sender.hasPermission("flighttrails.toggle.other")) {
+        } else if (args.length == 4 && args[0].equalsIgnoreCase("set") && sender.hasPermission("flighttrails.set.other")) {
             // If the argument length is longer than 3
 
             // Get a new Array List

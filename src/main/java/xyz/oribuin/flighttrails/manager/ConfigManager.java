@@ -163,8 +163,5 @@ public class ConfigManager extends Manager {
 
             this.value = FlightTrails.getInstance().getConfig().get(this.key);
         }
-
-
     }
-
 }

@@ -1,15 +1,18 @@
-# Change any message of these to '' to disable the message
-# For 1.16 Users: Use {#HEX} for hex codes
+# Change any message to '' to disable the message
+# For 1.16 Users:
+# Use #HEX for hex codes
+# Use <g:#hex:#hex> for gradients. Example: <g:#12c2e9:#c471ed:#f64f59>Text
+# Use <rainbow> for rainbow text. Example: <rainbow>Text
 
-prefix: '{#9494ed}FlightTrails {#cbcbd3}» '
+prefix: '<g:#12c2e9:#c471ed:#f64f59>FlightTrails #283048» '
 
 # » Command Messages «
 trails-enabled: '&bYou have enabled your Flight Trails.'
 trails-disabled: '&cYou have disabled your Flight Trails.'
 
 # /trails toggle <player>
-toggled-other-enabled: '&bYou have enabled %player''s Flight Trails'
-toggled-other-disabled: '&bYou have disabled %player''s Flight Trails'
+toggled-other-enabled: '&bYou have enabled %player%''s Flight Trails'
+toggled-other-disabled: '&bYou have disabled %player%''s Flight Trails'
 
 # » Set Command Messages «
 set-command:
@@ -27,7 +30,7 @@ set-command:
   changed-other: '&bYou have changed %player%''s trails.'
 
 # » Misc Messages «
-reload: '&bYou have reloaded FlightTrails (%version%)'
+reload: '<rainbow>You have reloaded FlightTrails (%version%)'
 invalid-permission: '&cYou do not have permission to execute this command.'
 invalid-player: '&bThat is an invalid player.'
 player-only: '&cOnly a player can execute this command.'

@@ -1,6 +1,8 @@
 package xyz.oribuin.flighttrails;
 
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -14,6 +16,7 @@ import xyz.oribuin.flighttrails.manager.ConfigManager;
 import xyz.oribuin.flighttrails.manager.ConfigManager.Setting;
 import xyz.oribuin.flighttrails.manager.DataManager;
 import xyz.oribuin.flighttrails.manager.MessageManager;
+import xyz.oribuin.flighttrails.util.HexUtils;
 import xyz.oribuin.flighttrails.util.VectorUtils;
 
 import java.util.List;
@@ -50,7 +53,7 @@ public class FlightTrails extends JavaPlugin {
 
         // Warn PlaceholderAPI not being enabled.
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            Bukkit.getConsoleSender().sendMessage("[FlightTrails] No PlaceholderAPI, Placeholders will not work.");
+            Bukkit.getConsoleSender().spigot().sendMessage(TextComponent.fromLegacyText(HexUtils.colorify("[FlightTrails] No PlaceholderAPI, Placeholders will not work.")));
         }
 
         // If PlaceholderAPIHook is enabled, register Placeholders
@@ -74,6 +77,7 @@ public class FlightTrails extends JavaPlugin {
                  * if the player is vanished
                  * if the player does not have trails enabled
                  * if the player is in a disabled world
+                 * if the player is in spectator mode
                  *
                  * don't spawn particles
                  */
@@ -81,7 +85,8 @@ public class FlightTrails extends JavaPlugin {
                 if (!player.hasPermission("flighttrails.use")
                         || player.hasMetadata("vanished")
                         || !playerData.isEnabled()
-                        || disabledWorlds.contains(player.getWorld().getName())) {
+                        || disabledWorlds.contains(player.getWorld().getName())
+                        || player.getGameMode() == GameMode.SPECTATOR) {
                     continue;
                 }
 

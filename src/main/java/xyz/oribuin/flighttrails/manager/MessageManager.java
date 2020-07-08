@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import xyz.oribuin.flighttrails.FlightTrails;
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook;
 import xyz.oribuin.flighttrails.util.FileUtils;
+import xyz.oribuin.flighttrails.util.HexUtils;
 import xyz.oribuin.flighttrails.util.NMSUtil;
 import xyz.oribuin.flighttrails.util.StringPlaceholders;
 
@@ -39,43 +40,16 @@ public class MessageManager extends Manager {
 
     public void sendMessage(CommandSender sender, String messageId, StringPlaceholders placeholders) {
 
-        if (this.messageConfig.getString(messageId) == null) {
-            throw new NullPointerException("Invalid Messages.yml Value: " + messageId);
+        if (messageConfig.getString(messageId) == null) {
+            sender.spigot().sendMessage(TextComponent.fromLegacyText(HexUtils.colorify("{#ff4072}" + messageId + " is null in messages.yml")));
+            return;
         }
 
-        if (!this.messageConfig.getString(messageId).isEmpty()) {
-            final String msg = this.messageConfig.getString("prefix") + placeholders.apply(this.messageConfig.getString(messageId));
+        if (!messageConfig.getString(messageId).isEmpty()) {
+            final String msg = messageConfig.getString("prefix") + placeholders.apply(messageConfig.getString(messageId));
 
-            if (NMSUtil.getVersionNumber() >= 16) {
-                sender.spigot().sendMessage(TextComponent.fromLegacyText((this.parseColors(this.parsePlaceholders(sender, msg)))));
-            } else {
-                sender.sendMessage(this.parseColors(this.parsePlaceholders(sender, msg)));
-            }
+            sender.spigot().sendMessage(TextComponent.fromLegacyText(HexUtils.colorify(this.parsePlaceholders(sender, msg))));
         }
-    }
-
-
-    // Thank you esophose for saving me here
-    private String parseColors(String message) {
-        String parsed = message;
-
-        if (NMSUtil.getVersionNumber() >= 16) {
-            Matcher matcher = HEX_PATTERN.matcher(parsed);
-
-            while(matcher.find()) {
-                String hexString = matcher.group();
-                hexString = hexString.substring(1, hexString.length() - 1);
-
-                final ChatColor hexColor = ChatColor.of(hexString);
-                final String before = parsed.substring(0, matcher.start());
-                final String after = parsed.substring(matcher.end());
-
-                parsed = before + hexColor + after;
-                matcher = HEX_PATTERN.matcher(parsed);
-            }
-        }
-
-        return ChatColor.translateAlternateColorCodes('&', parsed);
     }
 
     private String parsePlaceholders(CommandSender sender, String message) {
