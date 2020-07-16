@@ -1,6 +1,5 @@
 package xyz.oribuin.flighttrails.manager;
 
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,16 +9,11 @@ import xyz.oribuin.flighttrails.FlightTrails;
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook;
 import xyz.oribuin.flighttrails.util.FileUtils;
 import xyz.oribuin.flighttrails.util.HexUtils;
-import xyz.oribuin.flighttrails.util.NMSUtil;
 import xyz.oribuin.flighttrails.util.StringPlaceholders;
 
 import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MessageManager extends Manager {
-    private static final Pattern HEX_PATTERN = Pattern.compile("\\{#([A-Fa-f0-9]){6}}");
-
     private final static String MESSAGE_CONFIG = "messages.yml";
 
     private FileConfiguration messageConfig;

@@ -3,6 +3,8 @@ package xyz.oribuin.flighttrails.manager;
 import org.bukkit.configuration.file.FileConfiguration;
 import xyz.oribuin.flighttrails.FlightTrails;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,13 +62,26 @@ public class ConfigManager extends Manager {
         }
 
         public void setIfNotExists(FileConfiguration config) {
-            this.loadValue();
-
-            if (this.defaultValue != null) {
+            if (config.get(key) == null) {
                 config.set(this.key, this.defaultValue);
+                this.saveData();
             }
 
+            this.loadValue();
         }
+
+        private void saveData() {
+            try {
+                FlightTrails.getInstance().getConfig().save(this.getDataFile());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        private File getDataFile() {
+            return new File(FlightTrails.getInstance().getDataFolder(), "config.yml");
+        }
+
 
         /**
          * Gets the setting as a boolean
@@ -160,6 +175,7 @@ public class ConfigManager extends Manager {
         private void loadValue() {
             if (this.value != null)
                 return;
+
 
             this.value = FlightTrails.getInstance().getConfig().get(this.key);
         }

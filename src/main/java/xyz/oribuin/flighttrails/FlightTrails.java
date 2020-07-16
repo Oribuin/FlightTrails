@@ -48,7 +48,7 @@ public class FlightTrails extends JavaPlugin {
         this.dataManager = new DataManager(this);
         this.messageManager = new MessageManager(this);
 
-        // Reload manages
+        // Reload managers
         this.reload();
 
         // Warn PlaceholderAPI not being enabled.
