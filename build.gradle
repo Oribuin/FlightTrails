@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'xyz.oribuin'
-version '1.1.0-BETA4'
+version '1.1.0'
 compileJava.options.encoding = 'UTF-8'
 
 targetCompatibility = 1.8
@@ -31,7 +31,7 @@ dependencies {
 shadowJar {
     mergeServiceFiles()
     relocate('dev.esophose.guiframework', 'xyz.oribuin.flighttrails.libs.guiframework')
-    archiveName 'FlightTrails-' + project.property("version") + "-Pre2.jar"
+    archiveName 'FlightTrails-' + project.property("version") + "-Pre3.jar"
 }
 
 processResources {

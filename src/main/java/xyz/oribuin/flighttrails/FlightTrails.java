@@ -72,15 +72,6 @@ public class FlightTrails extends JavaPlugin {
                 // Get the player
                 Player player = playerData.getPlayer();
 
-                /*
-                 * if the player does not have permission
-                 * if the player is vanished
-                 * if the player does not have trails enabled
-                 * if the player is in a disabled world
-                 * if the player is in spectator mode
-                 *
-                 * don't spawn particles
-                 */
 
                 if (!player.hasPermission("flighttrails.use")
                         || player.hasMetadata("vanished")

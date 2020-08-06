@@ -24,6 +24,8 @@ permissions:
       - flighttrails.set.block
       - flighttrails.set.item
       - flighttrails.set.color
+      - flighttrails.set.other
+      - flighttrails.admin
 
   flighttrails.set.*:
     description: All set command permissions

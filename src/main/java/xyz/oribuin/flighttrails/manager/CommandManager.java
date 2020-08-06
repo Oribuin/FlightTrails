@@ -87,17 +87,12 @@ public class CommandManager extends Manager implements TabExecutor {
         }
     }
 
-    private void onSetParticle(Player player, String particleValue) {
+    private void onSetParticle(CommandSender sender, Player player, String particleValue) {
         // Instantiate the managers
 
         MessageManager messageManager = this.plugin.getMessageManager();
         DataManager dataManager = this.plugin.getDataManager();
 
-        // Check /trails set particle permission
-        if (!player.hasPermission("flighttrails.set.particle")) {
-            messageManager.sendMessage(player, "invalid-permission");
-            return;
-        }
 
         Particle particle;
         // Check particle
@@ -109,7 +104,7 @@ public class CommandManager extends Manager implements TabExecutor {
         }
 
         // Check if player has permission for the particle
-        if (!player.hasPermission("flighttrails.particle." + particle.name().toLowerCase())) {
+        if (!sender.hasPermission("flighttrails.admin") && !player.hasPermission("flighttrails.particle." + particle.name().toLowerCase())) {
             messageManager.sendMessage(player, "invalid-permission");
             return;
         }
@@ -123,12 +118,6 @@ public class CommandManager extends Manager implements TabExecutor {
         // Instantiate the managers
         MessageManager messageManager = this.plugin.getMessageManager();
         DataManager dataManager = this.plugin.getDataManager();
-
-        // Check permission
-        if (!player.hasPermission("flighttrails.set.item")) {
-            messageManager.sendMessage(player, "invalid-permission");
-            return;
-        }
 
         // Instantiate the PlayerData and Particle
         PlayerData playerData = dataManager.getPlayerData(player, true);
@@ -160,12 +149,6 @@ public class CommandManager extends Manager implements TabExecutor {
         MessageManager messageManager = this.plugin.getMessageManager();
         DataManager dataManager = this.plugin.getDataManager();
 
-        // Check Permission
-        if (!player.hasPermission("flighttrails.set.block")) {
-            messageManager.sendMessage(player, "invalid-permission");
-            return;
-        }
-
         // Instantiate the PlayerData and Particle
         PlayerData playerData = dataManager.getPlayerData(player, true);
         Particle particle = playerData.getParticle();
@@ -193,16 +176,10 @@ public class CommandManager extends Manager implements TabExecutor {
         messageManager.sendMessage(player, "set-command.block", StringPlaceholders.single("block", material.name().toLowerCase()));
     }
 
-    private void onSetColor(Player player, String colorValue) {
+    private void onSetColor(CommandSender sender, Player player, String colorValue) {
         // Instantiate the managers
         MessageManager messageManager = this.plugin.getMessageManager();
         DataManager dataManager = this.plugin.getDataManager();
-
-        // Check permission
-        if (!player.hasPermission("flighttrails.set.color")) {
-            messageManager.sendMessage(player, "invalid-permission");
-            return;
-        }
 
         // Instantiate the PlayerData and Particle
         PlayerData playerData = dataManager.getPlayerData(player, true);
@@ -224,7 +201,7 @@ public class CommandManager extends Manager implements TabExecutor {
         }
 
         // Check if player has permission for the trail color
-        if (!player.hasPermission("flighttrails.color." + particle.name().toLowerCase())) {
+        if (!sender.hasPermission("flighttrails.admin") && !player.hasPermission("flighttrails.color." + color.name().toLowerCase())) {
             messageManager.sendMessage(player, "invalid-permission");
             return;
         }
@@ -317,7 +294,7 @@ public class CommandManager extends Manager implements TabExecutor {
                     break;
                 }
 
-                // if the args.length == 3
+                // If the set command does not contain a username
                 if (args.length == 3) {
 
                     // check if player
@@ -330,30 +307,58 @@ public class CommandManager extends Manager implements TabExecutor {
                     Player player = (Player) sender;
                     switch (args[1].toLowerCase()) {
                         case "particle":
-                            this.onSetParticle(player, args[2]);
+
+                            // Check /trails set particle permission
+                            if (!player.hasPermission("flighttrails.set.particle")) {
+                                messageManager.sendMessage(player, "invalid-permission");
+                                return true;
+                            }
+
+                            this.onSetParticle(sender, player, args[2]);
                             break;
                         case "item":
+
+                            // Check permission
+                            if (!player.hasPermission("flighttrails.set.item")) {
+                                messageManager.sendMessage(player, "invalid-permission");
+                                return true;
+                            }
+
                             this.onSetItem(player, args[2].toUpperCase());
                             break;
                         case "block":
+
+                            // Check Permission
+                            if (!player.hasPermission("flighttrails.set.block")) {
+                                messageManager.sendMessage(player, "invalid-permission");
+                                return true;
+                            }
+
                             this.onSetBlock(player, args[2].toUpperCase());
                             break;
                         case "color":
-                            this.onSetColor(player, args[2]);
+                            // Check permission
+                            if (!player.hasPermission("flighttrails.set.color")) {
+                                messageManager.sendMessage(player, "invalid-permission");
+                                return true;
+                            }
+
+
+                            this.onSetColor(sender, player, args[2]);
                             break;
                     }
 
                     break;
                 }
 
-                // if the args length includes a player name
+                // if the set command contains a username
                 if (args.length == 4) {
 
                     // Define player's name
                     Player mentioned = Bukkit.getPlayer(args[3]);
 
                     // If sender has permission to change other's particles
-                    if (!sender.hasPermission("flighttrails.set.other")) {
+                    if (!sender.hasPermission("flighttrails.admin") && !sender.hasPermission("flighttrails.set.other")) {
                         messageManager.sendMessage(sender, "invalid-permission");
                         return true;
                     }
@@ -369,7 +374,7 @@ public class CommandManager extends Manager implements TabExecutor {
                     // Change Mentioned PlayerData
                     switch (args[1].toLowerCase()) {
                         case "particle":
-                            this.onSetParticle(mentioned, args[2]);
+                            this.onSetParticle(sender, mentioned, args[2]);
                             break;
                         case "item":
                             this.onSetItem(mentioned, args[2].toUpperCase());
@@ -378,7 +383,8 @@ public class CommandManager extends Manager implements TabExecutor {
                             this.onSetBlock(mentioned, args[2].toUpperCase());
                             break;
                         case "color":
-                            this.onSetColor(mentioned, args[2]);
+                            // Check permission
+                            this.onSetColor(sender, mentioned, args[2]);
                             break;
                     }
 
