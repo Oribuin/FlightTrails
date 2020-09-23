@@ -2,36 +2,38 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.0'
+    id 'me.bristermitten.pdm' version '0.0.26'
 }
 
 group 'xyz.oribuin'
-version '1.1.0'
+version '2.0.0'
 compileJava.options.encoding = 'UTF-8'
 
-targetCompatibility = 1.8
-sourceCompatibility = 1.8
+targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 
 repositories {
     mavenCentral()
+    mavenLocal()
     jcenter()
 
-    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-    maven { url = 'https://repo.codemc.org/repository/maven-public' }
-    maven { url = 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url 'https://repo.codemc.org/repository/maven-public' }
+    maven { url 'https://repo.rosewooddev.io/repository/public/' }
 }
 
 dependencies {
-    shadow 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
-    compileOnly 'me.clip:placeholderapi:2.10.5'
-    implementation 'dev.esophose:guiframework:1.1.0'
-}
+    pdm "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    pdm "org.jetbrains.kotlin:kotlin-reflect:1.4.0"
 
-shadowJar {
-    mergeServiceFiles()
-    relocate('dev.esophose.guiframework', 'xyz.oribuin.flighttrails.libs.guiframework')
-    archiveName 'FlightTrails-' + project.property("version") + "-Pre3.jar"
+    // Spigot Stuff
+    compileOnly 'org.spigotmc:spigot:1.16.2'
+    compileOnly 'me.clip:placeholderapi:2.10.9'
+
+    pdm 'dev.rosewood:guiframework:1.1.1'
 }
 
 processResources {
@@ -40,3 +42,11 @@ processResources {
         filter ReplaceTokens, tokens: ["version": project.property("version")]
     }
 }
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+jar.dependsOn project.tasks.getByName('pdm')
