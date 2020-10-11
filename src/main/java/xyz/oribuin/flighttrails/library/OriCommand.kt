@@ -18,6 +18,7 @@ abstract class OriCommand(val plugin: OriPlugin, private val name: String) : Tab
         }
 
         Bukkit.getPluginManager().registerEvents(this, plugin)
+        this.addSubCommands()
     }
 
     /**
@@ -37,11 +38,14 @@ abstract class OriCommand(val plugin: OriPlugin, private val name: String) : Tab
      * */
     abstract fun tabComplete(sender: CommandSender, args: Array<String>): List<String>?
 
+    abstract fun addSubCommands()
+
     // Execute the command.
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         executeCommand(sender, args)
         return true
     }
+
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String>): List<String>? {
         return tabComplete(sender, args)

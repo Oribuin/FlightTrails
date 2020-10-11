@@ -25,6 +25,7 @@ class MessageManager(plugin: FlightTrails) : Manager(plugin) {
             if (messageConfig.get(value.key) == null) {
                 messageConfig.set(value.key, value.defaultValue)
             }
+
             value.load(messageConfig)
         }
 
@@ -74,19 +75,24 @@ class MessageManager(plugin: FlightTrails) : Manager(plugin) {
 
         // Set command
         SET_PARTICLE("set-command.particle", "&bYour particle was changed to %particle%!"),
-        SET_ITEM("set-command.", "&bYour "),
-        SET_BLOCK("set-command.", "&bYour "),
-        SET_COLOR("set-command.", "&bYour "),
-        SET_NO_TYPE("set-command.", "&bYour "),
-        SET_NO_VALUE("set-command.", "&bYour "),
-        SET_INVALID_PARTICLE("set-command.", "&bYour "),
-        SET_INVALID_ITEM("set-command.", "&bYour "),
-        SET_INVALID_BLOCK("set-command.", "&bYour "),
-        SET_INVALID_COLOR("set-command.", "&bYour "),
-        SET_REQUIRED_PARTICLE("set-command.", "&bYour "),
-        SET_CHANGED_OTHER("set-command.", "&bYour "),
+        SET_ITEM("set-command.item", "&bYour item was changed to %item%."),
+        SET_BLOCK("set-command.block", "&bYour block was changed to %block%."),
+        SET_COLOR("set-command.color", "&bYour color was changed to %color%."),
+        SET_NO_TYPE("set-command.no-type", "&bYou did not provide a type to set."),
+        SET_NO_VALUE("set-command.no-value", "&bYour did not provide a value to set."),
+        SET_INVALID_PARTICLE("set-command.invalid-particle", "&bPlease provide a valid particle effect."),
+        SET_INVALID_ITEM("set-command.invalid-item", "&bPlease provide a valid item."),
+        SET_INVALID_BLOCK("set-command.invalid-block", "&bPlease provide a valid block. "),
+        SET_INVALID_COLOR("set-command.invalid-color", "&bPlease provide a valid color."),
+        SET_REQUIRED_PARTICLE("set-command.required-particle", "&bYou do not have the right particle for this."),
+        SET_CHANGED_OTHER("set-command.changed-other", "&bYou have changed %player%''s trails."),
 
-
+        // Misc
+        RELOAD("reload", "&bYou have reloaded FlightTrails (&b%version%&b)."),
+        INVALID_PERMISSION("invalid-permission", "&cInsufficient permission."),
+        INVALID_PLAYER("invalid-player", "&cInsufficient player provided."),
+        PLAYER_ONLY("&cplayer-only", "&cOnly a player can execute this command."),
+        UNKNOWN_COMMAND("unknown-command", "&cAn unknown command was entered.");
 
 
         private var value: Any? = null

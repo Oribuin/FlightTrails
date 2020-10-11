@@ -10,14 +10,15 @@ import kotlin.reflect.KClass
 /**
  * @author Oribuin
  *
- *
  * Reminder: Java Dumb
  */
 abstract class OriPlugin : JavaPlugin() {
     private var managers = mutableMapOf<KClass<out Manager>, Manager>()
 
     abstract fun enablePlugin()
+
     abstract fun disablePlugin()
+
     override fun onEnable() {
         saveDefaultConfig()
         enablePlugin()

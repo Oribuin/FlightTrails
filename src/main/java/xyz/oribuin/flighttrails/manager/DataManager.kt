@@ -86,7 +86,7 @@ class DataManager(plugin: FlightTrails) : Manager(plugin) {
      */
     fun setColor(player: Player, color: Color?): Color {
         if (color != null) {
-            getConfig().set(player.uniqueId.toString() + ".color", color.asRGB())
+            getConfig().set(player.uniqueId.toString() + ".color", color)
             saveData()
             return color
         }

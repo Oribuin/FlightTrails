@@ -3,35 +3,3 @@
 # Use #HEX for hex codes
 # Use <g:#hex:#hex> for gradients. Example: <g:#12c2e9:#c471ed:#f64f59>Text
 # Use <rainbow> for rainbow text. Example: <rainbow>Text
-
-prefix: '<g:#12c2e9:#c471ed:#f64f59>FlightTrails #283048» '
-
-# » Command Messages «
-trails-enabled: '&bYou have enabled your Flight Trails.'
-trails-disabled: '&cYou have disabled your Flight Trails.'
-
-# /trails toggle <player>
-toggled-other-enabled: '&bYou have enabled %player%''s Flight Trails'
-toggled-other-disabled: '&bYou have disabled %player%''s Flight Trails'
-
-# » Set Command Messages «
-set-command:
-  particle: '&bYour particle was changed to %particle%.'
-  item: '&bYour item was changed to %item%.'
-  block: '&bYour block was changed to %block%.'
-  color: '&bYour color was changed to %color%.'
-  no-type: '&cYou did not provide a type to set.'
-  no-value: '&cYou did not provide a value to set.'
-  invalid-particle: '&cThat is not a valid particle effect.'
-  invalid-item: '&cThat is not a valid item.'
-  invalid-block: '&cThat is not a valid block.'
-  invalid-color: '&cThat is not a valid color.'
-  required-particle: '&cYou do not have the right particles to do this.'
-  changed-other: '&bYou have changed %player%''s trails.'
-
-# » Misc Messages «
-reload: '<rainbow>You have reloaded FlightTrails (%version%)'
-invalid-permission: '&cYou do not have permission to execute this command.'
-invalid-player: '&bThat is an invalid player.'
-player-only: '&cOnly a player can execute this command.'
-unknown-command: '&cAn unknown command was entered.'
