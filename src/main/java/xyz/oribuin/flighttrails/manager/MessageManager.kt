@@ -91,6 +91,7 @@ class MessageManager(plugin: FlightTrails) : Manager(plugin) {
         RELOAD("reload", "&bYou have reloaded FlightTrails (&b%version%&b)."),
         INVALID_PERMISSION("invalid-permission", "&cInsufficient permission."),
         INVALID_PLAYER("invalid-player", "&cInsufficient player provided."),
+        INVALID_HEX("invalid-hex", "&cInsufficient Hex Code."),
         PLAYER_ONLY("&cplayer-only", "&cOnly a player can execute this command."),
         UNKNOWN_COMMAND("unknown-command", "&cAn unknown command was entered.");
 

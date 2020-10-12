@@ -5,7 +5,6 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.library.Manager
 import xyz.oribuin.flighttrails.manager.ConfigManager
 import xyz.oribuin.flighttrails.manager.DataManager
 

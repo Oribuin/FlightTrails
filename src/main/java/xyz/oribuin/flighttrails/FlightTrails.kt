@@ -1,5 +1,6 @@
 package xyz.oribuin.flighttrails
 
+import org.bukkit.Bukkit
 import xyz.oribuin.flighttrails.command.CmdTrails
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
 import xyz.oribuin.flighttrails.hook.PlaceholderExp
@@ -15,6 +16,8 @@ import xyz.oribuin.flighttrails.manager.ParticleManager
  */
 class FlightTrails : OriPlugin() {
     override fun enablePlugin() {
+        Bukkit.getOnlinePlayers().forEach { player -> player.closeInventory() }
+
 
         // Register Managers
         getManager(ConfigManager::class)
@@ -23,7 +26,6 @@ class FlightTrails : OriPlugin() {
         getManager(ParticleManager::class)
 
         // Register PlaceholderAPI
-
         if (PlaceholderAPIHook.enabled()) {
             PlaceholderExp(this).register()
         }
@@ -36,7 +38,6 @@ class FlightTrails : OriPlugin() {
     }
 
     override fun disablePlugin() {
-        // Unused
     }
 
 }

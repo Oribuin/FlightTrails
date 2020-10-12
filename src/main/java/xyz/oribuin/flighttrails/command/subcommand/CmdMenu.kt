@@ -7,7 +7,7 @@ import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.command.SubCommand
 import xyz.oribuin.flighttrails.library.OriCommand
 import xyz.oribuin.flighttrails.manager.MessageManager
-import xyz.oribuin.flighttrails.menu.ColorMenu
+import xyz.oribuin.flighttrails.menu.MainMenu
 
 class CmdMenu(private val plugin: FlightTrails, command: OriCommand) : SubCommand(command, "menu") {
     override fun executeArgument(sender: CommandSender, args: Array<String>) {
@@ -29,7 +29,7 @@ class CmdMenu(private val plugin: FlightTrails, command: OriCommand) : SubComman
             }
 
             // Open Menu
-            ColorMenu(plugin, mentioned).openMenu()
+            MainMenu(plugin, mentioned).openMenu()
             return
         }
 
@@ -46,6 +46,6 @@ class CmdMenu(private val plugin: FlightTrails, command: OriCommand) : SubComman
         }
 
         // Open Menu
-        ColorMenu(plugin, sender).openMenu()
+        MainMenu(plugin, sender).openMenu()
     }
 }

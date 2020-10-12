@@ -40,12 +40,11 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
                 return@forEach
 
 
-
             // If creative fly trails are enabled and the player is flying
             if (ConfigManager.Setting.CREATIVE_FLY_TRAILS.boolean && player.isFlying) {
                 this.spawnFeetParticle(player)
                 return@forEach
-            } else if(ConfigManager.Setting.ELYTRA_TRAILS.boolean && player.isGliding) {
+            } else if (ConfigManager.Setting.ELYTRA_TRAILS.boolean && player.isGliding) {
                 if (ConfigManager.Setting.PS_ELYTRA_STYLE.string.equals("LEGACY", true)) {
                     this.spawnFeetParticle(player)
                 } else {
@@ -61,27 +60,27 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
      *
      * @param player The player that the particles are being spawned at
      */
-    private fun spawnFeetParticle(player: Player) {
+    private fun spawnFeetParticle(particleOwner: Player) {
         val data = plugin.getManager(DataManager::class)
         val particleCount = ConfigManager.Setting.PS_COUNT.int
-        val color = data.setColor(player, null)
+        val color = data.setColor(particleOwner, null)
 
-        when (val particle = data.setParticle(player, null)) {
+        when (val particle = data.setParticle(particleOwner, null)) {
             Particle.REDSTONE -> {
                 val dustOptions = DustOptions(Color.fromRGB(color.red, color.green, color.blue), ConfigManager.Setting.PS_SIZE.float)
-                player.world.spawnParticle(particle, player.location, particleCount, 0.0, 0.0, 0.0, dustOptions)
+                particleOwner.world.spawnParticle(particle, particleOwner.location.subtract(0.0, 0.1, 0.0), particleCount, 0.0, 0.0, 0.0, dustOptions)
             }
 
             Particle.BLOCK_CRACK, Particle.BLOCK_DUST, Particle.FALLING_DUST -> {
-                player.world.spawnParticle(particle, player.location, particleCount, 0.0, 0.0, 0.0, data.setBlock(player, null).createBlockData())
+                particleOwner.world.spawnParticle(particle, particleOwner.location.subtract(0.0, 0.1, 0.0), particleCount, 0.0, 0.0, 0.0, data.setBlock(particleOwner, null).createBlockData())
             }
 
             Particle.ITEM_CRACK -> {
-                player.world.spawnParticle(particle, player.location, particleCount, 0.0, 0.0, 0.0, data.setItem(player, null))
+                particleOwner.world.spawnParticle(particle, particleOwner.location.subtract(0.0, 0.1, 0.0), particleCount, 0.0, 0.0, 0.0, data.setItem(particleOwner, null))
             }
 
             else -> {
-                player.world.spawnParticle(particle, player.location, particleCount, 0.0, 0.0, 0.0, 0.0)
+                particleOwner.world.spawnParticle(particle, particleOwner.location.subtract(0.0, 0.1, 0.0), particleCount, 0.0, 0.0, 0.0, 0.0)
             }
         }
     }
@@ -125,6 +124,7 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
             }
         }
     }
+
 
     // Disable Method
     override fun disable() {

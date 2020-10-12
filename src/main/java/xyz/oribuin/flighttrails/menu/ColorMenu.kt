@@ -1,20 +1,22 @@
 package xyz.oribuin.flighttrails.menu
 
+import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Bukkit
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.Particle
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import xyz.oribuin.flighttrails.FlightTrails
+import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
 import xyz.oribuin.flighttrails.library.HexUtils.colorify
 import xyz.oribuin.flighttrails.library.PluginUtils.formatToHex
 import xyz.oribuin.flighttrails.library.StringPlaceholders
@@ -22,17 +24,13 @@ import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
 
 class ColorMenu(private val plugin: FlightTrails, private val player: Player) : Listener {
+    val color = plugin.getManager(DataManager::class).setColor(player, null)
 
     fun openMenu() {
         player.openInventory(menu())
     }
 
     private fun menu(): Inventory {
-        val craftPlayer = player as CraftPlayer
-
-        val data = plugin.getManager(DataManager::class)
-        val color = data.setColor(player, null)
-
         val inv = Bukkit.createInventory(null, 54, format("Set your color"))
 
         for (i in 0..53) {
@@ -61,7 +59,26 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, Runnable {
             if (player.hasPermission("flighttrails.color.custom")) {
-                inv.setItem(40, currentColor(color))
+                inv.setItem(39, normalItem(Material.RED_CONCRETE, "&c-Remove &7RGB Numbers", listOf(
+                        " ",
+                        " &f» &bLeft Click - &7Remove 1 &cRed",
+                        " &f» &bMiddle Click - &7Remove 1 &aGreen",
+                        " &f» &bRight Click - &7Remove 1 &bBlue",
+                        " &f» &bShift Left Click - &7Set &cRed&7 to 0",
+                        " &f» &bNumber Click - &7Set &aGreen&7 to 0",
+                        " &f» &bShift Right Click - &7Set &bBlue&7 to 0")))
+
+                inv.setItem(40, currentColor())
+
+                inv.setItem(41, normalItem(Material.GREEN_CONCRETE, "&a+Add &7RGB Numbers", listOf(
+                        " ",
+                        " &f» &bLeft Click - &7Add 1 &cRed",
+                        " &f» &bMiddle Click - &7Add 1 &aGreen",
+                        " &f» &bRight Click - &7Add 1 &bBlue",
+                        " &f» &bShift Left Click - &7Set &cRed&7 to 255",
+                        " &f» &bNumber Click - &7Set &aGreen&7 to 255",
+                        " &f» &bShift Right Click - &7Set &bBlue&7 to 255")))
+
             }
         }, 0, 1)
         return inv
@@ -69,10 +86,8 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     fun clickEvent(event: InventoryClickEvent) {
-        val topInventory = event.view.topInventory
-        val inventory = event.clickedInventory
 
-        if (inventory == null || event.whoClicked !is Player || inventory != topInventory || event.view.title != "Set your color")
+        if (event.whoClicked !is Player || event.view.title != "Set your color")
             return
 
         val player = event.whoClicked as Player
@@ -139,18 +154,39 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
             22 -> {
                 colorCommands(player, Color.BLACK)
             }
+
+            39 -> {
+                removeRGBColor(event.click)
+            }
+
+            40 -> {
+                setHexColor(player)
+            }
+
+            41 -> {
+                addRGBColor(event.click)
+            }
         }
     }
 
-    private fun currentColor(color: Color): ItemStack {
+    private fun currentColor(): ItemStack {
+        val newColor = plugin.getManager(DataManager::class).setColor(player, null)
         val armor = ItemStack(Material.LEATHER_CHESTPLATE)
         val meta = armor.itemMeta as LeatherArmorMeta
 
-        meta.setColor(Color.fromRGB(color.red, color.green, color.blue))
-        meta.setDisplayName(format("&bCurrent Colour:${formatToHex(color)} ${color.red},${color.green},${color.blue}"))
+        val clr = Color.fromRGB(newColor.red, newColor.green, newColor.blue)
 
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS)
+        meta.setColor(clr)
+        meta.setDisplayName(format("&bCurrent Colour: ${formatToHex(clr)}${newColor.red},${newColor.green},${newColor.blue}"))
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE)
+        val lore = listOf(
+                format("&7View your current trail color here."),
+                format("&7Use side buttons to alter the RGB Code"),
+                format(" "),
+                format("&bClick to change trail color in #HEX")
+        )
 
+        meta.lore = lore
         armor.itemMeta = meta
         return armor
     }
@@ -174,9 +210,21 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
         return itemStack
     }
 
+    private fun normalItem(material: Material, name: String, lore: List<String>): ItemStack {
+        val itemStack = ItemStack(material)
+        val meta = itemStack.itemMeta ?: return ItemStack(Material.AIR)
+        meta.setDisplayName(PlaceholderAPIHook.apply(player, colorify(name)))
+        val coloredLore = mutableListOf<String>()
+        lore.forEach { s -> coloredLore.add(PlaceholderAPIHook.apply(player, colorify(s))) }
+        meta.lore = coloredLore
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
+        itemStack.itemMeta = meta
+        return itemStack
+    }
+
     private fun colorCommands(player: Player, color: Color) {
-        val data = plugin.getManager(DataManager::class)
         val msg = plugin.getManager(MessageManager::class)
+        val data = plugin.getManager(DataManager::class)
 
         if (!player.hasPermission("flighttrails.admin") && !player.hasPermission("flighttrails.particle.redstone")) {
             msg.sendMessage(player, "invalid-permission")
@@ -189,19 +237,114 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
             player.closeInventory()
         }
 
-        data.setColor(player, color)
-        data.setParticle(player, Particle.REDSTONE)
-        player.closeInventory()
         msg.sendMessage(player, "set-command.color", StringPlaceholders.builder()
                 .addPlaceholder("color", "${color.red}, ${color.green}, ${color.blue}")
                 .addPlaceholder("hex", formatToHex(color))
                 .build())
+
+        data.setColor(player, color)
+        data.setParticle(player, Particle.REDSTONE)
+    }
+
+    private fun addRGBColor(clickType: ClickType): Color {
+        val newColor = plugin.getManager(DataManager::class).setColor(player, null)
+
+        var red = newColor.red
+        var green = newColor.green
+        var blue = newColor.blue
+
+        if (clickType == ClickType.LEFT && red < 255 && red > -1) {
+            red += 1
+        } else if (clickType == ClickType.MIDDLE && green < 255 && green > -1) {
+            green += 1
+        } else if (clickType == ClickType.RIGHT && blue < 255 && blue > -1) {
+            blue += 1
+        } else if (clickType == ClickType.SHIFT_LEFT && red < 255) {
+            red = 255
+        } else if (clickType == ClickType.SHIFT_RIGHT && blue < 255) {
+            blue = 255
+        } else if (clickType == ClickType.NUMBER_KEY && green < 255) {
+            green = 255
+        }
+
+        val data = plugin.getManager(DataManager::class)
+        data.setColor(player, Color.fromRGB(red, green, blue))
+        data.setParticle(player, Particle.REDSTONE)
+
+        return this.color
+    }
+
+    private fun removeRGBColor(clickType: ClickType): Color {
+        val newColor = plugin.getManager(DataManager::class).setColor(player, null)
+
+        var red = newColor.red
+        var green = newColor.green
+        var blue = newColor.blue
+
+        if (clickType == ClickType.LEFT && red > 0) {
+            red -= 1
+        } else if (clickType == ClickType.MIDDLE && green > 0) {
+            green -= 1
+        } else if (clickType == ClickType.RIGHT && blue > 0) {
+            blue -= 1
+        } else if (clickType == ClickType.SHIFT_LEFT) {
+            red = 0
+        } else if (clickType == ClickType.SHIFT_RIGHT) {
+            blue = 0
+        } else if (clickType == ClickType.NUMBER_KEY) {
+            green = 0
+        }
+
+        val data = plugin.getManager(DataManager::class)
+        data.setColor(player, Color.fromRGB(red, green, blue))
+        data.setParticle(player, Particle.REDSTONE)
+        return this.color
     }
 
     private fun format(string: String, placeholders: StringPlaceholders = StringPlaceholders.empty()): String {
         return colorify(placeholders.apply(string))
     }
 
+    private fun setHexColor(pl: Player) {
+        val data = plugin.getManager(DataManager::class)
+
+        AnvilGUI.Builder()
+                .onComplete { _, text ->
+                    val msg = plugin.getManager(MessageManager::class)
+                    if (!text.startsWith("#") || text.length != 7) {
+                        msg.sendMessage(pl, "invalid-hex")
+                        return@onComplete AnvilGUI.Response.close()
+                    }
+
+                    try {
+
+                        if (!player.hasPermission("flighttrails.admin") && !player.hasPermission("flighttrails.particle.redstone")) {
+                            msg.sendMessage(player, "invalid-permission")
+                            player.closeInventory()
+                            return@onComplete AnvilGUI.Response.close()
+                        }
+
+                        val clr = java.awt.Color.decode(text)
+                        data.setColor(player, Color.fromRGB(clr.red, clr.green, clr.blue))
+                        data.setParticle(player, Particle.REDSTONE)
+
+                        msg.sendMessage(player, "set-command.color", StringPlaceholders.builder()
+                                .addPlaceholder("color", "${clr.red}, ${clr.green}, ${clr.blue}")
+                                .addPlaceholder("hex", formatToHex(color))
+                                .build())
+
+                        return@onComplete AnvilGUI.Response.close()
+
+                    } catch (ex: NumberFormatException) {
+                        msg.sendMessage(pl, "invalid-hex")
+                        return@onComplete AnvilGUI.Response.close()
+                    }
+                }
+                .plugin(plugin)
+                .title("Set trail hex color")
+                .text(formatToHex(data.setColor(pl, null)))
+                .open(pl)
+    }
 
     init {
         Bukkit.getPluginManager().registerEvents(this, plugin)
