@@ -35,11 +35,17 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
             inv.setItem(i, item)
         }
 
+
         inv.setItem(10, normalItem(Material.RED_DYE, "&bColor Menu", listOf(
                 "&7Click to access the color menu",
-                "&7to change your redstone particle color",
+                "&7to change your redstone particle color.",
                 " ",
                 "&b&lRequires redstone Particle"
+        )))
+
+        inv.setItem(13, normalItem(Material.BLAZE_POWDER, "&bParticle Menu", listOf(
+                "&7Click to access the particle menu",
+                "&7to change your trail particle."
         )))
 
         return inv
@@ -61,7 +67,7 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
         when (event.slot) {
             10 -> {
 
-                if (!player.hasPermission("flighttrails.admin") && data.setParticle(player, null) != Particle.REDSTONE) {
+                if (!player.hasPermission("flighttrails.admin") && data.getOrSetParticle(player, null) != Particle.REDSTONE) {
                     msg.sendMessage(player, "set-command.required-particle")
                     player.closeInventory()
                     return
@@ -69,12 +75,24 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
 
                 ColorMenu(plugin, player).openMenu()
             }
+
+            13 -> {
+                ParticleMenu(plugin, player).openMenu()
+            }
+
+            16 -> {
+                BlockMenu(plugin, player).openMenu()
+            }
+
+            17 -> {
+                ItemMenu(plugin, player).openMenu()
+            }
         }
     }
 
 
     private fun normalItem(material: Material, name: String, lore: List<String>): ItemStack {
-        val itemStack = ItemStack(material)
+        val itemStack = ItemStack(transformMaterial(material))
         val meta = itemStack.itemMeta ?: return ItemStack(Material.AIR)
         meta.setDisplayName(PlaceholderAPIHook.apply(player, colorify(name)))
         val coloredLore = mutableListOf<String>()
@@ -91,5 +109,13 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
 
     init {
         Bukkit.getPluginManager().registerEvents(this, plugin)
+    }
+
+    private fun transformMaterial(material: Material): Material {
+        return try {
+            material
+        } catch (ex: NoSuchFieldError) {
+            Material.STONE
+        }
     }
 }

@@ -30,12 +30,12 @@ class DataManager(plugin: FlightTrails) : Manager(plugin) {
     }
 
     /**
-     * Set the trail particle for a player
+     * Get or set the trail particle for a player
      *
      * @param player The player being set.
      * @param particle The particle being set.
      */
-    fun setParticle(player: Player, particle: Particle?): Particle {
+    fun getOrSetParticle(player: Player, particle: Particle?): Particle {
         if (particle != null) {
             getConfig().set(player.uniqueId.toString() + ".particle", particle.name)
             saveData()
@@ -46,12 +46,12 @@ class DataManager(plugin: FlightTrails) : Manager(plugin) {
     }
 
     /**
-     * Set the trail block for a player
+     * Get or set the trail block for a player
      *
      * @param player The player being set.
      * @param material The material being set.
      */
-    fun setBlock(player: Player, material: Material?): Material {
+    fun getOrSetBlock(player: Player, material: Material?): Material {
         if (material != null) {
             getConfig().set(player.uniqueId.toString() + ".block", material.name)
             saveData()
@@ -62,39 +62,45 @@ class DataManager(plugin: FlightTrails) : Manager(plugin) {
     }
 
     /**
-     * Set the trail Item for a player
+     * Get or set the trail Item for a player
      *
      * @param player The player being set.
      * @param itemStack The item being set.
      */
-    fun setItem(player: Player, itemStack: ItemStack?): ItemStack {
+    fun getOrSetItem(player: Player, itemStack: ItemStack?): ItemStack {
         if (itemStack != null) {
             getConfig().set(player.uniqueId.toString() + ".item", itemStack)
             saveData()
             return itemStack
         }
 
-        return getConfig().getItemStack(player.uniqueId.toString() + ".item")?: return plugin.config.getItemStack("particle-settings.default.item") ?: return ItemStack(Material.LIGHT_BLUE_WOOL)
+        return getConfig().getItemStack(player.uniqueId.toString() + ".item") ?: return plugin.config.getItemStack("particle-settings.default.item") ?: return ItemStack(Material.LIGHT_BLUE_WOOL)
     }
 
     /**
-     * Set the trail color for a player
+     * Get or set the trail color for a player
      *
      * @param player The player being set.
      * @param color The color
      * being set.
      */
-    fun setColor(player: Player, color: Color?): Color {
+    fun getOrSetColor(player: Player, color: Color?): Color {
         if (color != null) {
             getConfig().set(player.uniqueId.toString() + ".color", color)
             saveData()
             return color
         }
 
-        return getConfig().getColor(player.uniqueId.toString() + ".color") ?: return plugin.config.getColor("particle-settings.default.color")?: return Color.AQUA
+        return getConfig().getColor(player.uniqueId.toString() + ".color") ?: return plugin.config.getColor("particle-settings.default.color") ?: return Color.AQUA
     }
 
-    fun setEnabled(player: Player, enabled: Boolean?): Boolean {
+    /**
+     * Get or set if the player has trails
+     *
+     * @param player The player being set
+     * @param enabled if they are enabled or not
+     */
+    fun getOrSetEnabled(player: Player, enabled: Boolean?): Boolean {
         if (enabled != null) {
             getConfig().set(player.uniqueId.toString() + ".enabled", enabled)
             saveData()
@@ -110,11 +116,20 @@ class DataManager(plugin: FlightTrails) : Manager(plugin) {
     fun setDefault(player: Player) {
         val uuid = player.uniqueId.toString()
         getConfig().set("$uuid.enabled", plugin.config.getBoolean("particle-settings.default.enabled"))
-        getConfig().set("$uuid.block", setBlock(player, null).name)
-        getConfig().set("$uuid.color", setColor(player, null))
-        getConfig().set("$uuid.particle", setParticle(player, null).name)
-        getConfig().set("$uuid.item", setItem(player, null))
+        getConfig().set("$uuid.block", getOrSetBlock(player, null).name)
+        getConfig().set("$uuid.color", getOrSetColor(player, null))
+        getConfig().set("$uuid.particle", getOrSetParticle(player, null).name)
+        getConfig().set("$uuid.item", getOrSetItem(player, null))
         saveData()
+    }
+
+    /**
+     * Get the player from the config
+     *
+     * @param player The player being obtained
+     */
+    fun getPlayer(player: Player): Player? {
+        return getConfig().getOfflinePlayer(player.uniqueId.toString())?.player
     }
 
     /**

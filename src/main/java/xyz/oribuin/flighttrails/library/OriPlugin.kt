@@ -23,12 +23,10 @@ abstract class OriPlugin : JavaPlugin() {
         saveDefaultConfig()
         enablePlugin()
         reload()
-        server.consoleSender.sendMessage(HexUtils.colorify("&8[&b&lArsentic&8] &7-> The arsentic plugin, " + description.version + ", has been &aenabled &7successfully!"))
     }
 
     override fun onDisable() {
         disablePlugin()
-        server.consoleSender.sendMessage(HexUtils.colorify("&8[&b&lArsentic&8] &7-> The arsentic plugin, " + description.version + ", has been &cdisabled &7successfully!"))
     }
 
     /**

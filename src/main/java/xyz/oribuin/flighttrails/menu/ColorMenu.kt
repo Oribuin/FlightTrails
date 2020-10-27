@@ -24,7 +24,7 @@ import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
 
 class ColorMenu(private val plugin: FlightTrails, private val player: Player) : Listener {
-    val color = plugin.getManager(DataManager::class).setColor(player, null)
+    val color = plugin.getManager(DataManager::class).getOrSetColor(player, null)
 
     fun openMenu() {
         player.openInventory(menu())
@@ -170,7 +170,7 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
     }
 
     private fun currentColor(): ItemStack {
-        val newColor = plugin.getManager(DataManager::class).setColor(player, null)
+        val newColor = plugin.getManager(DataManager::class).getOrSetColor(player, null)
         val armor = ItemStack(Material.LEATHER_CHESTPLATE)
         val meta = armor.itemMeta as LeatherArmorMeta
 
@@ -242,12 +242,12 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
                 .addPlaceholder("hex", formatToHex(color))
                 .build())
 
-        data.setColor(player, color)
-        data.setParticle(player, Particle.REDSTONE)
+        data.getOrSetColor(player, color)
+        data.getOrSetParticle(player, Particle.REDSTONE)
     }
 
     private fun addRGBColor(clickType: ClickType): Color {
-        val newColor = plugin.getManager(DataManager::class).setColor(player, null)
+        val newColor = plugin.getManager(DataManager::class).getOrSetColor(player, null)
 
         var red = newColor.red
         var green = newColor.green
@@ -268,14 +268,14 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
         }
 
         val data = plugin.getManager(DataManager::class)
-        data.setColor(player, Color.fromRGB(red, green, blue))
-        data.setParticle(player, Particle.REDSTONE)
+        data.getOrSetColor(player, Color.fromRGB(red, green, blue))
+        data.getOrSetParticle(player, Particle.REDSTONE)
 
         return this.color
     }
 
     private fun removeRGBColor(clickType: ClickType): Color {
-        val newColor = plugin.getManager(DataManager::class).setColor(player, null)
+        val newColor = plugin.getManager(DataManager::class).getOrSetColor(player, null)
 
         var red = newColor.red
         var green = newColor.green
@@ -296,8 +296,8 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
         }
 
         val data = plugin.getManager(DataManager::class)
-        data.setColor(player, Color.fromRGB(red, green, blue))
-        data.setParticle(player, Particle.REDSTONE)
+        data.getOrSetColor(player, Color.fromRGB(red, green, blue))
+        data.getOrSetParticle(player, Particle.REDSTONE)
         return this.color
     }
 
@@ -325,8 +325,8 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
                         }
 
                         val clr = java.awt.Color.decode(text)
-                        data.setColor(player, Color.fromRGB(clr.red, clr.green, clr.blue))
-                        data.setParticle(player, Particle.REDSTONE)
+                        data.getOrSetColor(player, Color.fromRGB(clr.red, clr.green, clr.blue))
+                        data.getOrSetParticle(player, Particle.REDSTONE)
 
                         msg.sendMessage(player, "set-command.color", StringPlaceholders.builder()
                                 .addPlaceholder("color", "${clr.red}, ${clr.green}, ${clr.blue}")
@@ -342,7 +342,7 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
                 }
                 .plugin(plugin)
                 .title("Set trail hex color")
-                .text(formatToHex(data.setColor(pl, null)))
+                .text(formatToHex(data.getOrSetColor(pl, null)))
                 .open(pl)
     }
 

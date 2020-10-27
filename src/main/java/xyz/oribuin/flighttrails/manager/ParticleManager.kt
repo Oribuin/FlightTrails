@@ -34,7 +34,7 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
             // Check for perm, if vanished, has trails enabled, is in an enabled world and not in spectator
             if (!player.hasPermission("flighttrails.use")
                     || player.hasMetadata("vanished")
-                    || !data.setEnabled(player, null)
+                    || !data.getOrSetEnabled(player, null)
                     || plugin.config.getStringList("disabled-worlds").contains(player.name)
                     || player.gameMode == GameMode.SPECTATOR)
                 return@forEach
@@ -63,20 +63,20 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
     private fun spawnFeetParticle(particleOwner: Player) {
         val data = plugin.getManager(DataManager::class)
         val particleCount = ConfigManager.Setting.PS_COUNT.int
-        val color = data.setColor(particleOwner, null)
+        val color = data.getOrSetColor(particleOwner, null)
 
-        when (val particle = data.setParticle(particleOwner, null)) {
+        when (val particle = data.getOrSetParticle(particleOwner, null)) {
             Particle.REDSTONE -> {
                 val dustOptions = DustOptions(Color.fromRGB(color.red, color.green, color.blue), ConfigManager.Setting.PS_SIZE.float)
                 particleOwner.world.spawnParticle(particle, particleOwner.location.subtract(0.0, 0.1, 0.0), particleCount, 0.0, 0.0, 0.0, dustOptions)
             }
 
             Particle.BLOCK_CRACK, Particle.BLOCK_DUST, Particle.FALLING_DUST -> {
-                particleOwner.world.spawnParticle(particle, particleOwner.location.subtract(0.0, 0.1, 0.0), particleCount, 0.0, 0.0, 0.0, data.setBlock(particleOwner, null).createBlockData())
+                particleOwner.world.spawnParticle(particle, particleOwner.location.subtract(0.0, 0.1, 0.0), particleCount, 0.0, 0.0, 0.0, data.getOrSetBlock(particleOwner, null).createBlockData())
             }
 
             Particle.ITEM_CRACK -> {
-                particleOwner.world.spawnParticle(particle, particleOwner.location.subtract(0.0, 0.1, 0.0), particleCount, 0.0, 0.0, 0.0, data.setItem(particleOwner, null))
+                particleOwner.world.spawnParticle(particle, particleOwner.location.subtract(0.0, 0.1, 0.0), particleCount, 0.0, 0.0, 0.0, data.getOrSetItem(particleOwner, null))
             }
 
             else -> {
@@ -92,7 +92,7 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
      */
     private fun spawnElytraParticles(player: Player) {
         val data = plugin.getManager(DataManager::class)
-        val color = data.setColor(player, null)
+        val color = data.getOrSetColor(player, null)
 
         val particleCount = ConfigManager.Setting.PS_COUNT.int
         val loc = player.location
@@ -101,7 +101,7 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
         val leftWing = VectorUtils.rotateVector(Vector(-0.25, -0.4, distanceFromFeetCenter), loc.yaw, loc.pitch)
         val rightWing = VectorUtils.rotateVector(Vector(-0.25, -0.4, -distanceFromFeetCenter), loc.yaw, loc.pitch)
 
-        when (val particle = data.setParticle(player, null)) {
+        when (val particle = data.getOrSetParticle(player, null)) {
             Particle.REDSTONE -> {
                 val dustOptions = DustOptions(Color.fromRGB(color.red, color.green, color.blue), ConfigManager.Setting.PS_SIZE.float)
                 player.world.spawnParticle(particle, loc.clone().subtract(leftWing), particleCount, 0.0, 0.0, 0.0, dustOptions)
@@ -109,13 +109,13 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
             }
 
             Particle.BLOCK_CRACK, Particle.BLOCK_DUST, Particle.FALLING_DUST -> {
-                player.world.spawnParticle(particle, loc.clone().subtract(leftWing), particleCount, 0.0, 0.0, 0.0, data.setBlock(player, null).createBlockData())
-                player.world.spawnParticle(particle, loc.clone().subtract(rightWing), particleCount, 0.0, 0.0, 0.0, data.setBlock(player, null).createBlockData())
+                player.world.spawnParticle(particle, loc.clone().subtract(leftWing), particleCount, 0.0, 0.0, 0.0, data.getOrSetBlock(player, null).createBlockData())
+                player.world.spawnParticle(particle, loc.clone().subtract(rightWing), particleCount, 0.0, 0.0, 0.0, data.getOrSetBlock(player, null).createBlockData())
             }
 
             Particle.ITEM_CRACK -> {
-                player.world.spawnParticle(particle, loc.clone().subtract(leftWing), particleCount, 0.0, 0.0, 0.0, data.setItem(player, null))
-                player.world.spawnParticle(particle, loc.clone().subtract(rightWing), particleCount, 0.0, 0.0, 0.0, data.setItem(player, null))
+                player.world.spawnParticle(particle, loc.clone().subtract(leftWing), particleCount, 0.0, 0.0, 0.0, data.getOrSetItem(player, null))
+                player.world.spawnParticle(particle, loc.clone().subtract(rightWing), particleCount, 0.0, 0.0, 0.0, data.getOrSetItem(player, null))
             }
 
             else -> {

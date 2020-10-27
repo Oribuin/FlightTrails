@@ -2,11 +2,14 @@ package xyz.oribuin.flighttrails.command
 
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import org.bukkit.util.StringUtil
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.command.subcommand.CmdMenu
 import xyz.oribuin.flighttrails.command.subcommand.CmdReload
+import xyz.oribuin.flighttrails.command.subcommand.CmdToggle
 import xyz.oribuin.flighttrails.library.OriCommand
+import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
 
 class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
@@ -15,6 +18,10 @@ class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
     private val messageManager = plugin.getManager(MessageManager::class)
 
     override fun executeCommand(sender: CommandSender, args: Array<String>) {
+
+        if (sender is Player && plugin.getManager(DataManager::class).getPlayer(sender) == null) {
+            plugin.getManager(DataManager::class).setDefault(sender)
+        }
 
         for (cmd in subcommands) {
             if (args.isEmpty()) {
@@ -66,7 +73,7 @@ class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
     }
 
     override fun addSubCommands() {
-        subcommands.addAll(listOf(CmdMenu(plugin as FlightTrails, this), CmdReload(plugin, this)))
+        subcommands.addAll(listOf(CmdMenu(plugin as FlightTrails, this), CmdReload(plugin, this), CmdToggle(plugin, this)))
     }
 
 }

@@ -5,12 +5,13 @@ import dev.rosewood.guiframework.GuiFramework
 import dev.rosewood.guiframework.gui.ClickAction
 import dev.rosewood.guiframework.gui.GuiSize
 import dev.rosewood.guiframework.gui.screen.GuiScreen
+import org.apache.commons.lang.StringUtils
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.enums.ParticleItem
 import xyz.oribuin.flighttrails.library.HexUtils.colorify
 import xyz.oribuin.flighttrails.library.StringPlaceholders
 import xyz.oribuin.flighttrails.manager.DataManager
@@ -18,13 +19,13 @@ import xyz.oribuin.flighttrails.manager.MessageManager
 import java.util.*
 import java.util.function.Function
 
-class ParticleMenu(private val plugin: FlightTrails, private val player: Player) : Listener {
+class ItemMenu(private val plugin: FlightTrails, private val player: Player) : Listener {
 
     private val guiFramework = GuiFramework.instantiate(plugin)
     private val container = GuiFactory.createContainer().setTickRate(3)
 
     companion object {
-        var instance: ParticleMenu? = null
+        var instance: ItemMenu? = null
             private set
     }
 
@@ -35,12 +36,23 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
 
     private fun mainMenu(): GuiScreen {
         val screen = GuiFactory.createScreen(container, GuiSize.ROWS_SIX)
-                .setTitle(colorify("Set your particle"))
+                .setTitle(colorify("Set your item"))
 
         this.borderSlots().forEach { i -> screen.addItemStackAt(i, borderItem()) }
 
-        val particleList = ParticleItem.values().toList()
-        particleList.sortedBy { particleItem -> particleItem.particleName }
+        val itemList = mutableListOf<Material>()
+
+        val tempInv = Bukkit.createInventory(null, 9)
+        for (material in Material.values()) {
+            tempInv.clear()
+            tempInv.setItem(0, ItemStack(material, 1))
+            val stack = tempInv.getItem(0);
+            if (stack != null) {
+                if (material.isItem) {
+                    itemList.add(material)
+                }
+            }
+        }
 
         screen.addButtonAt(47, GuiFactory.createButton()
                 .setIcon(Material.PAPER)
@@ -57,22 +69,22 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
                 .setName(format("&bForward Page &7»"))
                 .setClickAction(Function { return@Function ClickAction.PAGE_FORWARDS }))
 
-        screen.setPaginatedSection(GuiFactory.createScreenSection(particleSlots()), particleList.size) { _: Int, startIndex: Int, endIndex: Int ->
+        screen.setPaginatedSection(GuiFactory.createScreenSection(particleSlots()), itemList.size) { _: Int, startIndex: Int, endIndex: Int ->
             val results = GuiFactory.createPageContentsResult()
-            for (i in startIndex until endIndex.coerceAtMost(particleList.size)) {
+            for (i in startIndex until endIndex.coerceAtMost(itemList.size)) {
 
-                val particleItem = particleList[i]
+                val blockItem = itemList[i]
 
                 val button = GuiFactory.createButton()
-                        .setIcon(particleItem.material)
-                        .setName(format("&b${particleItem.particleName}"))
-                        .setLore(format("&7Click to change your current"), format("&7flight trail particle."))
+                        .setIcon(blockItem)
+                        .setName(format("&b${StringUtils.capitalize(blockItem.name.toLowerCase().replace("_", " "))}"))
+                        .setLore(format("&7Click to change your current"), format("&7flight trail block."))
                         .setClickAction(Function {
-                            particleCommands(player, particleItem)
+                            itemCommands(player, blockItem)
                             return@Function ClickAction.CLOSE
                         })
 
-                if (plugin.getManager(DataManager::class).getOrSetParticle(player, null) == particleItem.particle) {
+                if (plugin.getManager(DataManager::class).getOrSetBlock(player, null) == blockItem) {
                     button.setGlowing(true)
                 }
 
@@ -132,19 +144,19 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
         return colorify(placeholders.apply(string))
     }
 
-    private fun particleCommands(player: Player, particleItem: ParticleItem) {
+    private fun itemCommands(player: Player, material: Material) {
         val msg = plugin.getManager(MessageManager::class)
         val data = plugin.getManager(DataManager::class)
+//
+//        if (!player.hasPermission("flighttrails.admin") && !player.hasPermission("flighttrails.particle.${material.name.toLowerCase()}")) {
+//            msg.sendMessage(player, "invalid-permission")
+//            player.closeInventory()
+//        }
 
-        if (!player.hasPermission("flighttrails.admin") && !player.hasPermission("flighttrails.particle.${particleItem.particle.name.toLowerCase()}")) {
-            msg.sendMessage(player, "invalid-permission")
-            player.closeInventory()
-        }
-
-        msg.sendMessage(player, "set-command.particle", StringPlaceholders.builder()
-                .addPlaceholder("particle", particleItem.particleName)
+        msg.sendMessage(player, "set-command.item", StringPlaceholders.builder()
+                .addPlaceholder("item", StringUtils.capitalize(material.name.toLowerCase().replace("_", " ")))
                 .build())
 
-        data.getOrSetParticle(player, particleItem.particle)
+        data.getOrSetItem(player, ItemStack(material))
     }
 }
