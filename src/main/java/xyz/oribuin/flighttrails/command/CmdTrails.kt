@@ -38,7 +38,7 @@ class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
 
     override fun tabComplete(sender: CommandSender, args: Array<String>): MutableList<String>? {
 
-        val suggestions: MutableList<String> = ArrayList()
+        val suggestions = mutableListOf<String>()
         if (args.isEmpty() || args.size == 1) {
             val subCommand = if (args.isEmpty()) "" else args[0]
 
@@ -60,7 +60,7 @@ class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
             StringUtil.copyPartialMatches(subCommand, commands, suggestions)
         } else if (args.size == 2) {
             if (args[0].toLowerCase() == "menu" && sender.hasPermission("flighttrails.menu.other")) {
-                val players: MutableList<String> = ArrayList()
+                val players = mutableListOf<String>()
                 Bukkit.getOnlinePlayers().stream().filter { player -> !player.hasPermission("vanished") }.forEach { player -> players.add(player.name) }
 
                 StringUtil.copyPartialMatches(args[1].toLowerCase(), players, suggestions)
