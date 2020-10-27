@@ -65,7 +65,11 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
         event.isCancelled = true
 
         when (event.slot) {
-            10 -> {
+            13 -> {
+                ParticleMenu(plugin, player).openMenu()
+            }
+
+            28 -> {
 
                 if (!player.hasPermission("flighttrails.admin") && data.getOrSetParticle(player, null) != Particle.REDSTONE) {
                     msg.sendMessage(player, "set-command.required-particle")
@@ -76,15 +80,11 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
                 ColorMenu(plugin, player).openMenu()
             }
 
-            13 -> {
-                ParticleMenu(plugin, player).openMenu()
-            }
-
-            16 -> {
+            31 -> {
                 BlockMenu(plugin, player).openMenu()
             }
 
-            17 -> {
+            34 -> {
                 ItemMenu(plugin, player).openMenu()
             }
         }
