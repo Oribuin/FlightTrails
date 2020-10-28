@@ -50,6 +50,7 @@ enum class ParticleItem(val particleName: String, val particle: Particle, val ma
     NAUTILIS("Nautilis", Particle.NAUTILUS, Material.HEART_OF_THE_SEA),
     NOTE("Note", Particle.NOTE, Material.NOTE_BLOCK),
     PORTAL("Portal", Particle.PORTAL, Material.PURPLE_CONCRETE),
+    REDSTONE("Redstone", Particle.REDSTONE, Material.REDSTONE),
     REVERSED_PORTAL("Reversed Portal", Particle.REVERSE_PORTAL, Material.PURPLE_DYE),
     SLIME("Slime", Particle.SLIME, Material.SLIME_BLOCK),
     SMOKE_LARGE("Smoke Large", Particle.SMOKE_LARGE, Material.NETHERITE_BLOCK),

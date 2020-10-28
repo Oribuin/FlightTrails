@@ -63,6 +63,9 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
 
                 val particleItem = particleList[i]
 
+                if (!player.hasPermission("flighttrails.admin") || !player.hasPermission("flighttrails.particle.${particleItem.particle.name.toLowerCase()}"))
+                    continue
+
                 val button = GuiFactory.createButton()
                         .setIcon(particleItem.material)
                         .setName(format("&b${particleItem.particleName}"))

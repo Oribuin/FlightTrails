@@ -36,17 +36,32 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
         }
 
 
-        inv.setItem(10, normalItem(Material.RED_DYE, "&bColor Menu", listOf(
+        inv.setItem(28, normalItem(Material.RED_DYE, "&bColor Menu", listOf(
                 "&7Click to access the color menu",
                 "&7to change your redstone particle color.",
                 " ",
-                "&b&lRequires redstone Particle"
+                "&b&lRequires redstone particle."
         )))
 
         inv.setItem(13, normalItem(Material.BLAZE_POWDER, "&bParticle Menu", listOf(
                 "&7Click to access the particle menu",
                 "&7to change your trail particle."
         )))
+
+        inv.setItem(31, normalItem(plugin.getManager(DataManager::class).getOrSetBlock(player, null), "&bBlock Menu", listOf(
+                "&7Click to access the color menu",
+                "&7to change your particle block.",
+                " ",
+                "&b&lRequires block particle."
+        )))
+
+        inv.setItem(34, normalItem(plugin.getManager(DataManager::class).getOrSetItem(player, null).type, "&bItem Menu", listOf(
+                "&7Click to access the color menu",
+                "&7to change your particle item.",
+                " ",
+                "&b&lRequires item crack particle."
+        )))
+
 
         return inv
     }
