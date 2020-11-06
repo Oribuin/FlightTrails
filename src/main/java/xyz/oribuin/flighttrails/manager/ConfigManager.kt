@@ -29,6 +29,7 @@ class ConfigManager(plugin: FlightTrails) : Manager(plugin) {
         CREATIVE_FLY_TRAILS("conditions.creative-fly", true),
         ELYTRA_TRAILS("conditions.elytra", true),
         DISABLED_WORLDS("disabled-worlds", listOf("disabled-world1", "disabled-world2")),
+        DISABLED_PARTICLES("disabled-particles", listOf("EXPLOSION_LARGE", "EXPLOSION_HUGE")),
         PS_COUNT("particle-settings.count", 2),
         PS_SIZE("particle-settings.size", 1.0.toFloat()),
         PS_ELYTRA_STYLE("particle-settings.elytra-style", "FANCY"),

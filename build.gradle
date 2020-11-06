@@ -34,6 +34,8 @@ dependencies {
     shadow 'org.spigotmc:spigot:1.16.2'
     shadow 'me.clip:placeholderapi:2.10.9'
 
+    shadow 'com.github.MilkBowl:VaultAPI:1.7'
+
     implementation 'dev.rosewood:guiframework:1.1.1'
     implementation 'com.github.WesJD.AnvilGUI:anvilgui:master-SNAPSHOT'
 }

@@ -22,15 +22,15 @@ class CmdToggle(private val plugin: FlightTrails, command: OriCommand) : SubComm
             return
         }
 
-
         val data = plugin.getManager(DataManager::class)
+
         // Basically Data#isEnabled
         if (data.getOrSetEnabled(sender, null)) {
-            messageManager.sendMessage(sender, "trails-disabled")
             data.getOrSetEnabled(sender, false)
+            messageManager.sendMessage(sender, "trails-disabled")
         } else {
-            messageManager.sendMessage(sender, "trails-enabled")
             data.getOrSetEnabled(sender, true)
+            messageManager.sendMessage(sender, "trails-enabled")
         }
 
     }

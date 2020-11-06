@@ -64,8 +64,12 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
         val data = plugin.getManager(DataManager::class)
         val particleCount = ConfigManager.Setting.PS_COUNT.int
         val color = data.getOrSetColor(particleOwner, null)
+        val particle = data.getOrSetParticle(particleOwner, null)
 
-        when (val particle = data.getOrSetParticle(particleOwner, null)) {
+        if (plugin.config.getStringList("disabled-particles").contains(particle.name))
+            return
+
+        when (particle) {
             Particle.REDSTONE -> {
                 val dustOptions = DustOptions(Color.fromRGB(color.red, color.green, color.blue), ConfigManager.Setting.PS_SIZE.float)
                 particleOwner.world.spawnParticle(particle, particleOwner.location.subtract(0.0, 0.1, 0.0), particleCount, 0.0, 0.0, 0.0, dustOptions)
@@ -93,6 +97,7 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
     private fun spawnElytraParticles(player: Player) {
         val data = plugin.getManager(DataManager::class)
         val color = data.getOrSetColor(player, null)
+        val particle = data.getOrSetParticle(player, null)
 
         val particleCount = ConfigManager.Setting.PS_COUNT.int
         val loc = player.location
@@ -101,7 +106,11 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
         val leftWing = VectorUtils.rotateVector(Vector(-0.25, -0.4, distanceFromFeetCenter), loc.yaw, loc.pitch)
         val rightWing = VectorUtils.rotateVector(Vector(-0.25, -0.4, -distanceFromFeetCenter), loc.yaw, loc.pitch)
 
-        when (val particle = data.getOrSetParticle(player, null)) {
+        if (plugin.config.getStringList("disabled-particles").contains(particle.name))
+            return
+
+
+        when (particle) {
             Particle.REDSTONE -> {
                 val dustOptions = DustOptions(Color.fromRGB(color.red, color.green, color.blue), ConfigManager.Setting.PS_SIZE.float)
                 player.world.spawnParticle(particle, loc.clone().subtract(leftWing), particleCount, 0.0, 0.0, 0.0, dustOptions)

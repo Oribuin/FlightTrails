@@ -5,9 +5,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.util.StringUtil
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.command.subcommand.CmdMenu
-import xyz.oribuin.flighttrails.command.subcommand.CmdReload
-import xyz.oribuin.flighttrails.command.subcommand.CmdToggle
+import xyz.oribuin.flighttrails.command.subcommand.*
 import xyz.oribuin.flighttrails.library.OriCommand
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
@@ -61,7 +59,7 @@ class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
         } else if (args.size == 2) {
             if (args[0].toLowerCase() == "menu" && sender.hasPermission("flighttrails.menu.other")) {
                 val players = mutableListOf<String>()
-                Bukkit.getOnlinePlayers().stream().filter { player -> !player.hasPermission("vanished") }.forEach { player -> players.add(player.name) }
+                Bukkit.getOnlinePlayers().stream().filter { player -> !player.hasMetadata("vanished") }.forEach { player -> players.add(player.name) }
 
                 StringUtil.copyPartialMatches(args[1].toLowerCase(), players, suggestions)
 
@@ -73,7 +71,7 @@ class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
     }
 
     override fun addSubCommands() {
-        subcommands.addAll(listOf(CmdMenu(plugin as FlightTrails, this), CmdReload(plugin, this), CmdToggle(plugin, this)))
+        subcommands.addAll(listOf(CmdMenu(plugin, this), CmdReload(plugin, this), CmdToggle(plugin, this)))
     }
 
 }

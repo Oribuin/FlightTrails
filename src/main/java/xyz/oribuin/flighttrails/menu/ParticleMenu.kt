@@ -39,8 +39,9 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
 
         this.borderSlots().forEach { i -> screen.addItemStackAt(i, borderItem()) }
 
-        val particleList = ParticleItem.values().toList()
+        val particleList = ParticleItem.values().toMutableList()
         particleList.sortedBy { particleItem -> particleItem.particleName }
+        particleList.removeIf { particleItem -> plugin.config.getStringList("disabled-particles").contains(particleItem.particle.name) }
 
         screen.addButtonAt(47, GuiFactory.createButton()
                 .setIcon(Material.PAPER)

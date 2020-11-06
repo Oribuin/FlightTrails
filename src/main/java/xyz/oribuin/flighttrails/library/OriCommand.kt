@@ -5,11 +5,12 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 import org.bukkit.event.Listener
+import xyz.oribuin.flighttrails.FlightTrails
 
 /**
  * @author Oribuin
  */
-abstract class OriCommand(val plugin: OriPlugin, private val name: String) : TabExecutor, Listener {
+abstract class OriCommand(val plugin: FlightTrails, private val name: String) : TabExecutor, Listener {
     fun register() {
         val cmd = Bukkit.getPluginCommand(name)
         if (cmd != null) {
