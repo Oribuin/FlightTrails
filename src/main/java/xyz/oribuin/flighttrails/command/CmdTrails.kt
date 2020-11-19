@@ -71,7 +71,7 @@ class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
     }
 
     override fun addSubCommands() {
-        subcommands.addAll(listOf(CmdMenu(plugin, this), CmdReload(plugin, this), CmdToggle(plugin, this)))
+        subcommands.addAll(listOf(CmdMenu(plugin, this), CmdReload(plugin, this), CmdSet(plugin, this), CmdToggle(plugin, this)))
     }
 
 }
