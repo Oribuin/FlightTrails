@@ -1,4 +1,4 @@
-package xyz.oribuin.flighttrails.util
+package xyz.oribuin.flighttrails.library
 
 import org.bukkit.plugin.Plugin
 import java.io.File

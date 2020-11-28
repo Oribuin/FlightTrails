@@ -11,7 +11,7 @@ import xyz.oribuin.flighttrails.library.HexUtils.colorify
 import xyz.oribuin.flighttrails.library.Manager
 import xyz.oribuin.flighttrails.library.StringPlaceholders
 import xyz.oribuin.flighttrails.library.StringPlaceholders.Companion.empty
-import xyz.oribuin.flighttrails.util.FileUtils.createFile
+import xyz.oribuin.flighttrails.library.FileUtils.createFile
 import java.io.File
 
 class MessageManager(plugin: FlightTrails) : Manager(plugin) {

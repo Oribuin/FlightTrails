@@ -2,12 +2,14 @@ package xyz.oribuin.flighttrails.library
 
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
+import org.bukkit.command.CommandSender
+import xyz.oribuin.flighttrails.library.NMSUtil.versionNumber
 import java.awt.Color
 import java.util.*
 import java.util.regex.Pattern
 import java.util.stream.Collectors
-import kotlin.math.floor
 import kotlin.math.roundToInt
+
 
 object HexUtils {
     private const val CHARS_UNTIL_LOOP = 30
@@ -32,12 +34,21 @@ object HexUtils {
     )
 
     /**
+     * Sends a CommandSender a colored message
+     *
+     * @param sender  The CommandSender to send to
+     * @param message The message to send
+     */
+    fun sendMessage(sender: CommandSender, message: String) {
+        sender.sendMessage(colorify(message))
+    }
+
+    /**
      * Parses gradients, hex colors, and legacy color codes
      *
      * @param message The message
      * @return A color-replaced message
      */
-    @JvmStatic
     fun colorify(message: String): String {
         var parsed = message
         parsed = parseRainbow(parsed)
@@ -60,7 +71,7 @@ object HexUtils {
             var extraData: DoubleArray
             if (extraDataContent.isNotEmpty()) {
                 extraDataContent = extraDataContent.substring(1)
-                if (LOOP_VALUES.stream().anyMatch { suffix: String? -> extraDataContent.endsWith(suffix!!) }) {
+                if (LOOP_VALUES.stream().anyMatch { suffix: String -> extraDataContent.endsWith((suffix)) }) {
                     looping = true
                     extraDataContent = if (extraDataContent.contains(":")) {
                         extraDataContent.substring(0, extraDataContent.lastIndexOf(":"))
@@ -68,17 +79,36 @@ object HexUtils {
                         ""
                     }
                 }
-                extraData = Arrays.stream(extraDataContent.split(":").toTypedArray()).filter { x: String -> x.isNotEmpty() }.mapToDouble { s: String -> s.toDouble() }.toArray()
+                extraData = Arrays.stream(extraDataContent.split(":".toRegex()).toTypedArray()).filter { x -> x.isNotEmpty() }.mapToDouble { s -> s.toDouble() }.toArray()
             } else {
                 extraData = DoubleArray(0)
             }
-            val saturation = if (extraData.isNotEmpty()) extraData[0].toFloat() else 1.0f
+            val saturation = if (extraData.size > 0) extraData[0].toFloat() else 1.0f
             val brightness = if (extraData.size > 1) extraData[1].toFloat() else 1.0f
             val stop = findStop(parsed, matcher.end())
             val content = parsed.substring(matcher.end(), stop)
-            val length = if (looping) content.length.coerceAtMost(CHARS_UNTIL_LOOP) else content.length
+            var contentLength = content.length
+            val chars = content.toCharArray()
+            for (i in 0 until chars.size - 1) if (chars[i] == '&' && "KkLlMmNnOoRr".indexOf(chars[i + 1]) > -1) contentLength -= 2
+            val length = if (looping) Math.min(contentLength, CHARS_UNTIL_LOOP) else contentLength
             val rainbow = Rainbow(length, saturation, brightness)
-            for (c in content.toCharArray()) parsedRainbow.append(translateHex(rainbow.next())).append(c)
+            var compoundedFormat = "" // Carry the format codes through the rainbow gradient
+            var i = 0
+            while (i < chars.size) {
+                val c = chars[i]
+                if (c == '&' && i + 1 < chars.size) {
+                    val next = chars[i + 1]
+                    val color = org.bukkit.ChatColor.getByChar(next)
+                    if (color != null && color.isFormat) {
+                        compoundedFormat += ChatColor.COLOR_CHAR.toString() + next
+                        i++ // Skip next character
+                        i++
+                        continue
+                    }
+                }
+                parsedRainbow.append(translateHex(rainbow.next())).append(compoundedFormat).append(c)
+                i++
+            }
             val before = parsed.substring(0, matcher.start())
             val after = parsed.substring(stop)
             parsed = before + parsedRainbow + after
@@ -97,16 +127,35 @@ object HexUtils {
             val indexOfClose = match.indexOf(">")
             var hexContent = match.substring(tagLength, indexOfClose)
             var looping = false
-            if (LOOP_VALUES.stream().anyMatch { suffix: String? -> hexContent.endsWith(suffix!!) }) {
+            if (LOOP_VALUES.stream().anyMatch { suffix -> hexContent.endsWith((suffix)) }) {
                 looping = true
                 hexContent = hexContent.substring(0, hexContent.lastIndexOf(":"))
             }
-            val hexSteps = Arrays.stream(hexContent.split(":").toTypedArray()).map { nm: String? -> Color.decode(nm) }.collect(Collectors.toList())
+            val hexSteps = Arrays.stream(hexContent.split(":".toRegex()).toTypedArray()).map { nm -> Color.decode(nm) }.collect(Collectors.toList())
             val stop = findStop(parsed, matcher.end())
             val content = parsed.substring(matcher.end(), stop)
-            val length = if (looping) content.length.coerceAtMost(CHARS_UNTIL_LOOP) else content.length
+            var contentLength = content.length
+            val chars = content.toCharArray()
+            for (i in 0 until chars.size - 1) if (chars[i] == '&' && "KkLlMmNnOoRr".indexOf(chars[i + 1]) > -1) contentLength -= 2
+            val length = if (looping) Math.min(contentLength, CHARS_UNTIL_LOOP) else contentLength
             val gradient = Gradient(hexSteps, length)
-            for (c in content.toCharArray()) parsedGradient.append(translateHex(gradient.next())).append(c)
+            var compoundedFormat: String = "" // Carry the format codes through the gradient
+            var i = 0
+            while (i < chars.size) {
+                val c = chars[i]
+                if (c == '&' && i + 1 < chars.size) {
+                    val next = chars[i + 1]
+                    val color = org.bukkit.ChatColor.getByChar(next)
+                    if (color != null && color.isFormat) {
+                        compoundedFormat += ChatColor.COLOR_CHAR.toString() + next
+                        i++ // Skip next character
+                        i++
+                        continue
+                    }
+                }
+                parsedGradient.append(translateHex(gradient.next())).append(compoundedFormat).append(c)
+                i++
+            }
             val before = parsed.substring(0, matcher.start())
             val after = parsed.substring(stop)
             parsed = before + parsedGradient + after
@@ -117,7 +166,7 @@ object HexUtils {
 
     private fun parseHex(message: String): String {
         var parsed = message
-        for (pattern in HEX_PATTERNS) {
+        for (pattern: Pattern in HEX_PATTERNS) {
             var matcher = pattern.matcher(parsed)
             while (matcher.find()) {
                 val color = translateHex(cleanHex(matcher.group()))
@@ -150,9 +199,9 @@ object HexUtils {
     }
 
     private fun cleanHex(hex: String): String {
-        return if (hex.startsWith("<") || hex.startsWith("{")) {
-            hex.substring(1, hex.length - 1)
-        } else if (hex.startsWith("&")) {
+        if (hex.startsWith("<") || hex.startsWith("{")) {
+            return hex.substring(1, hex.length - 1)
+        } else return if (hex.startsWith("&")) {
             hex.substring(1)
         } else {
             hex
@@ -166,18 +215,18 @@ object HexUtils {
      * @return The closest ChatColor value
      */
     private fun translateHex(hex: String): String {
-        return if (NMSUtil.versionNumber >= 16) ChatColor.of(hex).toString() else translateHex(Color.decode(hex))
+        return if (versionNumber >= 16) ChatColor.of(hex).toString() else translateHex(Color.decode(hex))
     }
 
     private fun translateHex(color: Color): String {
-        if (NMSUtil.versionNumber >= 16) return ChatColor.of(color).toString()
+        if (versionNumber >= 16) return ChatColor.of(color).toString()
         var minDist = Int.MAX_VALUE
         var legacy = ChatColor.WHITE
-        for (mapping in ChatColorHexMapping.values()) {
+        for (mapping: ChatColorHexMapping in ChatColorHexMapping.values()) {
             val r = mapping.red - color.red
             val g = mapping.green - color.green
             val b = mapping.blue - color.blue
-            val dist = r * r + g * g + b * b
+            val dist = (r * r) + (g * g) + (b * b)
             if (dist < minDist) {
                 minDist = dist
                 legacy = mapping.chatColor
@@ -189,26 +238,12 @@ object HexUtils {
     /**
      * Maps hex codes to ChatColors
      */
-    private enum class ChatColorHexMapping(hex: Int, chatColor: ChatColor) {
-        BLACK(0x000000, ChatColor.BLACK),
-        DARK_BLUE(0x0000AA, ChatColor.DARK_BLUE),
-        DARK_GREEN(0x00AA00, ChatColor.DARK_GREEN),
-        DARK_AQUA(0x00AAAA, ChatColor.DARK_AQUA),
-        DARK_RED(0xAA0000, ChatColor.DARK_RED),
-        DARK_PURPLE(0xAA00AA, ChatColor.DARK_PURPLE), GOLD(0xFFAA00, ChatColor.GOLD),
-        GRAY(0xAAAAAA, ChatColor.GRAY),
-        DARK_GRAY(0x555555, ChatColor.DARK_GRAY),
-        BLUE(0x5555FF, ChatColor.BLUE),
-        GREEN(0x55FF55, ChatColor.GREEN),
-        AQUA(0x55FFFF, ChatColor.AQUA),
-        RED(0xFF5555, ChatColor.RED),
-        LIGHT_PURPLE(0xFF55FF, ChatColor.LIGHT_PURPLE), YELLOW(0xFFFF55, ChatColor.YELLOW),
-        WHITE(0xFFFFFF, ChatColor.WHITE);
+    private enum class ChatColorHexMapping(hex: Int, val chatColor: ChatColor) {
+        BLACK(0x000000, ChatColor.BLACK), DARK_BLUE(0x0000AA, ChatColor.DARK_BLUE), DARK_GREEN(0x00AA00, ChatColor.DARK_GREEN), DARK_AQUA(0x00AAAA, ChatColor.DARK_AQUA), DARK_RED(0xAA0000, ChatColor.DARK_RED), DARK_PURPLE(0xAA00AA, ChatColor.DARK_PURPLE), GOLD(0xFFAA00, ChatColor.GOLD), GRAY(0xAAAAAA, ChatColor.GRAY), DARK_GRAY(0x555555, ChatColor.DARK_GRAY), BLUE(0x5555FF, ChatColor.BLUE), GREEN(0x55FF55, ChatColor.GREEN), AQUA(0x55FFFF, ChatColor.AQUA), RED(0xFF5555, ChatColor.RED), LIGHT_PURPLE(0xFF55FF, ChatColor.LIGHT_PURPLE), YELLOW(0xFFFF55, ChatColor.YELLOW), WHITE(0xFFFFFF, ChatColor.WHITE);
 
-        val red: Int = hex shr 16 and 0xFF
-        val green: Int = hex shr 8 and 0xFF
-        val blue: Int = hex and 0xFF
-        val chatColor: ChatColor = chatColor
+        val red = (hex shr 16) and 0xFF
+        val green = (hex shr 8) and 0xFF
+        val blue = hex and 0xFF
 
     }
 
@@ -226,14 +261,14 @@ object HexUtils {
          */
         operator fun next(): Color {
             // Gradients will use the first color if the entire spectrum won't be available to preserve prettiness
-            if (NMSUtil.versionNumber < 16 || steps <= 1) return gradients[0].colorAt(0)
+            if (versionNumber < 16 || steps <= 1) return gradients[0].colorAt(0)
             val color: Color
-            color = if (gradients.size < 2) {
-                gradients[0].colorAt(step)
+            if (gradients.size < 2) {
+                color = gradients[0].colorAt(step)
             } else {
                 val segment = steps.toFloat() / gradients.size
-                val index = floor(step / segment.toDouble()).coerceAtMost(gradients.size - 1.toDouble()).toInt()
-                gradients[index].colorAt(step)
+                val index = Math.min(Math.floor((step / segment).toDouble()), (gradients.size - 1).toDouble()).toInt()
+                color = gradients[index].colorAt(step)
             }
 
             // Increment/Loop the step to keep it rotating through the gradients
@@ -270,7 +305,7 @@ object HexUtils {
         }
 
         init {
-            require(colors.size >= 2) { "Must provide at least 2 colors" }
+            if (colors.size < 2) throw IllegalArgumentException("Must provide at least 2 colors")
             gradients = ArrayList()
             this.steps = steps - 1
             step = 0
@@ -299,9 +334,9 @@ object HexUtils {
         }
 
         init {
-            require(totalColors >= 1) { "Must have at least 1 total color" }
-            require(!(0.0f > saturation || saturation > 1.0f)) { "Saturation must be between 0.0 and 1.0" }
-            require(!(0.0f > brightness || brightness > 1.0f)) { "Brightness must be between 0.0 and 1.0" }
+            if (totalColors < 1) throw IllegalArgumentException("Must have at least 1 total color")
+            if (0.0f > saturation || saturation > 1.0f) throw IllegalArgumentException("Saturation must be between 0.0 and 1.0")
+            if (0.0f > brightness || brightness > 1.0f) throw IllegalArgumentException("Brightness must be between 0.0 and 1.0")
             hueStep = 1.0f / totalColors
             this.saturation = saturation
             this.brightness = brightness
@@ -317,13 +352,13 @@ internal object NMSUtil {
     /**
      * @return The server version
      */
-    val version: String?
+    private val version: String
         get() {
             if (cachedVersion == null) {
                 val name = Bukkit.getServer().javaClass.getPackage().name
                 cachedVersion = name.substring(name.lastIndexOf('.') + 1)
             }
-            return cachedVersion
+            return cachedVersion?: ""
         }
 
     /**
@@ -332,8 +367,8 @@ internal object NMSUtil {
     val versionNumber: Int
         get() {
             if (cachedVersionNumber == -1) {
-                val name = version?.substring(3)
-                cachedVersionNumber = name?.substring(0, name.length - 3)?.toInt()!!
+                val name = version.substring(3)
+                cachedVersionNumber = name.substring(0, name.length - 3).toInt()
             }
             return cachedVersionNumber
         }
