@@ -35,7 +35,7 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
 
     private fun mainMenu(): GuiScreen {
         val screen = GuiFactory.createScreen(container, GuiSize.ROWS_SIX)
-                .setTitle(colorify("Set your particle"))
+            .setTitle(colorify("Set your particle"))
 
         this.borderSlots().forEach { i -> screen.addItemStackAt(i, borderItem()) }
 
@@ -44,19 +44,21 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
         particleList.removeIf { particleItem -> plugin.config.getStringList("disabled-particles").contains(particleItem.particle.name) }
 
         screen.addButtonAt(47, GuiFactory.createButton()
-                .setIcon(Material.PAPER)
-                .setGlowing(true)
-                .setHiddenReplacement(borderItem())
-                .setName(format("&7«- &bBack Page"))
-                .setClickAction(Function { return@Function ClickAction.PAGE_BACKWARDS }))
+            .setIcon(Material.PAPER)
+            .setGlowing(true)
+            .setHiddenReplacement(borderItem())
+            .setName(format("&7«- &bBack Page"))
+            .setClickAction(Function { return@Function ClickAction.PAGE_BACKWARDS })
+        )
 
 
         screen.addButtonAt(51, GuiFactory.createButton()
-                .setIcon(Material.PAPER)
-                .setGlowing(true)
-                .setHiddenReplacement(borderItem())
-                .setName(format("&bForward Page &7»"))
-                .setClickAction(Function { return@Function ClickAction.PAGE_FORWARDS }))
+            .setIcon(Material.PAPER)
+            .setGlowing(true)
+            .setHiddenReplacement(borderItem())
+            .setName(format("&bForward Page &7»"))
+            .setClickAction(Function { return@Function ClickAction.PAGE_FORWARDS })
+        )
 
         screen.setPaginatedSection(GuiFactory.createScreenSection(particleSlots()), particleList.size) { _: Int, startIndex: Int, endIndex: Int ->
             val results = GuiFactory.createPageContentsResult()
@@ -68,13 +70,13 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
                     continue
 
                 val button = GuiFactory.createButton()
-                        .setIcon(particleItem.material)
-                        .setName(format("&b${particleItem.particleName}"))
-                        .setLore(format("&7Click to change your current"), format("&7flight trail particle."))
-                        .setClickAction(Function {
-                            particleCommands(player, particleItem)
-                            return@Function ClickAction.CLOSE
-                        })
+                    .setIcon(particleItem.material)
+                    .setName(format("&b${particleItem.particleName}"))
+                    .setLore(format("&7Click to change your current"), format("&7flight trail particle."))
+                    .setClickAction(Function {
+                        particleCommands(player, particleItem)
+                        return@Function ClickAction.CLOSE
+                    })
 
                 if (plugin.getManager(DataManager::class).getOrSetParticle(player, null) == particleItem.particle) {
                     button.setGlowing(true)
@@ -145,9 +147,11 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
             player.closeInventory()
         }
 
-        msg.sendMessage(player, "set-command.particle", StringPlaceholders.builder()
+        msg.sendMessage(
+            player, "set-command.particle", StringPlaceholders.builder()
                 .addPlaceholder("particle", particleItem.particleName)
-                .build())
+                .build()
+        )
 
         data.getOrSetParticle(player, particleItem.particle)
     }

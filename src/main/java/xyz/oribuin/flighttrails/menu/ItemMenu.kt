@@ -36,7 +36,7 @@ class ItemMenu(private val plugin: FlightTrails, private val player: Player) : L
 
     private fun mainMenu(): GuiScreen {
         val screen = GuiFactory.createScreen(container, GuiSize.ROWS_SIX)
-                .setTitle(colorify("Set your item"))
+            .setTitle(colorify("Set your item"))
 
         this.borderSlots().forEach { i -> screen.addItemStackAt(i, borderItem()) }
 
@@ -46,7 +46,7 @@ class ItemMenu(private val plugin: FlightTrails, private val player: Player) : L
         for (material in Material.values()) {
             tempInv.clear()
             tempInv.setItem(0, ItemStack(material, 1))
-            val stack = tempInv.getItem(0);
+            val stack = tempInv.getItem(0)
             if (stack != null) {
                 if (material.isItem) {
                     itemList.add(material)
@@ -55,19 +55,21 @@ class ItemMenu(private val plugin: FlightTrails, private val player: Player) : L
         }
 
         screen.addButtonAt(47, GuiFactory.createButton()
-                .setIcon(Material.PAPER)
-                .setGlowing(true)
-                .setHiddenReplacement(borderItem())
-                .setName(format("&7«- &bBack Page"))
-                .setClickAction(Function { return@Function ClickAction.PAGE_BACKWARDS }))
+            .setIcon(Material.PAPER)
+            .setGlowing(true)
+            .setHiddenReplacement(borderItem())
+            .setName(format("&7«- &bBack Page"))
+            .setClickAction(Function { return@Function ClickAction.PAGE_BACKWARDS })
+        )
 
 
         screen.addButtonAt(51, GuiFactory.createButton()
-                .setIcon(Material.PAPER)
-                .setGlowing(true)
-                .setHiddenReplacement(borderItem())
-                .setName(format("&bForward Page &7»"))
-                .setClickAction(Function { return@Function ClickAction.PAGE_FORWARDS }))
+            .setIcon(Material.PAPER)
+            .setGlowing(true)
+            .setHiddenReplacement(borderItem())
+            .setName(format("&bForward Page &7»"))
+            .setClickAction(Function { return@Function ClickAction.PAGE_FORWARDS })
+        )
 
         screen.setPaginatedSection(GuiFactory.createScreenSection(particleSlots()), itemList.size) { _: Int, startIndex: Int, endIndex: Int ->
             val results = GuiFactory.createPageContentsResult()
@@ -76,13 +78,13 @@ class ItemMenu(private val plugin: FlightTrails, private val player: Player) : L
                 val blockItem = itemList[i]
 
                 val button = GuiFactory.createButton()
-                        .setIcon(blockItem)
-                        .setName(format("&b${StringUtils.capitalize(blockItem.name.toLowerCase().replace("_", " "))}"))
-                        .setLore(format("&7Click to change your current"), format("&7flight trail block."))
-                        .setClickAction(Function {
-                            itemCommands(player, blockItem)
-                            return@Function ClickAction.CLOSE
-                        })
+                    .setIcon(blockItem)
+                    .setName(format("&b${StringUtils.capitalize(blockItem.name.toLowerCase().replace("_", " "))}"))
+                    .setLore(format("&7Click to change your current"), format("&7flight trail block."))
+                    .setClickAction(Function {
+                        itemCommands(player, blockItem)
+                        return@Function ClickAction.CLOSE
+                    })
 
                 if (plugin.getManager(DataManager::class).getOrSetBlock(player, null) == blockItem) {
                     button.setGlowing(true)
@@ -153,9 +155,11 @@ class ItemMenu(private val plugin: FlightTrails, private val player: Player) : L
 //            player.closeInventory()
 //        }
 
-        msg.sendMessage(player, "set-command.item", StringPlaceholders.builder()
+        msg.sendMessage(
+            player, "set-command.item", StringPlaceholders.builder()
                 .addPlaceholder("item", StringUtils.capitalize(material.name.toLowerCase().replace("_", " ")))
-                .build())
+                .build()
+        )
 
         data.getOrSetItem(player, ItemStack(material))
     }

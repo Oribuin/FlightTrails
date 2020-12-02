@@ -33,10 +33,11 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
 
             // Check for perm, if vanished, has trails enabled, is in an enabled world and not in spectator
             if (!player.hasPermission("flighttrails.use")
-                    || player.hasMetadata("vanished")
-                    || !data.getOrSetEnabled(player, null)
-                    || plugin.config.getStringList("disabled-worlds").contains(player.name)
-                    || player.gameMode == GameMode.SPECTATOR)
+                || player.hasMetadata("vanished")
+                || !data.getOrSetEnabled(player, null)
+                || plugin.config.getStringList("disabled-worlds").contains(player.name)
+                || player.gameMode == GameMode.SPECTATOR
+            )
                 return@forEach
 
 

@@ -5,7 +5,10 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.util.StringUtil
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.command.subcommand.*
+import xyz.oribuin.flighttrails.command.subcommand.CmdMenu
+import xyz.oribuin.flighttrails.command.subcommand.CmdReload
+import xyz.oribuin.flighttrails.command.subcommand.CmdSet
+import xyz.oribuin.flighttrails.command.subcommand.CmdToggle
 import xyz.oribuin.flighttrails.library.OriCommand
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager

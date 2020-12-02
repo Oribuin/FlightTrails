@@ -1,7 +1,6 @@
 package xyz.oribuin.flighttrails.command.subcommand
 
 import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.command.SubCommand
 import xyz.oribuin.flighttrails.library.OriCommand

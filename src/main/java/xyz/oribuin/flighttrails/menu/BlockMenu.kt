@@ -36,7 +36,7 @@ class BlockMenu(private val plugin: FlightTrails, private val player: Player) : 
 
     private fun mainMenu(): GuiScreen {
         val screen = GuiFactory.createScreen(container, GuiSize.ROWS_SIX)
-                .setTitle(colorify("Set your block"))
+            .setTitle(colorify("Set your block"))
 
         this.borderSlots().forEach { i -> screen.addItemStackAt(i, borderItem()) }
 
@@ -46,7 +46,7 @@ class BlockMenu(private val plugin: FlightTrails, private val player: Player) : 
         for (material in Material.values()) {
             tempInv.clear()
             tempInv.setItem(0, ItemStack(material, 1))
-            val stack = tempInv.getItem(0);
+            val stack = tempInv.getItem(0)
             if (stack != null) {
                 if (material.isBlock) {
                     blockList.add(material)
@@ -55,19 +55,21 @@ class BlockMenu(private val plugin: FlightTrails, private val player: Player) : 
         }
 
         screen.addButtonAt(47, GuiFactory.createButton()
-                .setIcon(Material.PAPER)
-                .setGlowing(true)
-                .setHiddenReplacement(borderItem())
-                .setName(format("&7«- &bBack Page"))
-                .setClickAction(Function { return@Function ClickAction.PAGE_BACKWARDS }))
+            .setIcon(Material.PAPER)
+            .setGlowing(true)
+            .setHiddenReplacement(borderItem())
+            .setName(format("&7«- &bBack Page"))
+            .setClickAction(Function { return@Function ClickAction.PAGE_BACKWARDS })
+        )
 
 
         screen.addButtonAt(51, GuiFactory.createButton()
-                .setIcon(Material.PAPER)
-                .setGlowing(true)
-                .setHiddenReplacement(borderItem())
-                .setName(format("&bForward Page &7»"))
-                .setClickAction(Function { return@Function ClickAction.PAGE_FORWARDS }))
+            .setIcon(Material.PAPER)
+            .setGlowing(true)
+            .setHiddenReplacement(borderItem())
+            .setName(format("&bForward Page &7»"))
+            .setClickAction(Function { return@Function ClickAction.PAGE_FORWARDS })
+        )
 
         screen.setPaginatedSection(GuiFactory.createScreenSection(particleSlots()), blockList.size) { _: Int, startIndex: Int, endIndex: Int ->
             val results = GuiFactory.createPageContentsResult()
@@ -76,13 +78,13 @@ class BlockMenu(private val plugin: FlightTrails, private val player: Player) : 
                 val blockItem = blockList[i]
 
                 val button = GuiFactory.createButton()
-                        .setIcon(blockItem)
-                        .setName(format("&b${StringUtils.capitalize(blockItem.name.toLowerCase().replace("_", " "))}"))
-                        .setLore(format("&7Click to change your current"), format("&7flight trail block."))
-                        .setClickAction(Function {
-                            blockCommands(player, blockItem)
-                            return@Function ClickAction.CLOSE
-                        })
+                    .setIcon(blockItem)
+                    .setName(format("&b${StringUtils.capitalize(blockItem.name.toLowerCase().replace("_", " "))}"))
+                    .setLore(format("&7Click to change your current"), format("&7flight trail block."))
+                    .setClickAction(Function {
+                        blockCommands(player, blockItem)
+                        return@Function ClickAction.CLOSE
+                    })
 
                 if (plugin.getManager(DataManager::class).getOrSetBlock(player, null) == blockItem) {
                     button.setGlowing(true)
@@ -153,9 +155,11 @@ class BlockMenu(private val plugin: FlightTrails, private val player: Player) : 
 //            player.closeInventory()
 //        }
 
-        msg.sendMessage(player, "set-command.block", StringPlaceholders.builder()
+        msg.sendMessage(
+            player, "set-command.block", StringPlaceholders.builder()
                 .addPlaceholder("block", StringUtils.capitalize(material.name.toLowerCase().replace("_", " ")))
-                .build())
+                .build()
+        )
 
         data.getOrSetBlock(player, material)
     }

@@ -1,8 +1,6 @@
 package xyz.oribuin.flighttrails
 
 import org.bukkit.Bukkit
-import org.bukkit.entity.Minecart
-import org.bukkit.entity.Player
 import xyz.oribuin.flighttrails.command.CmdTrails
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
 import xyz.oribuin.flighttrails.hook.PlaceholderExp

@@ -10,27 +10,26 @@ import java.util.regex.Pattern
 import java.util.stream.Collectors
 import kotlin.math.roundToInt
 
-
 object HexUtils {
     private const val CHARS_UNTIL_LOOP = 30
     private val LOOP_VALUES = listOf("l", "L", "loop")
     private val RAINBOW_PATTERN = Pattern.compile("<(rainbow|r)(:\\d*\\.?\\d+){0,2}(:(l|L|loop))?>")
     private val GRADIENT_PATTERN = Pattern.compile("<(gradient|g)(:#([A-Fa-f0-9]){6}){2,}(:(l|L|loop))?>")
     private val HEX_PATTERNS = listOf(
-            Pattern.compile("<#([A-Fa-f0-9]){6}>"),  // <#FFFFFF>
-            Pattern.compile("\\{#([A-Fa-f0-9]){6}}"),  // {#FFFFFF}
-            Pattern.compile("&#([A-Fa-f0-9]){6}"),  // &#FFFFFF
-            Pattern.compile("#([A-Fa-f0-9]){6}") // #FFFFFF
+        Pattern.compile("<#([A-Fa-f0-9]){6}>"),  // <#FFFFFF>
+        Pattern.compile("\\{#([A-Fa-f0-9]){6}}"),  // {#FFFFFF}
+        Pattern.compile("&#([A-Fa-f0-9]){6}"),  // &#FFFFFF
+        Pattern.compile("#([A-Fa-f0-9]){6}") // #FFFFFF
     )
     private val STOP = Pattern.compile(
-            "<(gradient|g)(:#([A-Fa-f0-9]){6}){2,}(:(l|L|loop))?>|" +
-                    "<(rainbow|r)(:\\d*\\.?\\d+){0,2}(:(l|L|loop))?>|" +
-                    "(&[a-f0-9r])|" +
-                    "<#([A-Fa-f0-9]){6}>|" +
-                    "\\{#([A-Fa-f0-9]){6}}|" +
-                    "&#([A-Fa-f0-9]){6}|" +
-                    "#([A-Fa-f0-9]){6}|" +
-                    org.bukkit.ChatColor.COLOR_CHAR
+        "<(gradient|g)(:#([A-Fa-f0-9]){6}){2,}(:(l|L|loop))?>|" +
+                "<(rainbow|r)(:\\d*\\.?\\d+){0,2}(:(l|L|loop))?>|" +
+                "(&[a-f0-9r])|" +
+                "<#([A-Fa-f0-9]){6}>|" +
+                "\\{#([A-Fa-f0-9]){6}}|" +
+                "&#([A-Fa-f0-9]){6}|" +
+                "#([A-Fa-f0-9]){6}|" +
+                org.bukkit.ChatColor.COLOR_CHAR
     )
 
     /**
@@ -291,9 +290,9 @@ object HexUtils {
              */
             fun colorAt(step: Int): Color {
                 return Color(
-                        calculateHexPiece(step, startColor.red, endColor.red),
-                        calculateHexPiece(step, startColor.green, endColor.green),
-                        calculateHexPiece(step, startColor.blue, endColor.blue)
+                    calculateHexPiece(step, startColor.red, endColor.red),
+                    calculateHexPiece(step, startColor.green, endColor.green),
+                    calculateHexPiece(step, startColor.blue, endColor.blue)
                 )
             }
 
@@ -358,7 +357,7 @@ internal object NMSUtil {
                 val name = Bukkit.getServer().javaClass.getPackage().name
                 cachedVersion = name.substring(name.lastIndexOf('.') + 1)
             }
-            return cachedVersion?: ""
+            return cachedVersion ?: ""
         }
 
     /**
