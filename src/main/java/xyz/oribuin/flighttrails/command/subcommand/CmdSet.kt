@@ -123,10 +123,9 @@ class CmdSet(private val plugin: FlightTrails, command: OriCommand) : SubCommand
         // Instantiate the managers
         val messageManager = plugin.getManager(MessageManager::class)
         val dataManager = plugin.getManager(DataManager::class)
-        val particle: ParticleItem?
 
         // Check particle
-        particle = try {
+        val particle: ParticleItem? = try {
             ParticleItem.valueOf(particleValue.toUpperCase())
         } catch (ex: Exception) {
             messageManager.sendMessage(player, "set-command.invalid-particle")
