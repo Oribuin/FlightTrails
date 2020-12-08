@@ -8,8 +8,8 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.library.FileUtils.createFile
-import xyz.oribuin.flighttrails.library.Manager
+import xyz.oribuin.orilibrary.FileUtils.createFile
+import xyz.oribuin.orilibrary.Manager
 import java.io.File
 
 /**
@@ -19,7 +19,7 @@ class DataManager(plugin: FlightTrails) : Manager(plugin) {
     private var dataConfig: FileConfiguration? = null
 
     // Reload Method
-    override fun reload() {
+    override fun enable() {
         createFile(plugin, "data.yml")
         dataConfig = YamlConfiguration.loadConfiguration(dataFile)
     }

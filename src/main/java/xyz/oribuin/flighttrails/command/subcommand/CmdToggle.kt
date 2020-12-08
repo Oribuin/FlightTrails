@@ -4,15 +4,15 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.command.SubCommand
-import xyz.oribuin.flighttrails.library.OriCommand
-import xyz.oribuin.flighttrails.library.StringPlaceholders
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
+import xyz.oribuin.orilibrary.OriCommand
+import xyz.oribuin.orilibrary.StringPlaceholders
+import xyz.oribuin.orilibrary.SubCommand
 
 class CmdToggle(private val plugin: FlightTrails, command: OriCommand) : SubCommand(command, "toggle") {
     override fun executeArgument(sender: CommandSender, args: Array<String>) {
-        val messageManager = plugin.getManager(MessageManager::class)
+        val messageManager = plugin.getManager(MessageManager::class.java)
 
         if (args.size == 2) {
             val mentioned = Bukkit.getPlayer(args[1])
@@ -22,7 +22,7 @@ class CmdToggle(private val plugin: FlightTrails, command: OriCommand) : SubComm
                 return
             }
 
-            val data = plugin.getManager(DataManager::class)
+            val data = plugin.getManager(DataManager::class.java)
 
             // Basically Data#isEnabled
             if (data.getOrSetEnabled(mentioned, null)) {
@@ -45,7 +45,7 @@ class CmdToggle(private val plugin: FlightTrails, command: OriCommand) : SubComm
             return
         }
 
-        val data = plugin.getManager(DataManager::class)
+        val data = plugin.getManager(DataManager::class.java)
 
         // Basically Data#isEnabled
         if (data.getOrSetEnabled(sender, null)) {

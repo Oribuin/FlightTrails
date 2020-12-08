@@ -4,14 +4,14 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.command.SubCommand
-import xyz.oribuin.flighttrails.library.OriCommand
 import xyz.oribuin.flighttrails.manager.MessageManager
 import xyz.oribuin.flighttrails.menu.MainMenu
+import xyz.oribuin.orilibrary.OriCommand
+import xyz.oribuin.orilibrary.SubCommand
 
 class CmdMenu(private val plugin: FlightTrails, command: OriCommand) : SubCommand(command, "menu") {
     override fun executeArgument(sender: CommandSender, args: Array<String>) {
-        val messageManager = plugin.getManager(MessageManager::class)
+        val messageManager = plugin.getManager(MessageManager::class.java)
 
         if (args.size == 2) {
             val mentioned = Bukkit.getPlayer(args[1])

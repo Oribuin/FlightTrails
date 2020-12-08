@@ -7,17 +7,17 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
-import xyz.oribuin.flighttrails.library.FileUtils.createFile
 import xyz.oribuin.flighttrails.library.HexUtils.colorify
-import xyz.oribuin.flighttrails.library.Manager
-import xyz.oribuin.flighttrails.library.StringPlaceholders
-import xyz.oribuin.flighttrails.library.StringPlaceholders.Companion.empty
+import xyz.oribuin.orilibrary.FileUtils.createFile
+import xyz.oribuin.orilibrary.Manager
+import xyz.oribuin.orilibrary.StringPlaceholders
+import xyz.oribuin.orilibrary.StringPlaceholders.empty
 import java.io.File
 
 class MessageManager(plugin: FlightTrails) : Manager(plugin) {
     lateinit var messageConfig: FileConfiguration
 
-    override fun reload() {
+    override fun enable() {
         createFile(plugin, MESSAGE_CONFIG)
         messageConfig = YamlConfiguration.loadConfiguration(File(plugin.dataFolder, MESSAGE_CONFIG))
 
@@ -35,6 +35,7 @@ class MessageManager(plugin: FlightTrails) : Manager(plugin) {
 
     @JvmOverloads
     fun sendMessage(sender: CommandSender, messageId: String, placeholders: StringPlaceholders = empty()) {
+
         if (messageConfig.getString(messageId) == null) {
             sender.spigot().sendMessage(*TextComponent.fromLegacyText(colorify("#ff4072$messageId is null in messages.yml")))
             return

@@ -9,19 +9,20 @@ import xyz.oribuin.flighttrails.command.subcommand.CmdMenu
 import xyz.oribuin.flighttrails.command.subcommand.CmdReload
 import xyz.oribuin.flighttrails.command.subcommand.CmdSet
 import xyz.oribuin.flighttrails.command.subcommand.CmdToggle
-import xyz.oribuin.flighttrails.library.OriCommand
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
+import xyz.oribuin.orilibrary.OriCommand
+import xyz.oribuin.orilibrary.SubCommand
 
 class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
     private val subcommands = mutableListOf<SubCommand>()
 
-    private val messageManager = plugin.getManager(MessageManager::class)
+    private val messageManager = plugin.getManager(MessageManager::class.java)
 
     override fun executeCommand(sender: CommandSender, args: Array<String>) {
 
-        if (sender is Player && plugin.getManager(DataManager::class).getPlayer(sender) == null) {
-            plugin.getManager(DataManager::class).setDefault(sender)
+        if (sender is Player && plugin.getManager(DataManager::class.java).getPlayer(sender) == null) {
+            plugin.getManager(DataManager::class.java).setDefault(sender)
         }
 
         for (cmd in subcommands) {
@@ -74,7 +75,15 @@ class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
     }
 
     override fun addSubCommands() {
-        subcommands.addAll(listOf(CmdMenu(plugin, this), CmdReload(plugin, this), CmdSet(plugin, this), CmdToggle(plugin, this)))
+        val flightTrails = plugin as FlightTrails
+        subcommands.addAll(
+            listOf(
+                CmdMenu(flightTrails, this),
+                CmdReload(flightTrails, this),
+                CmdSet(flightTrails, this),
+                CmdToggle(flightTrails, this)
+            )
+        )
     }
 
 }

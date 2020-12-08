@@ -8,8 +8,8 @@ import org.bukkit.Particle.DustOptions
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.library.Manager
 import xyz.oribuin.flighttrails.util.VectorUtils
+import xyz.oribuin.orilibrary.Manager
 
 /**
  * @author Oribuin
@@ -17,11 +17,9 @@ import xyz.oribuin.flighttrails.util.VectorUtils
 class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
 
     // Reload Method
-    override fun reload() {
+    override fun enable() {
         Bukkit.getScheduler().cancelTasks(plugin)
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, Runnable {
-            this.spawnParticles()
-        }, 0, 0.1.toLong())
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, Runnable { this.spawnParticles() }, 0, 0.1.toLong())
     }
 
     /**
@@ -29,7 +27,9 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
      */
     private fun spawnParticles() {
         Bukkit.getOnlinePlayers().forEach { player ->
-            val data = plugin.getManager(DataManager::class)
+
+            val data = plugin.getManager(DataManager::class.java)
+
 
             // Check for perm, if vanished, has trails enabled, is in an enabled world and not in spectator
             if (!player.hasPermission("flighttrails.use")
@@ -62,7 +62,7 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
      * @param player The player that the particles are being spawned at
      */
     private fun spawnFeetParticle(particleOwner: Player) {
-        val data = plugin.getManager(DataManager::class)
+        val data = plugin.getManager(DataManager::class.java)
         val particleCount = ConfigManager.Setting.PS_COUNT.int
         val color = data.getOrSetColor(particleOwner, null)
         val particle = data.getOrSetParticle(particleOwner, null)
@@ -96,7 +96,7 @@ class ParticleManager(plugin: FlightTrails) : Manager(plugin) {
      * @param player The player that the particles are being spawned at
      */
     private fun spawnElytraParticles(player: Player) {
-        val data = plugin.getManager(DataManager::class)
+        val data = plugin.getManager(DataManager::class.java)
         val color = data.getOrSetColor(player, null)
         val particle = data.getOrSetParticle(player, null)
 

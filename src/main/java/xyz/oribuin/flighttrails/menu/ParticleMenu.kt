@@ -12,9 +12,9 @@ import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.enums.ParticleItem
 import xyz.oribuin.flighttrails.library.HexUtils.colorify
-import xyz.oribuin.flighttrails.library.StringPlaceholders
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
+import xyz.oribuin.orilibrary.StringPlaceholders
 import java.util.*
 import java.util.function.Function
 
@@ -78,7 +78,7 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
                         return@Function ClickAction.CLOSE
                     })
 
-                if (plugin.getManager(DataManager::class).getOrSetParticle(player, null) == particleItem.particle) {
+                if (plugin.getManager(DataManager::class.java).getOrSetParticle(player, null) == particleItem.particle) {
                     button.setGlowing(true)
                 }
 
@@ -139,8 +139,8 @@ class ParticleMenu(private val plugin: FlightTrails, private val player: Player)
     }
 
     private fun particleCommands(player: Player, particleItem: ParticleItem) {
-        val msg = plugin.getManager(MessageManager::class)
-        val data = plugin.getManager(DataManager::class)
+        val msg = plugin.getManager(MessageManager::class.java)
+        val data = plugin.getManager(DataManager::class.java)
 
         if (!player.hasPermission("flighttrails.admin") && !player.hasPermission("flighttrails.particle.${particleItem.particle.name.toLowerCase()}")) {
             msg.sendMessage(player, "invalid-permission")

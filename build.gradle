@@ -23,6 +23,7 @@ repositories {
     maven { url 'https://repo.codemc.org/repository/maven-public' }
     maven { url 'https://repo.rosewooddev.io/repository/public/' }
     maven { url 'https://jitpack.io' }
+    maven { url 'http://repo.oribuin.xyz:8081/repository/maven-public/' }
 }
 
 dependencies {
@@ -32,9 +33,9 @@ dependencies {
     // Spigot Stuff
     shadow 'org.spigotmc:spigot:1.16.4'
     shadow 'me.clip:placeholderapi:2.10.9'
-
     shadow 'com.github.MilkBowl:VaultAPI:1.7'
 
+    compileOnly 'xyz.oribuin:orilib:1.0.4'
     implementation 'dev.rosewood:guiframework:1.1.1'
     implementation 'com.github.WesJD.AnvilGUI:anvilgui:master-SNAPSHOT'
 }
@@ -63,6 +64,7 @@ shadowJar {
     relocate ('kotlin', 'xyz.oribuin.flighttrails.libs.kotlin')
     relocate ('net.wesjd.anvilgui', 'xyz.golimc.flighttrails.libs.anvilgui')
     relocate ('dev.rosewood.guiframework', 'xyz.oribuin.flighttrails.libs.guiframework')
+    relocate ('xyz.oribuin.orilibrary', 'xyz.oribuin.flighttrails.library')
 }
 
 build.dependsOn shadowJar

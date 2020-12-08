@@ -1,21 +1,25 @@
 package xyz.oribuin.flighttrails.command.subcommand
 
-import org.bukkit.*
+import net.md_5.bungee.api.ChatColor
+import org.bukkit.Bukkit
+import org.bukkit.Color
+import org.bukkit.Material
+import org.bukkit.Particle
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.command.SubCommand
 import xyz.oribuin.flighttrails.enums.ParticleItem
-import xyz.oribuin.flighttrails.library.OriCommand
-import xyz.oribuin.flighttrails.library.StringPlaceholders
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
+import xyz.oribuin.orilibrary.OriCommand
+import xyz.oribuin.orilibrary.StringPlaceholders
+import xyz.oribuin.orilibrary.SubCommand
 
 
 class CmdSet(private val plugin: FlightTrails, command: OriCommand) : SubCommand(command, "set") {
     override fun executeArgument(sender: CommandSender, args: Array<String>) {
-        val messageManager = plugin.getManager(MessageManager::class)
+        val messageManager = plugin.getManager(MessageManager::class.java)
 
 
         // If the argument length == 1 and no type or value was defined, send message
@@ -121,8 +125,8 @@ class CmdSet(private val plugin: FlightTrails, command: OriCommand) : SubCommand
 
     private fun onSetParticle(sender: CommandSender, player: Player, particleValue: String) {
         // Instantiate the managers
-        val messageManager = plugin.getManager(MessageManager::class)
-        val dataManager = plugin.getManager(DataManager::class)
+        val messageManager = plugin.getManager(MessageManager::class.java)
+        val dataManager = plugin.getManager(DataManager::class.java)
 
         // Check particle
         val particle: ParticleItem? = try {
@@ -145,8 +149,8 @@ class CmdSet(private val plugin: FlightTrails, command: OriCommand) : SubCommand
 
     private fun onSetItem(player: Player, itemValue: String) {
         // Instantiate the managers
-        val messageManager = plugin.getManager(MessageManager::class)
-        val dataManager = plugin.getManager(DataManager::class)
+        val messageManager = plugin.getManager(MessageManager::class.java)
+        val dataManager = plugin.getManager(DataManager::class.java)
 
         // Instantiate the PlayerData and Particle
         val particle = dataManager.getOrSetParticle(player, null)
@@ -174,8 +178,8 @@ class CmdSet(private val plugin: FlightTrails, command: OriCommand) : SubCommand
 
     private fun onSetBlock(player: Player, blockValue: String) {
         // Instantiate the managers
-        val messageManager = plugin.getManager(MessageManager::class)
-        val dataManager = plugin.getManager(DataManager::class)
+        val messageManager = plugin.getManager(MessageManager::class.java)
+        val dataManager = plugin.getManager(DataManager::class.java)
 
         // Instantiate the PlayerData and Particle
         val particle = dataManager.getOrSetParticle(player, null)
@@ -202,8 +206,8 @@ class CmdSet(private val plugin: FlightTrails, command: OriCommand) : SubCommand
 
     private fun onSetColor(sender: CommandSender, player: Player, colorValue: String) {
         // Instantiate the managers
-        val messageManager = plugin.getManager(MessageManager::class)
-        val dataManager = plugin.getManager(DataManager::class)
+        val messageManager = plugin.getManager(MessageManager::class.java)
+        val dataManager = plugin.getManager(DataManager::class.java)
 
         // Instantiate the PlayerData and Particle
         val particle = dataManager.getOrSetParticle(player, null)
@@ -215,8 +219,7 @@ class CmdSet(private val plugin: FlightTrails, command: OriCommand) : SubCommand
         }
 
         // Check required Trail Color
-        val color: ChatColor
-        color = try {
+        val color: ChatColor = try {
             ChatColor.valueOf(colorValue.toUpperCase())
         } catch (ex: Exception) {
             messageManager.sendMessage(player, "set-command.invalid-color")
@@ -230,10 +233,10 @@ class CmdSet(private val plugin: FlightTrails, command: OriCommand) : SubCommand
         }
 
         // Update player data
-        dataManager.getOrSetColor(player, Color.fromRGB(color.asBungee().color.rgb))
+        dataManager.getOrSetColor(player, Color.fromRGB(color.color.red, color.color.green, color.color.blue))
         // Send update message
 
-        val rgb = color.asBungee().color
+        val rgb = color.color
         messageManager.sendMessage(player, "set-command.color", StringPlaceholders.single("color", "${rgb.red}, ${rgb.green}, ${rgb.blue}"))
     }
 }

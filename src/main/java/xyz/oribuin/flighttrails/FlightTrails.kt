@@ -4,12 +4,12 @@ import org.bukkit.Bukkit
 import xyz.oribuin.flighttrails.command.CmdTrails
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
 import xyz.oribuin.flighttrails.hook.PlaceholderExp
-import xyz.oribuin.flighttrails.library.OriPlugin
 import xyz.oribuin.flighttrails.listener.GeneralListener
 import xyz.oribuin.flighttrails.manager.ConfigManager
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
 import xyz.oribuin.flighttrails.manager.ParticleManager
+import xyz.oribuin.orilibrary.OriPlugin
 
 /**
  * @author Oribuin
@@ -20,10 +20,10 @@ class FlightTrails : OriPlugin() {
         Bukkit.getOnlinePlayers().forEach { player -> player.closeInventory() }
 
         // Register Managers
-        getManager(ConfigManager::class)
-        getManager(DataManager::class)
-        getManager(MessageManager::class)
-        getManager(ParticleManager::class)
+        getManager(ConfigManager::class.java)
+        getManager(DataManager::class.java)
+        getManager(MessageManager::class.java)
+        getManager(ParticleManager::class.java)
 
         // Register PlaceholderAPI
         if (PlaceholderAPIHook.enabled()) {

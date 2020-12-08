@@ -6,11 +6,11 @@ import org.bukkit.Particle
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.library.Manager
+import xyz.oribuin.orilibrary.Manager
 import java.io.File
 
 class ConfigManager(plugin: FlightTrails) : Manager(plugin) {
-    override fun reload() {
+    override fun enable() {
         plugin.reloadConfig()
         plugin.saveDefaultConfig()
         val config = plugin.config

@@ -14,9 +14,9 @@ import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
 import xyz.oribuin.flighttrails.library.HexUtils.colorify
-import xyz.oribuin.flighttrails.library.StringPlaceholders
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
+import xyz.oribuin.orilibrary.StringPlaceholders
 
 class MainMenu(private val plugin: FlightTrails, private val player: Player) : Listener {
 
@@ -58,7 +58,7 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
 
         inv.setItem(
             31, normalItem(
-                plugin.getManager(DataManager::class).getOrSetBlock(player, null), "&bBlock Menu", listOf(
+                plugin.getManager(DataManager::class.java).getOrSetBlock(player, null), "&bBlock Menu", listOf(
                     "&7Click to access the color menu",
                     "&7to change your particle block.",
                     " ",
@@ -69,7 +69,7 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
 
         inv.setItem(
             34, normalItem(
-                plugin.getManager(DataManager::class).getOrSetItem(player, null).type, "&bItem Menu", listOf(
+                plugin.getManager(DataManager::class.java).getOrSetItem(player, null).type, "&bItem Menu", listOf(
                     "&7Click to access the color menu",
                     "&7to change your particle item.",
                     " ",
@@ -88,8 +88,8 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
         if (event.whoClicked !is Player || event.view.title != "FlightTrails Menu")
             return
 
-        val data = plugin.getManager(DataManager::class)
-        val msg = plugin.getManager(MessageManager::class)
+        val data = plugin.getManager(DataManager::class.java)
+        val msg = plugin.getManager(MessageManager::class.java)
 
         val player = event.whoClicked as Player
         event.cursor ?: return

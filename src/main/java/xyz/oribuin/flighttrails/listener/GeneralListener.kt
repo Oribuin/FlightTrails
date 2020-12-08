@@ -13,7 +13,7 @@ class GeneralListener(val plugin: FlightTrails) : Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     fun onJoin(event: PlayerJoinEvent) {
 
-        val data = plugin.getManager(DataManager::class)
+        val data = plugin.getManager(DataManager::class.java)
 
         if (event.player.hasPermission("flighttrails.use") && ConfigManager.Setting.PS_DEFAULT_ENABLED.boolean) {
             if (data.getConfig().get(event.player.uniqueId.toString()) == null) {

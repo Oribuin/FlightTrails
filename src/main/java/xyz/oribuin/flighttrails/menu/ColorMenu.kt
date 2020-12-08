@@ -18,13 +18,13 @@ import org.bukkit.inventory.meta.LeatherArmorMeta
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
 import xyz.oribuin.flighttrails.library.HexUtils.colorify
-import xyz.oribuin.flighttrails.library.PluginUtils.formatToHex
-import xyz.oribuin.flighttrails.library.StringPlaceholders
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
+import xyz.oribuin.flighttrails.util.TrailUtils.formatToHex
+import xyz.oribuin.orilibrary.StringPlaceholders
 
 class ColorMenu(private val plugin: FlightTrails, private val player: Player) : Listener {
-    val color = plugin.getManager(DataManager::class).getOrSetColor(player, null)
+    val color = plugin.getManager(DataManager::class.java).getOrSetColor(player, null)
 
     fun openMenu() {
         player.openInventory(menu())
@@ -180,7 +180,7 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
     }
 
     private fun currentColor(): ItemStack {
-        val newColor = plugin.getManager(DataManager::class).getOrSetColor(player, null)
+        val newColor = plugin.getManager(DataManager::class.java).getOrSetColor(player, null)
         val armor = ItemStack(Material.LEATHER_CHESTPLATE)
         val meta = armor.itemMeta as LeatherArmorMeta
 
@@ -233,8 +233,8 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
     }
 
     private fun colorCommands(player: Player, color: Color) {
-        val msg = plugin.getManager(MessageManager::class)
-        val data = plugin.getManager(DataManager::class)
+        val msg = plugin.getManager(MessageManager::class.java)
+        val data = plugin.getManager(DataManager::class.java)
 
         if (!player.hasPermission("flighttrails.admin") && !player.hasPermission("flighttrails.particle.redstone")) {
             msg.sendMessage(player, "invalid-permission")
@@ -259,7 +259,7 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
     }
 
     private fun addRGBColor(clickType: ClickType): Color {
-        val newColor = plugin.getManager(DataManager::class).getOrSetColor(player, null)
+        val newColor = plugin.getManager(DataManager::class.java).getOrSetColor(player, null)
 
         var red = newColor.red
         var green = newColor.green
@@ -279,7 +279,7 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
             green = 255
         }
 
-        val data = plugin.getManager(DataManager::class)
+        val data = plugin.getManager(DataManager::class.java)
         data.getOrSetColor(player, Color.fromRGB(red, green, blue))
         data.getOrSetParticle(player, Particle.REDSTONE)
 
@@ -287,7 +287,7 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
     }
 
     private fun removeRGBColor(clickType: ClickType): Color {
-        val newColor = plugin.getManager(DataManager::class).getOrSetColor(player, null)
+        val newColor = plugin.getManager(DataManager::class.java).getOrSetColor(player, null)
 
         var red = newColor.red
         var green = newColor.green
@@ -307,7 +307,7 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
             green = 0
         }
 
-        val data = plugin.getManager(DataManager::class)
+        val data = plugin.getManager(DataManager::class.java)
         data.getOrSetColor(player, Color.fromRGB(red, green, blue))
         data.getOrSetParticle(player, Particle.REDSTONE)
         return this.color
@@ -318,11 +318,11 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
     }
 
     private fun setHexColor(pl: Player) {
-        val data = plugin.getManager(DataManager::class)
+        val data = plugin.getManager(DataManager::class.java)
 
         AnvilGUI.Builder()
             .onComplete { _, text ->
-                val msg = plugin.getManager(MessageManager::class)
+                val msg = plugin.getManager(MessageManager::class.java)
                 if (!text.startsWith("#") || text.length != 7) {
                     msg.sendMessage(pl, "invalid-hex")
                     return@onComplete AnvilGUI.Response.close()
