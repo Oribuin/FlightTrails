@@ -19,23 +19,22 @@ repositories {
     jcenter()
 
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://repo.rosewooddev.io/repository/public/' }
+    maven { url 'http://repo.oribuin.xyz:8081/repository/maven-public/' }
     maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
     maven { url 'https://repo.codemc.org/repository/maven-public' }
-    maven { url 'https://repo.rosewooddev.io/repository/public/' }
     maven { url 'https://jitpack.io' }
-    maven { url 'http://repo.oribuin.xyz:8081/repository/maven-public/' }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.20"
 
     // Spigot Stuff
     shadow 'org.spigotmc:spigot:1.16.4'
     shadow 'me.clip:placeholderapi:2.10.9'
     shadow 'com.github.MilkBowl:VaultAPI:1.7'
 
-    compileOnly 'xyz.oribuin:orilib:1.0.4'
+    implementation 'xyz.oribuin:orilib:1.0.6'
     implementation 'dev.rosewood:guiframework:1.1.1'
     implementation 'com.github.WesJD.AnvilGUI:anvilgui:master-SNAPSHOT'
 }
@@ -56,13 +55,12 @@ compileKotlin {
 // Temporary replacement for PDM
 shadowJar {
     archiveClassifier.set(null)
-    archiveFileName = 'FlightTrails-' + project.property("version") + '.jar'
 
     // Relocate so much shit
     relocate ('org.jetbrains', 'xyz.oribuin.flighttrails.libs.jetbrains')
     relocate ('org.intellij', 'xyz.oribuin.flighttrails.libs.intellij')
     relocate ('kotlin', 'xyz.oribuin.flighttrails.libs.kotlin')
-    relocate ('net.wesjd.anvilgui', 'xyz.golimc.flighttrails.libs.anvilgui')
+    relocate ('net.wesjd.anvilgui', 'xyz.oribuin.flighttrails.libs.anvilgui')
     relocate ('dev.rosewood.guiframework', 'xyz.oribuin.flighttrails.libs.guiframework')
     relocate ('xyz.oribuin.orilibrary', 'xyz.oribuin.flighttrails.library')
 }

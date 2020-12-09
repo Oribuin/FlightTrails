@@ -11,7 +11,7 @@ import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.enums.ParticleItem
-import xyz.oribuin.flighttrails.library.HexUtils.colorify
+import xyz.oribuin.flighttrails.util.HexUtils.colorify
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
 import xyz.oribuin.orilibrary.StringPlaceholders

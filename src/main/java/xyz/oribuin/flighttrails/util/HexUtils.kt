@@ -1,9 +1,9 @@
-package xyz.oribuin.flighttrails.library
+package xyz.oribuin.flighttrails.util
 
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
-import xyz.oribuin.flighttrails.library.NMSUtil.versionNumber
+import xyz.oribuin.flighttrails.util.NMSUtil.versionNumber
 import java.awt.Color
 import java.util.*
 import java.util.regex.Pattern

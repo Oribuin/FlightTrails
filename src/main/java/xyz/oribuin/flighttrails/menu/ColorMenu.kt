@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
-import xyz.oribuin.flighttrails.library.HexUtils.colorify
+import xyz.oribuin.flighttrails.util.HexUtils.colorify
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
 import xyz.oribuin.flighttrails.util.TrailUtils.formatToHex

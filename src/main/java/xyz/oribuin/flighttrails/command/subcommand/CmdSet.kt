@@ -220,6 +220,7 @@ class CmdSet(private val plugin: FlightTrails, command: OriCommand) : SubCommand
 
         // Check required Trail Color
         val color: ChatColor = try {
+            @Suppress("DEPRECATION")
             ChatColor.valueOf(colorValue.toUpperCase())
         } catch (ex: Exception) {
             messageManager.sendMessage(player, "set-command.invalid-color")

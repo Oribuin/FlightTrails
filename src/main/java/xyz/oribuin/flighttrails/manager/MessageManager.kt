@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
-import xyz.oribuin.flighttrails.library.HexUtils.colorify
+import xyz.oribuin.flighttrails.util.HexUtils.colorify
 import xyz.oribuin.orilibrary.FileUtils.createFile
 import xyz.oribuin.orilibrary.Manager
 import xyz.oribuin.orilibrary.StringPlaceholders
