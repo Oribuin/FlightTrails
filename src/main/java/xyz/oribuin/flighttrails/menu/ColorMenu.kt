@@ -158,7 +158,7 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
     }
 
     private fun setColorRGB(type: RGBType) {
-        val msgs = plugin.getManager(MessageManager::class.java)
+        val messageManager = plugin.getManager(MessageManager::class.java)
 
         AnvilGUI.Builder()
             .onComplete { _, text ->
@@ -166,13 +166,13 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
                     val number = text.toInt()
 
                     if (!player.hasPermission("flighttrails.admin") && !player.hasPermission("flighttrails.particle.redstone") || !player.hasPermission("flighttrails.color.custom")) {
-                        msgs.sendMessage(player, "invalid-permission")
+                        messageManager.sendMessage(player, "invalid-permission")
                         player.closeInventory()
                         return@onComplete AnvilGUI.Response.close()
                     }
 
                     if (number > 255 || number < 0) {
-                        msgs.sendMessage(player, "invalid-rgb")
+                        messageManager.sendMessage(player, "invalid-rgb")
                         return@onComplete AnvilGUI.Response.close()
                     }
 
@@ -190,7 +190,7 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
                         }
                     }
                 } catch (ex: NumberFormatException) {
-                    msgs.sendMessage(player, "invalid-rgb")
+                    messageManager.sendMessage(player, "invalid-rgb")
                 }
                 AnvilGUI.Response.close()
             }
@@ -202,8 +202,6 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
     }
 
     private fun setHexColor(pl: Player) {
-        val data = plugin.getManager(DataManager::class.java)
-
         AnvilGUI.Builder()
             .onComplete { _, text ->
 
@@ -234,7 +232,7 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
             .plugin(plugin)
             .title("Set trail hex color")
             .onClose { this.openMenu() }
-            .text(formatToHex(data.getOrSetColor(pl, null)))
+            .text(formatToHex(cachedColor))
             .open(pl)
     }
 
