@@ -2,7 +2,7 @@ package xyz.oribuin.flighttrails
 
 import org.bukkit.Bukkit
 import xyz.oribuin.flighttrails.command.CmdTrails
-import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
+import xyz.oribuin.flighttrails.hook.PAPIHook
 import xyz.oribuin.flighttrails.hook.PlaceholderExp
 import xyz.oribuin.flighttrails.listener.GeneralListener
 import xyz.oribuin.flighttrails.manager.ConfigManager
@@ -26,12 +26,12 @@ class FlightTrails : OriPlugin() {
         getManager(ParticleManager::class.java)
 
         // Register PlaceholderAPI
-        if (PlaceholderAPIHook.enabled()) {
+        if (PAPIHook.enabled()) {
             PlaceholderExp(this).register()
         }
 
         // Register Commands
-        registerCommands(CmdTrails(this))
+        CmdTrails(this).register()
 
         Bukkit.getPluginManager().registerEvents(GeneralListener(this), this)
     }

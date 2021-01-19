@@ -6,9 +6,9 @@ import org.bukkit.entity.Player
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
-import xyz.oribuin.orilibrary.OriCommand
-import xyz.oribuin.orilibrary.StringPlaceholders
-import xyz.oribuin.orilibrary.SubCommand
+import xyz.oribuin.orilibrary.command.OriCommand
+import xyz.oribuin.orilibrary.util.StringPlaceholders
+import xyz.oribuin.orilibrary.command.SubCommand
 
 class CmdToggle(private val plugin: FlightTrails, command: OriCommand) : SubCommand(command, "toggle") {
     override fun executeArgument(sender: CommandSender, args: Array<String>) {

@@ -15,7 +15,7 @@ import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.util.HexUtils.colorify
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
-import xyz.oribuin.orilibrary.StringPlaceholders
+import xyz.oribuin.orilibrary.util.StringPlaceholders
 import java.util.*
 import java.util.function.Function
 

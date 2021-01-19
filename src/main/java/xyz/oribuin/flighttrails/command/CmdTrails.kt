@@ -11,15 +11,15 @@ import xyz.oribuin.flighttrails.command.subcommand.CmdSet
 import xyz.oribuin.flighttrails.command.subcommand.CmdToggle
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
-import xyz.oribuin.orilibrary.OriCommand
-import xyz.oribuin.orilibrary.SubCommand
+import xyz.oribuin.orilibrary.command.OriCommand
+import xyz.oribuin.orilibrary.command.SubCommand
 
 class CmdTrails(plugin: FlightTrails) : OriCommand(plugin, "trails") {
     private val subcommands = mutableListOf<SubCommand>()
 
     private val messageManager = plugin.getManager(MessageManager::class.java)
 
-    override fun executeCommand(sender: CommandSender, args: Array<String>) {
+    override fun executeCommand(sender: CommandSender, args: Array<String>, label: String) {
 
         if (sender is Player && plugin.getManager(DataManager::class.java).getPlayer(sender) == null) {
             plugin.getManager(DataManager::class.java).setDefault(sender)

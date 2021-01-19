@@ -8,8 +8,8 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.orilibrary.FileUtils.createFile
-import xyz.oribuin.orilibrary.Manager
+import xyz.oribuin.orilibrary.util.FileUtils.createFile
+import xyz.oribuin.orilibrary.manager.Manager
 import java.io.File
 
 /**

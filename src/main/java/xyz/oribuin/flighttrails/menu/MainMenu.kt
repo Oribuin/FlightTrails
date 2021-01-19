@@ -12,11 +12,11 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
+import xyz.oribuin.flighttrails.hook.PAPIHook
 import xyz.oribuin.flighttrails.util.HexUtils.colorify
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
-import xyz.oribuin.orilibrary.StringPlaceholders
+import xyz.oribuin.orilibrary.util.StringPlaceholders
 
 class MainMenu(private val plugin: FlightTrails, private val player: Player) : Listener {
 
@@ -125,9 +125,9 @@ class MainMenu(private val plugin: FlightTrails, private val player: Player) : L
     private fun normalItem(material: Material, name: String, lore: List<String>): ItemStack {
         val itemStack = ItemStack(transformMaterial(material))
         val meta = itemStack.itemMeta ?: return ItemStack(Material.AIR)
-        meta.setDisplayName(PlaceholderAPIHook.apply(player, colorify(name)))
+        meta.setDisplayName(PAPIHook.apply(player, colorify(name)))
         val coloredLore = mutableListOf<String>()
-        lore.forEach { s -> coloredLore.add(PlaceholderAPIHook.apply(player, colorify(s))) }
+        lore.forEach { s -> coloredLore.add(PAPIHook.apply(player, colorify(s))) }
         meta.lore = coloredLore
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
         itemStack.itemMeta = meta

@@ -6,7 +6,7 @@ import org.bukkit.Particle
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.orilibrary.Manager
+import xyz.oribuin.orilibrary.manager.Manager
 import java.io.File
 
 class ConfigManager(plugin: FlightTrails) : Manager(plugin) {

@@ -9,7 +9,7 @@ import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.util.VectorUtils
-import xyz.oribuin.orilibrary.Manager
+import xyz.oribuin.orilibrary.manager.Manager
 
 /**
  * @author Oribuin

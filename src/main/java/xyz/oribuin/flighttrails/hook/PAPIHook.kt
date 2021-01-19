@@ -4,7 +4,7 @@ import me.clip.placeholderapi.PlaceholderAPI
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-object PlaceholderAPIHook {
+object PAPIHook {
     private var enabled: Boolean? = null
 
     // return true if PlaceholderAPI is enabled

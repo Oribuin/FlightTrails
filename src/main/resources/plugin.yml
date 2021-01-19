@@ -1,15 +1,16 @@
 name: FlightTrails
 main: xyz.oribuin.flighttrails.FlightTrails
 version: '@version@'
-authors: [Oribuin, Esophose]
+authors: [ Oribuin, Esophose ]
 api-version: '1.16'
 description: Customize your flying with EULA friendly Flight Trails
 website: https://oribuin.xyz/
-softdepend: [PlaceholderAPI]
+softdepend: [ PlaceholderAPI ]
 commands:
   trails:
     description: Main FlightTrails command
-    usage: /<usage<
+    usage: /trails
+    aliases: [ 'flighttrails' ]
 
 permissions:
   flighttrails.*:
@@ -19,13 +20,10 @@ permissions:
       - flighttrails.use
       - flighttrails.toggle
       - flighttrails.reload
-      - flighttrails.set
-      - flighttrails.set.particle
-      - flighttrails.set.block
-      - flighttrails.set.item
-      - flighttrails.set.color
-      - flighttrails.set.other
       - flighttrails.admin
+      - flighttrails.set.*
+      - flighttrails.particle.*
+      - flighttrails.color.*
 
   flighttrails.set.*:
     description: All set command permissions
@@ -44,20 +42,17 @@ permissions:
       - flighttrails.color.red
       - flighttrails.color.orange
       - flighttrails.color.yellow
-      - flighttrails.color.gold
+      - flighttrails.color.lime
       - flighttrails.color.green
-      - flighttrails.color.dark_green
+      - flighttrails.color.light_blue
+      - flighttrails.color.cyan
       - flighttrails.color.blue
-      - flighttrails.color.aqua
-      - flighttrails.color.dark_aqua
-      - flighttrails.color.dark_blue
       - flighttrails.color.purple
       - flighttrails.color.pink
       - flighttrails.color.white
-      - flighttrails.color.black
-      - flighttrails.color.gray
       - flighttrails.color.light_gray
-      - flighttrails.color.brown
+      - flighttrails.color.black
+      - flighttrails.color.custom
 
   flighttrails.particle.*:
     description: All trail particle permissions

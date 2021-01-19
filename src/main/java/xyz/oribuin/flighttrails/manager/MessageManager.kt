@@ -6,12 +6,12 @@ import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.hook.PlaceholderAPIHook
+import xyz.oribuin.flighttrails.hook.PAPIHook
 import xyz.oribuin.flighttrails.util.HexUtils.colorify
-import xyz.oribuin.orilibrary.FileUtils.createFile
-import xyz.oribuin.orilibrary.Manager
-import xyz.oribuin.orilibrary.StringPlaceholders
-import xyz.oribuin.orilibrary.StringPlaceholders.empty
+import xyz.oribuin.orilibrary.util.FileUtils.createFile
+import xyz.oribuin.orilibrary.manager.Manager
+import xyz.oribuin.orilibrary.util.StringPlaceholders
+import xyz.oribuin.orilibrary.util.StringPlaceholders.empty
 import java.io.File
 
 class MessageManager(plugin: FlightTrails) : Manager(plugin) {
@@ -49,7 +49,7 @@ class MessageManager(plugin: FlightTrails) : Manager(plugin) {
 
     private fun parsePlaceholders(sender: CommandSender, message: String): String {
         return if (sender is Player)
-            PlaceholderAPIHook.apply(sender, message)
+            PAPIHook.apply(sender, message)
         else
             message
     }
@@ -93,6 +93,7 @@ class MessageManager(plugin: FlightTrails) : Manager(plugin) {
         INVALID_PERMISSION("invalid-permission", "&cInsufficient permission."),
         INVALID_PLAYER("invalid-player", "&cInsufficient player provided."),
         INVALID_HEX("invalid-hex", "&cInsufficient Hex Code."),
+        INVALID_RGB("invalid-rgb", "&cInsufficient RGB Values."),
         PLAYER_ONLY("player-only", "&cOnly a player can execute this command."),
         UNKNOWN_COMMAND("unknown-command", "&cAn unknown command was entered.");
 
