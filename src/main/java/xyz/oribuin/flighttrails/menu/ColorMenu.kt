@@ -120,7 +120,8 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
                     .build()
 
 
-                listOf(fs("&fClick to confirm the change"), fs("&fof your trail color"), fs(), fs("&fCurrent color is &c%red%&f, &a%green%&f, &b%blue%", placeholders), fs("&cThis will change your particle to Dust.")) }
+                listOf(fs("&fClick to confirm the change"), fs("&fof your trail color"), fs(), fs("&fCurrent color is &c%red%&f, &a%green%&f, &b%blue%", placeholders), fs("&cThis will change your particle to Dust."))
+            }
             .setClickAction({
                 val data = plugin.getManager(DataManager::class.java)
 
@@ -163,7 +164,6 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
         AnvilGUI.Builder()
             .onComplete { _, text ->
                 try {
-                    val number = text.toInt()
 
                     if (!player.hasPermission("flighttrails.admin") && !player.hasPermission("flighttrails.particle.redstone") || !player.hasPermission("flighttrails.color.custom")) {
                         messageManager.sendMessage(player, "invalid-permission")
@@ -171,22 +171,23 @@ class ColorMenu(private val plugin: FlightTrails, private val player: Player) : 
                         return@onComplete AnvilGUI.Response.close()
                     }
 
-                    if (number > 255 || number < 0) {
+                    val number = text.toIntOrNull()
+                    if (number == null || number > 255 || number < 0) {
                         messageManager.sendMessage(player, "invalid-rgb")
                         return@onComplete AnvilGUI.Response.close()
                     }
 
                     when (type) {
                         RGBType.RED -> {
-                            cachedColor.red = number
+                            cachedColor = Color.fromRGB(number, cachedColor.green, cachedColor.blue)
                         }
 
                         RGBType.GREEN -> {
-                            cachedColor.green = number
+                            cachedColor = Color.fromRGB(cachedColor.red, number, cachedColor.blue)
                         }
 
                         RGBType.BLUE -> {
-                            cachedColor.blue = number
+                            cachedColor = Color.fromRGB(cachedColor.red, cachedColor.green, number)
                         }
                     }
                 } catch (ex: NumberFormatException) {
