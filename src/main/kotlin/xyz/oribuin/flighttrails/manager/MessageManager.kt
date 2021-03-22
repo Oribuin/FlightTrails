@@ -36,7 +36,7 @@ class MessageManager(private val plugin: FlightTrails) : Manager(plugin) {
         }
 
         if ((config.getString(messageId) ?: return).isNotEmpty()) {
-            val msg = colorify(placeholders.apply(config.getString(messageId) ?: "#ff4072$messageId is null in messages.yml"))
+            val msg = colorify("${config.getString("prefix") ?: MsgSettings.PREFIX.defaultValue}" + placeholders.apply(config.getString(messageId) ?: "#ff4072$messageId is null in messages.yml"))
             sender.sendMessage(msg)
         }
     }
@@ -52,7 +52,7 @@ class MessageManager(private val plugin: FlightTrails) : Manager(plugin) {
     enum class MsgSettings(val key: String, val defaultValue: Any) {
         // Misc Stuff
         PREFIX("prefix", "&b&lFlightTrails &8| &f"),
-        RELOAD("reload", "You have reloaded FlightTrails (b%version%&f)"),
+        RELOAD("reload", "You have reloaded FlightTrails (%version%&f)"),
 
         // Error Messages
         INVALID_PLAYER("invalid-player", "&cPlease provide a valid player name."),

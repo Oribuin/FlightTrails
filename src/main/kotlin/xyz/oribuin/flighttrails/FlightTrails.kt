@@ -4,6 +4,7 @@ import org.bukkit.Location
 import xyz.oribuin.flighttrails.command.CmdTrails
 import xyz.oribuin.flighttrails.listener.PlayerJoinLeaveEvents
 import xyz.oribuin.flighttrails.manager.DataManager
+import xyz.oribuin.flighttrails.manager.MessageManager
 import xyz.oribuin.flighttrails.task.ParticleTask
 import xyz.oribuin.orilibrary.OriPlugin
 import java.util.*
@@ -11,7 +12,6 @@ import java.util.*
 class FlightTrails : OriPlugin() {
 
     var toggleList = mutableListOf<UUID>()
-    var particleLoc: Location? = null
 
     override fun enablePlugin() {
 
@@ -19,6 +19,7 @@ class FlightTrails : OriPlugin() {
         // Load managers asynchronously
         this.server.scheduler.runTaskAsynchronously(this, Runnable {
             this.getManager(DataManager::class.java)
+            this.getManager(MessageManager::class.java)
         })
 
         // Register Commands
