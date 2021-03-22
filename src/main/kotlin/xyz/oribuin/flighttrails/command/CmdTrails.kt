@@ -18,8 +18,8 @@ import xyz.oribuin.orilibrary.libs.jetbrains.annotations.Nullable
 class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
 
     override fun runFunction(commandSender: @NotNull CommandSender, s: @NotNull String, strings: Array<String>) {
-        val player = commandSender as Player?
-        this.plugin.particleLoc = player!!.location
+        val player = commandSender as Player
+        this.plugin.particleLoc = player.location
     }
 
     override fun complete(commandSender: @NotNull CommandSender, s: @NotNull String, strings: Array<String>): @Nullable MutableList<Argument>? {

@@ -72,7 +72,7 @@ class DataManager(plugin: FlightTrails?) : Manager(plugin) {
         cachedTrails[uuid] = trail
 
         async {
-            connector!!.connect { connection: Connection ->
+            connector?.connect { connection ->
                 val query = "REPLACE INTO flighttrails_data (player, particle, color, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?, ?)"
 
                 connection.prepareStatement(query).use { statement ->
@@ -104,7 +104,7 @@ class DataManager(plugin: FlightTrails?) : Manager(plugin) {
         }
 
         val trailOptions: TrailOptions? = null
-        connector?.connect { connection: Connection ->
+        connector?.connect { connection ->
             val query = "SELECT * FROM flighttrails_data WHERE player = ?"
 
             connection.prepareStatement(query).use { statement ->
@@ -120,10 +120,10 @@ class DataManager(plugin: FlightTrails?) : Manager(plugin) {
 
 
     override fun disable() {
-        connector!!.closeConnection()
+        this.connector?.closeConnection()
     }
 
-    fun async(callback: Consumer<BukkitTask?>?) {
-        Thread { this.plugin.server.scheduler.runTaskAsynchronously(this.plugin, callback!!) }.start()
+    private fun async(callback: Consumer<BukkitTask>) {
+        Thread { this.plugin.server.scheduler.runTaskAsynchronously(this.plugin, callback) }.start()
     }
 }
