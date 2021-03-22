@@ -133,6 +133,9 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
             }
         }.start()
 
+        // Make sure the player has their trail options saved
+        if (trailOptions == null) return this.saveTrailOptions(TrailOptions(player.uniqueId))
+
         return trailOptions
     }
 
