@@ -1,17 +1,17 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.20'
-    id 'com.github.johnrengelman.shadow' version '6.0.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 group 'xyz.oribuin'
-version '2.0.0'
-compileJava.options.encoding = 'UTF-8'
+version '1.0-SNAPSHOT'
 
-targetCompatibility = JavaVersion.VERSION_1_8
 sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
 
 repositories {
     mavenCentral()
@@ -20,49 +20,31 @@ repositories {
 
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url 'https://repo.rosewooddev.io/repository/public/' }
-    maven { url 'http://repo.oribuin.xyz:8081/repository/maven-public/' }
     maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
     maven { url 'https://repo.codemc.org/repository/maven-public' }
     maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-
-    // Spigot Stuff
     shadow 'org.spigotmc:spigot:1.16.4'
     shadow 'me.clip:placeholderapi:2.10.9'
-    shadow 'com.github.MilkBowl:VaultAPI:1.7'
 
-    implementation 'xyz.oribuin:orilib:1.1.0'
-    implementation 'dev.rosewood:guiframework:1.1.2-SNAPSHOT'
-    implementation 'com.github.WesJD.AnvilGUI:anvilgui:master-SNAPSHOT'
+    implementation fileTree(dir: 'implementation', includes: ['*.jar'])
+    implementation 'me.mattstudios.utils:matt-framework-gui:2.0.2'
+    implementation 'io.github.bananapuncher714:NBTEditor:7.16'
 }
 
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        include '**/*.yml'
-        filter ReplaceTokens, tokens: ["version": project.property("version")]
-    }
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
-// Temporary replacement for PDM
 shadowJar {
     archiveClassifier.set(null)
 
-    // Relocate so much shit
-    relocate ('org.jetbrains', 'xyz.oribuin.flighttrails.libs.jetbrains')
-    relocate ('org.intellij', 'xyz.oribuin.flighttrails.libs.intellij')
-    relocate ('kotlin', 'xyz.oribuin.flighttrails.libs.kotlin')
-    relocate ('net.wesjd.anvilgui', 'xyz.oribuin.flighttrails.libs.anvilgui')
-    relocate ('dev.rosewood.guiframework', 'xyz.oribuin.flighttrails.libs.guiframework')
-    relocate ('xyz.oribuin.orilibrary', 'xyz.oribuin.flighttrails.library')
+    // Relocate all required dependencies.
+    relocate('org.jetbrains', 'com.craftyourtown.auctionhouse.libs.jetbrains')
+    relocate('org.intellij', 'com.craftyourtown.auctionhouse.libs.intellij')
+    relocate('xyz.oribuin.orilibrary', 'com.craftyourtown.auctionhouse.libs.orilib')
+    relocate('org.slf4j', 'com.craftyourtown.auctionhouse.libs.slf4j')
+    relocate('com.zaxxer', 'com.craftyourtown.auctionhouse.libs.zaxxer')
+    relocate('org.reflections', 'com.craftyourtown.auctionhouse.libs.reflections')
+    relocate('dev.me.mattstudios.mfgui', 'com.craftyourtown.auctionhouse.libs.mfgui')
+    relocate('javassist', 'com.craftyourtown.auctionhouse.libs.javassist')
+    relocate('io.github.bananapuncher714', 'com.craftyourtown.auctionhouse.libs.nbteditor')
 }
-
-build.dependsOn shadowJar

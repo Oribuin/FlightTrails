@@ -20,7 +20,6 @@ gradle.app.setting
 !gradle-wrapper.jar
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
