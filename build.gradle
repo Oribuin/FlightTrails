@@ -46,15 +46,16 @@ shadowJar {
     archiveClassifier.set(null)
 
     // Relocate all required dependencies.
-    relocate('org.jetbrains', 'com.craftyourtown.auctionhouse.libs.jetbrains')
-    relocate('org.intellij', 'com.craftyourtown.auctionhouse.libs.intellij')
-    relocate('xyz.oribuin.orilibrary', 'com.craftyourtown.auctionhouse.libs.orilib')
-    relocate('org.slf4j', 'com.craftyourtown.auctionhouse.libs.slf4j')
-    relocate('com.zaxxer', 'com.craftyourtown.auctionhouse.libs.zaxxer')
-    relocate('org.reflections', 'com.craftyourtown.auctionhouse.libs.reflections')
-    relocate('dev.me.mattstudios.mfgui', 'com.craftyourtown.auctionhouse.libs.mfgui')
-    relocate('javassist', 'com.craftyourtown.auctionhouse.libs.javassist')
-    relocate('io.github.bananapuncher714', 'com.craftyourtown.auctionhouse.libs.nbteditor')
+    relocate('kotlin', 'xyz.oribuin.flighttrails.libs.kotlin')
+    relocate('org.jetbrains', 'xyz.oribuin.flighttrails.libs.jetbrains')
+    relocate('org.intellij', 'xyz.oribuin.flighttrails.libs.intellij')
+    relocate('xyz.oribuin.orilibrary', 'xyz.oribuin.flighttrails.libs.orilib')
+    relocate('org.slf4j', 'xyz.oribuin.flighttrails.libs.slf4j')
+    relocate('com.zaxxer', 'xyz.oribuin.flighttrails.libs.zaxxer')
+    relocate('org.reflections', 'xyz.oribuin.flighttrails.libs.reflections')
+    relocate('dev.me.mattstudios.mfgui', 'xyz.oribuin.flighttrails.libs.mfgui')
+    relocate('javassist', 'xyz.oribuin.flighttrails.libs.javassist')
+    relocate('io.github.bananapuncher714', 'xyz.oribuin.flighttrails.libs.nbteditor')
 
     // Okay minimize, don't fuck me over
     minimize()
