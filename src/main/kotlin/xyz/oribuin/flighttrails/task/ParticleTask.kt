@@ -38,10 +38,10 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
                     return@forEach
                 }
 
-                val distanceFromFeetCenter = 0.75
+                val distanceFromFeetCenter = 0.90
 
-                val leftWing = VectorUtils.rotateVector(Vector(-0.25, -0.4, distanceFromFeetCenter), it.location.yaw, it.location.pitch)
-                val rightWing = VectorUtils.rotateVector(Vector(-0.25, -0.4, -distanceFromFeetCenter), it.location.yaw, it.location.pitch)
+                val leftWing = VectorUtils.rotateVector(Vector(-0.25, -0.5, distanceFromFeetCenter), it.location.yaw, it.location.pitch)
+                val rightWing = VectorUtils.rotateVector(Vector(-0.25, -0.5, -distanceFromFeetCenter), it.location.yaw, it.location.pitch)
 
 
                 this.spawnParticles(it, options, it.location.clone().subtract(leftWing))
