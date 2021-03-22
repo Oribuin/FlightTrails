@@ -1,6 +1,9 @@
 package xyz.oribuin.flighttrails.manager
 
+import org.bukkit.Material
 import org.bukkit.OfflinePlayer
+import org.bukkit.Particle
+import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitTask
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.obj.TrailOptions
@@ -15,20 +18,21 @@ import java.sql.Connection
 import java.util.*
 import java.util.function.Consumer
 
-class DataManager(plugin: FlightTrails?) : Manager(plugin) {
+class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
+
     private var connector: DatabaseConnector? = null
-    private val plugin = getPlugin() as FlightTrails
-    private val cachedTrails: MutableMap<UUID, TrailOptions?> = HashMap()
+    private val cachedTrails: MutableMap<UUID, TrailOptions> = HashMap()
+
     override fun enable() {
         val config = this.plugin.config
         if (config.getBoolean("mysql.enabled")) {
 
             // Define SQL Values
-            val hostName = config.getString("mysql.host")!!
+            val hostName = config.getString("mysql.host") ?: return
             val port = config.getInt("mysql.port")
-            val dbname = config.getString("mysql.dbname")!!
-            val username = config.getString("mysql.username")!!
-            val password = config.getString("mysql.password")!!
+            val dbname = config.getString("mysql.dbname") ?: return
+            val username = config.getString("mysql.username") ?: return
+            val password = config.getString("mysql.password") ?: return
             val ssl = config.getBoolean("mysql.ssl")
 
             // Connect to MySQL
@@ -52,8 +56,9 @@ class DataManager(plugin: FlightTrails?) : Manager(plugin) {
         val queries = arrayOf(
             "CREATE TABLE IF NOT EXISTS flighttrails_data (player VARCHAR(40), particle LONGTEXT, color VARCHAR(7), blockData VARCHAR(50), itemData VARCHAR(50), note INT, PRIMARY KEY(player))"
         )
-        async { task: BukkitTask? ->
-            connector!!.connect { connection: Connection ->
+
+        async {
+            connector?.connect { connection: Connection ->
                 connection.createStatement().use { statement ->
                     for (query in queries) statement.addBatch(query)
                     statement.executeBatch()
@@ -73,7 +78,7 @@ class DataManager(plugin: FlightTrails?) : Manager(plugin) {
 
         async {
             connector?.connect { connection ->
-                val query = "REPLACE INTO flighttrails_data (player, particle, color, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                val query = "REPLACE INTO flighttrails_data (player, particle, color, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?)"
 
                 connection.prepareStatement(query).use { statement ->
                     statement.setString(1, uuid.toString())
@@ -97,23 +102,36 @@ class DataManager(plugin: FlightTrails?) : Manager(plugin) {
      * @param sqlOnly true if you only want to get trail options from sql
      * @return
      */
-    fun getTrailOptions(player: OfflinePlayer, sqlOnly: Boolean): @Nullable TrailOptions? {
+    fun getTrailOptions(player: OfflinePlayer, sqlOnly: Boolean = true): @Nullable TrailOptions? {
 
         if (!sqlOnly && cachedTrails[player.uniqueId] != null) {
             return cachedTrails[player.uniqueId]
         }
 
-        val trailOptions: TrailOptions? = null
-        connector?.connect { connection ->
-            val query = "SELECT * FROM flighttrails_data WHERE player = ?"
+        var trailOptions: TrailOptions? = null
+        Thread() {
+            connector?.connect { connection ->
+                val query = "SELECT * FROM flighttrails_data WHERE player = ?"
 
-            connection.prepareStatement(query).use { statement ->
-                statement.setString(1, player.uniqueId.toString())
+                connection.prepareStatement(query).use { statement ->
+                    statement.setString(1, player.uniqueId.toString())
 
-                val result = statement.executeQuery()
+                    val result = statement.executeQuery()
+                    if (!result.next()) return@use
 
+                    val trail = TrailOptions(player.uniqueId)
+                    trail.particle = Particle.valueOf(result.getString("particle"))
+                    trail.particleColor = PluginUtils.fromHex(result.getString("color"))
+                    trail.blockData = Material.valueOf(result.getString("blockData"))
+                    trail.itemData = ItemStack(Material.valueOf(result.getString("itemData")))
+                    trail.note = result.getInt("note")
+
+                    trailOptions = trail
+                    cachedTrails[player.uniqueId] = trail
+
+                }
             }
-        }
+        }.start()
 
         return trailOptions
     }

@@ -9,7 +9,8 @@ object PluginUtils {
     }
 
     fun fromHex(hex: String): Color {
-        return Color.fromRGB(java.awt.Color.decode(hex).rgb)
+        val decoded = java.awt.Color.decode(hex)
+        return Color.fromRGB(decoded.red, decoded.green, decoded.blue)
     }
 
 }

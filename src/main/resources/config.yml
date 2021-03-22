@@ -1,2 +1,25 @@
 # FlightTrails by Oribuin | Donate @ https://oribuin.xyz/donate
 # Join Discord for Support
+
+mysql:
+  enabled: false
+  host: localhost
+  port: 3306
+  dbname: mysql
+  username: Username
+  password: Password
+  ssl: true
+
+particle-amount: 3
+particle-size: 1
+
+disabled-worlds:
+  - 'Disabled-World-1'
+  - 'Disabled-World-2'
+
+# Should there be particles for elytras
+elytra-particles: true
+elytra-particle-style: DEFAULT
+creative-fly-particles: true
+
+hide-if-invisible: true
