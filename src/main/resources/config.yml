@@ -17,6 +17,8 @@ disabled-worlds:
   - 'Disabled-World-1'
   - 'Disabled-World-2'
 
+disabled-particles: []
+
 # Should there be particles for elytras
 elytra-particles: true
 elytra-particle-style: DEFAULT

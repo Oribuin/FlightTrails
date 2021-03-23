@@ -52,6 +52,8 @@ class MessageManager(private val plugin: FlightTrails) : Manager(plugin) {
     enum class MsgSettings(val key: String, val defaultValue: Any) {
         // Misc Stuff
         PREFIX("prefix", "&b&lFlightTrails &8| &f"),
+        TRAILS_ENABLED("trails-enabled", "You have enabled your flight trails."),
+        TRAILS_DISABLED("trails-disabled", "You have disabled your flight trails."),
         RELOAD("reload", "You have reloaded FlightTrails (%version%&f)"),
 
         // Error Messages

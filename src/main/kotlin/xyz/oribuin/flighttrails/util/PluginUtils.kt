@@ -13,4 +13,8 @@ object PluginUtils {
         return Color.fromRGB(decoded.red, decoded.green, decoded.blue)
     }
 
+    fun fromAwtColor(color: java.awt.Color): Color {
+        return Color.fromRGB(color.red, color.green, color.blue)
+    }
+
 }
