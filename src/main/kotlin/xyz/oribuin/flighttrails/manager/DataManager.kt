@@ -44,7 +44,7 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
 
             // Connect to SQLite
             connector = SQLiteConnector(this.plugin, "FlightTrails.db")
-            this.plugin.logger.info("Connected to SQLite for data saving ~ /plugins/FlightTrails/FlightTrails.db")
+            this.plugin.logger.info("Connected to SQLite for data saving ~ FlightTrails.db")
         }
         createTables()
     }
