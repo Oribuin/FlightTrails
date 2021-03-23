@@ -1,6 +1,7 @@
 package xyz.oribuin.flighttrails
 
-import org.bukkit.Location
+import com.sk89q.worldguard.WorldGuard
+import com.sk89q.worldguard.protection.flags.StateFlag
 import xyz.oribuin.flighttrails.command.CmdTrails
 import xyz.oribuin.flighttrails.listener.PlayerJoinLeaveEvents
 import xyz.oribuin.flighttrails.manager.DataManager
@@ -12,9 +13,10 @@ import java.util.*
 class FlightTrails : OriPlugin() {
 
     var toggleList = mutableListOf<UUID>()
+    lateinit var flag: StateFlag
+
 
     override fun enablePlugin() {
-
 
         // Load managers asynchronously
         this.server.scheduler.runTaskAsynchronously(this, Runnable {
@@ -35,4 +37,17 @@ class FlightTrails : OriPlugin() {
     override fun disablePlugin() {
         this.toggleList.clear()
     }
+
+    override fun onLoad() {
+
+        this.server.pluginManager.getPlugin("WorldGuard") ?: return
+
+        val registry = WorldGuard.getInstance().flagRegistry
+
+        val flag = StateFlag("flighttrails-trails", true)
+        registry.register(flag)
+        this.flag = flag
+
+    }
+
 }

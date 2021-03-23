@@ -1,5 +1,7 @@
 package xyz.oribuin.flighttrails.task
 
+import com.sk89q.worldguard.WorldGuard
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin
 import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Particle
@@ -21,17 +23,35 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
         if (this.plugin.server.onlinePlayers.isEmpty()) return
 
         this.plugin.server.onlinePlayers.forEach {
+            // Check if player has permission to use trails.
             if (!it.hasPermission("flighttrails.use")) return@forEach
+
+            // Check if player is vanished
             if (it.hasMetadata("vanished")) return@forEach
+
+            // Check if the player has trails enabled
             if (!this.plugin.toggleList.contains(it.uniqueId)) return@forEach
+
+            // Check if in disabled world
             if (this.plugin.config.getStringList("disabled-worlds").contains(it.world.name)) return@forEach
+
+            // Check if gamemode is spectator
             if (it.gameMode == GameMode.SPECTATOR) return@forEach
+
+            // Check if invisible
             if (plugin.config.getBoolean("hide-if-invisible") && it.hasPotionEffect(PotionEffectType.INVISIBILITY)) return@forEach
+
+            // Check if can use trail in worldguard region
+            if (!canUseTrailsWorldguard(it)) return@forEach
 
             val options = data.getTrailOptions(it, sqlOnly = false) ?: return@forEach
 
-            if (it.isFlying && plugin.config.getBoolean("creative-fly-particles")) this.spawnParticles(it, options, it.location)
-            else if (it.isGliding && plugin.config.getBoolean("elytra-particles")) {
+            if (it.isFlying && plugin.config.getBoolean("creative-fly-particles"))  {
+                this.spawnParticles(it, options, it.location)
+                return@forEach
+            }
+
+            if (it.isGliding && plugin.config.getBoolean("elytra-particles")) {
 
                 if (plugin.config.getString("elytra-particle-style").equals("legacy", ignoreCase = true)) {
                     this.spawnParticles(it, options, it.location)
@@ -70,6 +90,16 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
         }
 
 
+    }
+
+    private fun canUseTrailsWorldguard(player: Player): Boolean {
+        val plugin = this.plugin.server.pluginManager.getPlugin("WorldGuard") ?: return true
+        if (!plugin.isEnabled) return true
+
+        val lp = WorldGuardPlugin.inst().wrapPlayer(player)
+        val container = WorldGuard.getInstance().platform.regionContainer
+
+        return container.createQuery().testState(lp.location, lp, this.plugin.flag)
     }
 
     init {

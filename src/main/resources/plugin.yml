@@ -4,4 +4,4 @@ version: '1.0'
 authors: [ Oribuin ]
 api-version: '1.13'
 description: Fly with style with unique particles!
-softdepend: [ PlaceholderAPI ]
+softdepend: [ PlaceholderAPI, WorldGuard ]
