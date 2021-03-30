@@ -8,7 +8,6 @@ import java.util.*
 
 class TrailOptions(val player: UUID) {
 
-    var enabled: Boolean = false
     var particle = Particle.FLAME
     var particleColor: Color = Color.BLACK
     var blockData = Material.BLACK_WOOL

@@ -55,11 +55,18 @@ class MessageManager(private val plugin: FlightTrails) : Manager(plugin) {
         TRAILS_ENABLED("trails-enabled", "You have enabled your flight trails."),
         TRAILS_DISABLED("trails-disabled", "You have disabled your flight trails."),
         RELOAD("reload", "You have reloaded FlightTrails (%version%&f)"),
+        SET_VALUE("set-value", "You have set your trail %type% to %value%"),
 
         // Error Messages
         INVALID_PLAYER("invalid-player", "&cPlease provide a valid player name."),
+        INVALID_PARTICLE("invalid-particle", "&cPlease provide a valid particle."),
+        INVALID_COLOR("invalid-color", "&cPlease provide a valid color."),
+        INVALID_BLOCK("invalid-block", "&cPlease provide a valid block."),
+        INVALID_ITEM("invalid-item", "&cPlease provide a valid item."),
+        INVALID_NOTE("invalid-note", "&cPlease provide a valid number between 0-24"),
+
         UNKNOWN_COMMAND("unknown-command", "&cPlease provide a valid command."),
-        INVALID_ARGUMENTS("invalid-arguments", "&cPlease provide valid arguments."),
+        INVALID_ARGUMENTS("invalid-arguments", "&cPlease provide valid arguments. Correct usage is %usage%"),
         INVALID_PERMISSION("invalid-permission", "&cYou do not have permission for this command."),
         PLAYER_ONLY("player-only", "&cOnly a player can execute this command.");
 
