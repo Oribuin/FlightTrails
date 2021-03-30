@@ -99,7 +99,7 @@ class SubSet(private val plugin: FlightTrails) : SubCommand(plugin) {
                     msg.sendMessage(sender, "invalid-color")
                     return
                 }
-                
+
                 options.particleColor = color
                 msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "color").addPlaceholder("value", args[2].replace("#", "")).build())
                 data.saveTrailOptions(options)

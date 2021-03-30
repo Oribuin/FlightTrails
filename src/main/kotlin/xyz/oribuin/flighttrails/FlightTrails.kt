@@ -3,6 +3,7 @@ package xyz.oribuin.flighttrails
 import com.sk89q.worldguard.WorldGuard
 import com.sk89q.worldguard.protection.flags.StateFlag
 import xyz.oribuin.flighttrails.command.CmdTrails
+import xyz.oribuin.flighttrails.hook.Expansion
 import xyz.oribuin.flighttrails.listener.PlayerJoinLeaveEvents
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
@@ -23,6 +24,11 @@ class FlightTrails : OriPlugin() {
             this.getManager(DataManager::class.java)
             this.getManager(MessageManager::class.java)
         })
+
+        if (this.server.pluginManager.getPlugin("PlaceholderAPI") != null) {
+            this.logger.info("Detected PlaceholderAPI... Registering Expansion")
+            Expansion(this).register()
+        }
 
         // Register Commands
         CmdTrails(this).register(this.config, "player-only", "invalid-permission");
