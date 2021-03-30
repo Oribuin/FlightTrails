@@ -1,5 +1,6 @@
 package xyz.oribuin.flighttrails.command.sub
 
+import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
 import org.bukkit.Color
 import org.bukkit.Material
@@ -16,6 +17,7 @@ import xyz.oribuin.flighttrails.obj.TrailOptions
 import xyz.oribuin.flighttrails.util.PluginUtils
 import xyz.oribuin.orilibrary.command.SubCommand
 import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull
+import xyz.oribuin.orilibrary.util.HexUtils
 import xyz.oribuin.orilibrary.util.StringPlaceholders
 import java.lang.Exception
 
@@ -97,10 +99,9 @@ class SubSet(private val plugin: FlightTrails) : SubCommand(plugin) {
                     msg.sendMessage(sender, "invalid-color")
                     return
                 }
-
-
+                
                 options.particleColor = color
-                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "color").addPlaceholder("value", args[2]).build())
+                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "color").addPlaceholder("value", args[2].replace("#", "")).build())
                 data.saveTrailOptions(options)
             }
 
