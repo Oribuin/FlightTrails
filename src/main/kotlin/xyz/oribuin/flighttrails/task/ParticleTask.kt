@@ -91,7 +91,7 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
 
             Particle.ITEM_CRACK -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0, trail.itemData)
 
-            Particle.NOTE -> player.world.spawnParticle(trail.particle, newLoc, 0, 0.0, 0.0, 0.0, 3 / 24.0)
+            Particle.NOTE -> player.world.spawnParticle(trail.particle, newLoc, 0, trail.note / 24.0, 0.0, 0.0, 1.0)
 
             else -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0)
 
@@ -109,7 +109,7 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
 
         return container.createQuery().testState(lp.location, lp, this.plugin.flag)
     }
-
+    
     init {
         runTaskTimerAsynchronously(plugin, 0, 1)
     }
