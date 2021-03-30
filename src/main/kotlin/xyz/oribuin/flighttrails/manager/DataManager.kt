@@ -21,7 +21,7 @@ import java.util.function.Consumer
 class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
 
     private var connector: DatabaseConnector? = null
-    private val cachedTrails: MutableMap<UUID, TrailOptions> = HashMap()
+    private val cachedTrails = mutableMapOf<UUID, TrailOptions>()
 
     override fun enable() {
         val config = this.plugin.config
@@ -46,6 +46,7 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
             connector = SQLiteConnector(this.plugin, "FlightTrails.db")
             this.plugin.logger.info("Connected to SQLite for data saving ~ FlightTrails.db")
         }
+
         createTables()
     }
 
@@ -102,36 +103,34 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
      * @param sqlOnly true if you only want to get trail options from sql
      * @return
      */
-    fun getTrailOptions(player: OfflinePlayer, sqlOnly: Boolean = true): @Nullable TrailOptions? {
+    fun getTrailOptions(player: OfflinePlayer, sqlOnly: Boolean = true): TrailOptions? {
 
         if (!sqlOnly && cachedTrails[player.uniqueId] != null) {
             return cachedTrails[player.uniqueId]
         }
 
         var trailOptions: TrailOptions? = null
-        Thread() {
-            connector?.connect { connection ->
-                val query = "SELECT * FROM flighttrails_data WHERE player = ?"
+        connector?.connect { connection ->
+            val query = "SELECT * FROM flighttrails_data WHERE player = ?"
 
-                connection.prepareStatement(query).use { statement ->
-                    statement.setString(1, player.uniqueId.toString())
+            connection.prepareStatement(query).use { statement ->
+                statement.setString(1, player.uniqueId.toString())
 
-                    val result = statement.executeQuery()
-                    if (!result.next()) return@use
+                val result = statement.executeQuery()
+                if (!result.next()) return@use
 
-                    val trail = TrailOptions(player.uniqueId)
-                    trail.particle = Particle.valueOf(result.getString("particle"))
-                    trail.particleColor = PluginUtils.fromHex(result.getString("color"))
-                    trail.blockData = Material.valueOf(result.getString("blockData"))
-                    trail.itemData = ItemStack(Material.valueOf(result.getString("itemData")))
-                    trail.note = result.getInt("note")
+                val trail = TrailOptions(player.uniqueId)
+                trail.particle = Particle.valueOf(result.getString("particle"))
+                trail.particleColor = PluginUtils.fromHex(result.getString("color"))
+                trail.blockData = Material.valueOf(result.getString("blockData"))
+                trail.itemData = ItemStack(Material.valueOf(result.getString("itemData")))
+                trail.note = result.getInt("note")
 
-                    trailOptions = trail
-                    cachedTrails[player.uniqueId] = trail
+                trailOptions = trail
+                cachedTrails[player.uniqueId] = trail
 
-                }
             }
-        }.start()
+        }
 
         return trailOptions
     }
