@@ -77,7 +77,7 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
         val newLoc = Location(loc.world, loc.x, loc.y - 0.1, loc.z)
 
         val list = plugin.config.getStringList("disabled-particles").toMutableList()
-        list.addAll(listOf(Particle.MOB_APPEARANCE.name, Particle.FLASH.name, Particle.LEGACY_BLOCK_CRACK.name, Particle.LEGACY_BLOCK_DUST.name, Particle.LEGACY_FALLING_DUST.name))
+        list.addAll(listOf(Particle.LEGACY_BLOCK_CRACK.name, Particle.LEGACY_BLOCK_DUST.name, Particle.LEGACY_FALLING_DUST.name))
 
         if (list.contains(trail.particle.name))
             return
@@ -109,7 +109,7 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
 
         return container.createQuery().testState(lp.location, lp, this.plugin.flag)
     }
-    
+
     init {
         runTaskTimerAsynchronously(plugin, 0, 1)
     }

@@ -51,7 +51,10 @@ class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
                 if (!args[0].equals("set", true)) return null
 
                 when (args[1].toLowerCase()) {
-                    "particle" -> tabComplete.addAll(Particle.values().map { it.name.toLowerCase() })
+                    "particle" -> tabComplete.addAll(Particle.values()
+                        .filter { !this.plugin.config.getStringList("disabled-particles").contains(it.name) }
+                        .filter { !it.name.contains("LEGACY") }
+                        .map { it.name.toLowerCase() })
                     "block" -> tabComplete.addAll(Material.values().filter { it.isBlock && !it.name.endsWith("AIR") }.map { it.name.toLowerCase() })
                     "item" -> tabComplete.addAll(Material.values().filter { it.isItem && !it.name.endsWith("AIR") }.map { it.name.toLowerCase() })
                     "color", "colour" -> tabComplete.addAll(listOf("#HEX", *TrailColor.values().map { it.name.toLowerCase() }.toTypedArray()))

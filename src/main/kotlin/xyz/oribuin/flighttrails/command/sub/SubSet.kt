@@ -77,6 +77,11 @@ class SubSet(private val plugin: FlightTrails) : SubCommand(plugin) {
                     return
                 }
 
+                if (this.plugin.config.getStringList("disabled-particles").contains(particle.name)) {
+                    msg.sendMessage(sender, "invalid-particle")
+                    return;
+                }
+
                 options.particle = particle
                 msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "particle").addPlaceholder("value", particle.name.toLowerCase().replace("_", " ")).build())
 
@@ -95,7 +100,7 @@ class SubSet(private val plugin: FlightTrails) : SubCommand(plugin) {
 
 
                 options.particleColor = color
-                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "color").addPlaceholder("value", args[2].length).build())
+                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "color").addPlaceholder("value", args[2]).build())
                 data.saveTrailOptions(options)
             }
 

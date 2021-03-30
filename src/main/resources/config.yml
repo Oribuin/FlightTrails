@@ -13,11 +13,15 @@ mysql:
 particle-amount: 3
 particle-size: 1
 
+# Worlds trails will not spawn in.
 disabled-worlds:
   - 'Disabled-World-1'
   - 'Disabled-World-2'
 
-disabled-particles: []
+# Highly recommend keeping these particles disabled.
+disabled-particles:
+  - 'FLASH'
+  - 'MOB_APPEARANCE'
 
 # Should there be particles for elytras
 elytra-particles: true
