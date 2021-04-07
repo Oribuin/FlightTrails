@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.command.sub.SubToggle
 import xyz.oribuin.flighttrails.enums.TrailColor
-import xyz.oribuin.flighttrails.manager.MessageManager
 import xyz.oribuin.orilibrary.command.Command
 import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull
 
@@ -15,7 +14,7 @@ import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull
     description = "Main Command for Flight Trails",
     usage = "/trails",
     permission = "flighttrails.use",
-    aliases = [],
+    aliases = ["flighttrails"],
     playerOnly = false
 )
 
@@ -24,7 +23,10 @@ class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
     override fun runFunction(sender: @NotNull CommandSender, s: @NotNull String, strings: Array<String>) {
 
         if (strings.isNotEmpty()) {
-            this.runSubCommands(sender, strings, "unknown-command", "invalid-permission")
+            val unknownCommand = this.plugin.config.getString("unknown-command")
+            val noPerm = this.plugin.config.getString("invalid-permission")
+
+            this.runSubCommands(sender, strings, unknownCommand, noPerm)
             return
         }
 
