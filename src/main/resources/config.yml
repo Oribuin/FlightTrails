@@ -1,5 +1,5 @@
 # FlightTrails by Oribuin | Donate @ https://oribuin.xyz/donate
-# Join Discord for Support
+# Join https://oribuin.xyz/support if you are experiencing issues!
 
 mysql:
   enabled: false
@@ -10,8 +10,16 @@ mysql:
   password: Password
   ssl: true
 
+# Lower if you are experiencing lag.
+# Do not go lower than 1
 particle-amount: 3
+# This only applies to 'Redstone' Particles
 particle-size: 1
+
+# Default: 1
+# Delay in ticks between each particle, Raise interval if the particles seem to cause lag.
+# Do not go lower than 1
+spawn-interval: 1
 
 # Worlds trails will not spawn in.
 disabled-worlds:
@@ -25,7 +33,12 @@ disabled-particles:
 
 # Should there be particles for elytras
 elytra-particles: true
+# DEFAULT = Particles look like they are coming out of the wings
+# LEGACY = Spawns particles at feet instead
 elytra-particle-style: DEFAULT
+
+# Should Trails spawn if you are flying?
 creative-fly-particles: true
 
+# If the player has the invisibility potion effect, disable particles
 hide-if-invisible: true

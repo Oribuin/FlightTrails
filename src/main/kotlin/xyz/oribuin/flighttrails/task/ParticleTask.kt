@@ -111,7 +111,8 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
     }
 
     init {
-        runTaskTimerAsynchronously(plugin, 0, 1)
+        val interval = if (this.plugin.config.get("spawn-interval") == null) 1 else this.plugin.config.getInt("spawn-interval")
+        runTaskTimerAsynchronously(plugin, 0, interval.toLong())
     }
 
 }
