@@ -23,16 +23,15 @@ class FlightTrails : OriPlugin() {
         // Check if outdated plugin.
         if (this.isOutdated()) return
 
-        // Load managers asynchronously
-        this.server.scheduler.runTaskAsynchronously(this, Runnable {
-            this.getManager(DataManager::class.java)
-            val msg = this.getManager(MessageManager::class.java)
+        // Load Data Manager Asynchronously.
+        this.server.scheduler.runTaskAsynchronously(this, Runnable { this.getManager(DataManager::class.java) })
 
-            val prefix = msg.config.getString("prefix") ?: MessageManager.MsgSettings.PREFIX.defaultValue.toString()
+        // Load messages.yml
+        val msg = this.getManager(MessageManager::class.java)
+        val prefix = msg.config.getString("prefix") ?: MessageManager.MsgSettings.PREFIX.defaultValue.toString()
 
-            // Register Commands Asynchronously
-            CmdTrails(this).register(prefix + msg.config.getString("player-only"), prefix + msg.config.getString("invalid-permission"))
-        })
+        // Register Commands
+        CmdTrails(this).register(prefix + msg.config.getString("player-only"), prefix + msg.config.getString("invalid-permission"))
 
         if (this.server.pluginManager.getPlugin("PlaceholderAPI") != null) {
             this.logger.info("Detected PlaceholderAPI... Registering Expansion")
