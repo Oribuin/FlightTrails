@@ -1,6 +1,10 @@
 # FlightTrails by Oribuin | Donate @ https://oribuin.xyz/donate
 # Join https://oribuin.xyz/support if you are experiencing issues!
 
+# Used for debugging SQL Stuff
+debug: false
+
+# Enable if you want to save everything in MySQL
 mysql:
   enabled: false
   host: localhost

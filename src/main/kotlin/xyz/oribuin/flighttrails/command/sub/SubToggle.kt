@@ -13,7 +13,7 @@ import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull
 @SubCommand.Info(
     names = ["toggle"],
     usage = "/trails toggle",
-    permission = "flighttrails.toggle",
+    permission = "flighttrails.use",
     command = CmdTrails::class
 )
 @Suppress("UNUSED")

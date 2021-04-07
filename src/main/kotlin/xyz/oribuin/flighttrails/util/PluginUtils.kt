@@ -1,6 +1,7 @@
 package xyz.oribuin.flighttrails.util
 
 import org.bukkit.Color
+import xyz.oribuin.flighttrails.FlightTrails
 
 object PluginUtils {
 
@@ -17,4 +18,9 @@ object PluginUtils {
         return Color.fromRGB(color.red, color.green, color.blue)
     }
 
+    fun debug(plugin: FlightTrails, msg: String) {
+        if (!plugin.config.getBoolean("debug")) return
+
+        plugin.logger.warning("[DEBUGGER] $msg")
+    }
 }

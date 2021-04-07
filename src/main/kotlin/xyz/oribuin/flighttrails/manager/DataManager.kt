@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitTask
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.obj.TrailOptions
 import xyz.oribuin.flighttrails.util.PluginUtils
+import xyz.oribuin.flighttrails.util.PluginUtils.debug
 import xyz.oribuin.orilibrary.database.DatabaseConnector
 import xyz.oribuin.orilibrary.database.MySQLConnector
 import xyz.oribuin.orilibrary.database.SQLiteConnector
@@ -91,6 +92,8 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
                     statement.setInt(7, trail.note)
                     statement.executeUpdate()
                 }
+
+                debug(this.plugin, "Executed Query: REPLACE INTO REPLACE INTO flighttrails_data (player, enabled, particle, color, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?, ?))")
             }
         }
 
@@ -131,6 +134,7 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
                 trailOptions = trail
                 cachedTrails[player.uniqueId] = trail
 
+                debug(this.plugin, "Executed Query: SELECT * FROM flighttrails_data WHERE player = \"${player.uniqueId}\"")
             }
         }
 

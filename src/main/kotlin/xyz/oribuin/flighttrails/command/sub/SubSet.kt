@@ -1,6 +1,5 @@
 package xyz.oribuin.flighttrails.command.sub
 
-import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
 import org.bukkit.Color
 import org.bukkit.Material
@@ -13,13 +12,10 @@ import xyz.oribuin.flighttrails.command.CmdTrails
 import xyz.oribuin.flighttrails.enums.TrailColor
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
-import xyz.oribuin.flighttrails.obj.TrailOptions
 import xyz.oribuin.flighttrails.util.PluginUtils
 import xyz.oribuin.orilibrary.command.SubCommand
 import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull
-import xyz.oribuin.orilibrary.util.HexUtils
 import xyz.oribuin.orilibrary.util.StringPlaceholders
-import java.lang.Exception
 
 @SubCommand.Info(
     names = ["switch", "set"],
@@ -65,8 +61,6 @@ class SubSet(private val plugin: FlightTrails) : SubCommand(plugin) {
         if (!options.enabled) {
             options.enabled = true
         }
-
-
 
         when (args[1].toLowerCase()) {
             "particle" -> {
