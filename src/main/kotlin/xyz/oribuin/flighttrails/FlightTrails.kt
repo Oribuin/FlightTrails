@@ -9,6 +9,7 @@ import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
 import xyz.oribuin.flighttrails.task.ParticleTask
 import xyz.oribuin.orilibrary.OriPlugin
+import java.io.File
 import java.util.*
 
 class FlightTrails : OriPlugin() {
@@ -18,6 +19,9 @@ class FlightTrails : OriPlugin() {
 
 
     override fun enablePlugin() {
+
+        // Check if outdated plugin.
+        if (this.isOutdated()) return
 
         // Load managers asynchronously
         this.server.scheduler.runTaskAsynchronously(this, Runnable {
@@ -60,6 +64,18 @@ class FlightTrails : OriPlugin() {
 
         this.logger.warning("Failed to detect WorldGuard... Region support has not been enabled.")
 
+    }
+
+    private fun isOutdated(): Boolean {
+        val file = File(this.dataFolder, "data.yml")
+
+        if (file.exists()) {
+            this.logger.severe("Please reset your FlightTrails Folder for the new update! Disabling plugin... ")
+            this.server.pluginManager.disablePlugin(this)
+            return true
+        }
+
+        return false
     }
 
 }
