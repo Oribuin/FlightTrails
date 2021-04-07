@@ -26,16 +26,18 @@ class FlightTrails : OriPlugin() {
         // Load managers asynchronously
         this.server.scheduler.runTaskAsynchronously(this, Runnable {
             this.getManager(DataManager::class.java)
-            this.getManager(MessageManager::class.java)
+            val msg = this.getManager(MessageManager::class.java)
+
+            val prefix = msg.config.getString("prefix") ?: MessageManager.MsgSettings.PREFIX.defaultValue.toString()
+
+            // Register Commands Asynchronously
+            CmdTrails(this).register(prefix + msg.config.getString("player-only"), prefix + msg.config.getString("invalid-permission"))
         })
 
         if (this.server.pluginManager.getPlugin("PlaceholderAPI") != null) {
             this.logger.info("Detected PlaceholderAPI... Registering Expansion")
             Expansion(this).register()
         }
-
-        // Register Commands
-        CmdTrails(this).register(this.config, "player-only", "invalid-permission");
 
         // Register Listeners.
         this.server.pluginManager.registerEvents(PlayerJoinLeaveEvents(this), this)
