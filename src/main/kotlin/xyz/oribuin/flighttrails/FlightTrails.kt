@@ -10,7 +10,6 @@ import xyz.oribuin.flighttrails.manager.MessageManager
 import xyz.oribuin.flighttrails.task.ParticleTask
 import xyz.oribuin.orilibrary.OriPlugin
 import java.io.File
-import java.util.*
 
 class FlightTrails : OriPlugin() {
 

@@ -12,7 +12,6 @@ import xyz.oribuin.flighttrails.util.PluginUtils.debug
 import xyz.oribuin.orilibrary.database.DatabaseConnector
 import xyz.oribuin.orilibrary.database.MySQLConnector
 import xyz.oribuin.orilibrary.database.SQLiteConnector
-import xyz.oribuin.orilibrary.libs.jetbrains.annotations.Nullable
 import xyz.oribuin.orilibrary.manager.Manager
 import xyz.oribuin.orilibrary.util.FileUtils
 import java.sql.Connection
