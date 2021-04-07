@@ -29,9 +29,6 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
             // Check if player is vanished
             if (it.hasMetadata("vanished")) return@forEach
 
-            // Check if the player has trails enabled
-            if (!this.plugin.toggleList.contains(it.uniqueId)) return@forEach
-
             // Check if in disabled world
             if (this.plugin.config.getStringList("disabled-worlds").contains(it.world.name)) return@forEach
 
@@ -45,6 +42,9 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
             if (!canUseTrailsWorldguard(it)) return@forEach
 
             val options = data.getTrailOptions(it, sqlOnly = false) ?: return@forEach
+
+            // Check if the player has trails enabled
+            if (!options.enabled) return@forEach
 
             if (it.isFlying && plugin.config.getBoolean("creative-fly-particles")) {
                 this.spawnParticles(it, options, it.location)
@@ -67,6 +67,7 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
                 this.spawnParticles(it, options, it.location.clone().subtract(leftWing))
                 this.spawnParticles(it, options, it.location.clone().subtract(rightWing))
             }
+
         }
 
     }

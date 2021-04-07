@@ -55,7 +55,7 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
      */
     private fun createTables() {
         val queries = arrayOf(
-            "CREATE TABLE IF NOT EXISTS flighttrails_data (player VARCHAR(40), particle LONGTEXT, color VARCHAR(7), blockData VARCHAR(50), itemData VARCHAR(50), note INT, PRIMARY KEY(player))"
+            "CREATE TABLE IF NOT EXISTS flighttrails_data (player VARCHAR(40), enabled BOOLEAN, particle LONGTEXT, color VARCHAR(7), blockData VARCHAR(50), itemData VARCHAR(50), note INT, PRIMARY KEY(player))"
         )
 
         async {
@@ -79,15 +79,16 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
 
         async {
             connector?.connect { connection ->
-                val query = "REPLACE INTO flighttrails_data (player, particle, color, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?)"
+                val query = "REPLACE INTO flighttrails_data (player, enabled, particle, color, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?, ?)"
 
                 connection.prepareStatement(query).use { statement ->
                     statement.setString(1, uuid.toString())
-                    statement.setString(2, trail.particle.name)
-                    statement.setString(3, PluginUtils.toHex(trail.particleColor))
-                    statement.setString(4, trail.blockData.name)
-                    statement.setString(5, trail.itemData.type.name)
-                    statement.setInt(6, trail.note)
+                    statement.setBoolean(2, trail.enabled)
+                    statement.setString(3, trail.particle.name)
+                    statement.setString(4, PluginUtils.toHex(trail.particleColor))
+                    statement.setString(5, trail.blockData.name)
+                    statement.setString(6, trail.itemData.type.name)
+                    statement.setInt(7, trail.note)
                     statement.executeUpdate()
                 }
             }
@@ -120,6 +121,7 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
                 if (!result.next()) return@use
 
                 val trail = TrailOptions(player.uniqueId)
+                trail.enabled = result.getBoolean("enabled")
                 trail.particle = Particle.valueOf(result.getString("particle"))
                 trail.particleColor = PluginUtils.fromHex(result.getString("color"))
                 trail.blockData = Material.valueOf(result.getString("blockData"))

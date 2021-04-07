@@ -17,7 +17,7 @@ class Expansion(private val plugin: FlightTrails) : PlaceholderExpansion() {
             "color", "colour" -> return PluginUtils.toHex(trail.particleColor)
             "block" -> return trail.blockData.name
             "item" -> return trail.itemData.type.name
-            "enabled" -> return this.plugin.toggleList.contains(player.uniqueId).toString()
+            "enabled" -> return trail.enabled.toString()
             "note" -> return trail.note.toString()
         }
 

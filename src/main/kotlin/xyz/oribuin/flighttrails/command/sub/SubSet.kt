@@ -23,7 +23,7 @@ import java.lang.Exception
 
 @SubCommand.Info(
     names = ["switch", "set"],
-    usage = "/trails set <block/color/particle/item> <value> [Player]",
+    usage = "/trails set <block/color/particle/item/note> <value> [Player]",
     permission = "flighttrails.set",
     command = CmdTrails::class
 )
@@ -60,12 +60,13 @@ class SubSet(private val plugin: FlightTrails) : SubCommand(plugin) {
             sender
         }
 
-        if (!this.plugin.toggleList.contains(player.uniqueId)) {
-            msg.sendMessage(sender, "trails-enabled")
-            this.plugin.toggleList.add(player.uniqueId)
+        val options = data.getTrailOptions(player, false) ?: return
+
+        if (!options.enabled) {
+            options.enabled = true
         }
 
-        val options = data.getTrailOptions(player, false) ?: return
+
 
         when (args[1].toLowerCase()) {
             "particle" -> {

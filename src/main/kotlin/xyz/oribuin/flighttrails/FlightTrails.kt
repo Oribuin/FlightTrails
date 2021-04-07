@@ -14,9 +14,7 @@ import java.util.*
 
 class FlightTrails : OriPlugin() {
 
-    var toggleList = mutableListOf<UUID>()
     lateinit var flag: StateFlag
-
 
     override fun enablePlugin() {
 
@@ -46,7 +44,7 @@ class FlightTrails : OriPlugin() {
     }
 
     override fun disablePlugin() {
-        this.toggleList.clear()
+
     }
 
     override fun onLoad() {
