@@ -35,10 +35,10 @@ class MessageManager(private val plugin: FlightTrails) : Manager(plugin) {
             return
         }
 
-        if ((config.getString(messageId) ?: return).isNotEmpty()) {
-            val msg = colorify("${config.getString("prefix") ?: MsgSettings.PREFIX.defaultValue}" + placeholders.apply(config.getString(messageId) ?: "#ff4072$messageId is null in messages.yml"))
-            sender.sendMessage(msg)
-        }
+        if ((config.getString(messageId) ?: return).isEmpty()) return
+
+        val msg = colorify("${config.getString("prefix") ?: MsgSettings.PREFIX.defaultValue}" + placeholders.apply(config.getString(messageId) ?: "#ff4072$messageId is null in messages.yml"))
+        sender.sendMessage(msg)
     }
 
     companion object {

@@ -23,8 +23,6 @@ class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
 
     override fun runFunction(sender: @NotNull CommandSender, s: @NotNull String, strings: Array<String>) {
 
-        val msg = this.plugin.getManager(MessageManager::class.java)
-
         if (strings.isNotEmpty()) {
             this.runSubCommands(sender, strings, "unknown-command", "invalid-permission")
             return
