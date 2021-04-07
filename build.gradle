@@ -34,7 +34,6 @@ dependencies {
 
     implementation fileTree(dir: 'implementation', includes: ['*.jar'])
     implementation 'me.mattstudios.utils:matt-framework-gui:2.0.2'
-    implementation 'io.github.bananapuncher714:NBTEditor:7.16'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
