@@ -46,13 +46,19 @@ class FlightTrails : OriPlugin() {
 
     override fun onLoad() {
 
-        this.server.pluginManager.getPlugin("WorldGuard") ?: return
+        val plugin = this.server.pluginManager.getPlugin("WorldGuard")
 
-        val registry = WorldGuard.getInstance().flagRegistry
+        if (plugin != null && plugin.isEnabled) {
+            this.logger.info("Detected WorldGuard... Registering 'flighttrails-trail' flag!")
+            val registry = WorldGuard.getInstance().flagRegistry
 
-        val flag = StateFlag("flighttrails-trails", true)
-        registry.register(flag)
-        this.flag = flag
+            val flag = StateFlag("flighttrails-trails", true)
+            registry.register(flag)
+            this.flag = flag
+            return
+        }
+
+        this.logger.warning("Failed to detect WorldGuard... Region support has not been enabled.")
 
     }
 
