@@ -24,7 +24,7 @@ import xyz.oribuin.orilibrary.util.StringPlaceholders
     command = CmdTrails::class
 )
 @Suppress("UNUSED")
-class SubSet(private val plugin: FlightTrails) : SubCommand(plugin) {
+class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(plugin, command) {
 
     override fun executeArgument(sender: @NotNull CommandSender, args: Array<String>) {
         val msg = this.plugin.getManager(MessageManager::class.java)

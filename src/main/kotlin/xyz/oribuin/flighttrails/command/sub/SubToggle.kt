@@ -17,7 +17,7 @@ import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull
     command = CmdTrails::class
 )
 @Suppress("UNUSED")
-class SubToggle(private val plugin: FlightTrails) : SubCommand(plugin) {
+class SubToggle(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(plugin, command) {
 
     override fun executeArgument(sender: @NotNull CommandSender, args: Array<String>) {
         val msg = this.plugin.getManager(MessageManager::class.java)

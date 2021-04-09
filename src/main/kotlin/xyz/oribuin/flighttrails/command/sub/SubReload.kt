@@ -16,7 +16,7 @@ import xyz.oribuin.orilibrary.util.StringPlaceholders
     command = CmdTrails::class
 )
 @Suppress("UNUSED")
-class SubReload(private val plugin: FlightTrails) : SubCommand(plugin) {
+class SubReload(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(plugin, command) {
 
     override fun executeArgument(sender: @NotNull CommandSender, args: Array<String>) {
 

@@ -36,7 +36,7 @@ class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
         }
 
 
-        SubToggle(plugin).executeArgument(sender, strings)
+        SubToggle(plugin, this).executeArgument(sender, strings)
     }
 
     override fun completeString(sender: CommandSender, label: String, args: Array<String>): MutableList<String>? {
@@ -45,7 +45,7 @@ class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
         if (!sender.hasPermission("flighttrails.use")) return playerList(sender)
 
         when (args.size) {
-            1 -> tabComplete.addAll(listOf("toggle", "reload", "set"))
+            1 -> tabComplete.addAll(listOf("toggle", "reload", "set", "help"))
             2 -> {
                 if (!args[0].equals("set", true)) return null
 
