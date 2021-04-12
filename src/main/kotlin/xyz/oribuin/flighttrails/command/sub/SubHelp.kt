@@ -11,7 +11,7 @@ import xyz.oribuin.orilibrary.util.HexUtils
 
 @SubCommand.Info(
     names = ["help"],
-    permission = "flighttrails.help",
+    permission = "flighttrails.use",
     usage = "/trails help",
     command = CmdTrails::class
 )

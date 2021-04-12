@@ -13,7 +13,7 @@ import java.io.File
 
 class FlightTrails : OriPlugin() {
 
-    lateinit var flag: StateFlag
+    var flag: StateFlag? = null
 
     override fun enablePlugin() {
 
@@ -55,8 +55,9 @@ class FlightTrails : OriPlugin() {
             val registry = WorldGuard.getInstance().flagRegistry
 
             val flag = StateFlag("flighttrails-trails", true)
-            registry.register(flag)
             this.flag = flag
+            registry.register(flag)
+
             return
         }
 

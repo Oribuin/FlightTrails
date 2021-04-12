@@ -19,7 +19,7 @@ import xyz.oribuin.orilibrary.util.StringPlaceholders
 
 @SubCommand.Info(
     names = ["switch", "set"],
-    usage = "/trails set <block/color/particle/item/note> <value> [Player]",
+    usage = "/trails set <block/color/particle/item/note> <value>",
     permission = "flighttrails.set",
     command = CmdTrails::class
 )

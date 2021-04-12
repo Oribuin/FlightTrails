@@ -103,6 +103,8 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
 
     private fun canUseTrailsWorldguard(player: Player): Boolean {
         val plugin = this.plugin.server.pluginManager.getPlugin("WorldGuard") ?: return true
+        this.plugin.flag ?: return true
+
         if (!plugin.isEnabled) return true
 
         val lp = WorldGuardPlugin.inst().wrapPlayer(player)
