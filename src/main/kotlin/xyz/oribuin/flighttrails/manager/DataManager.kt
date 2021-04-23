@@ -146,6 +146,6 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
     }
 
     private fun async(callback: Consumer<BukkitTask>) {
-        Thread { this.plugin.server.scheduler.runTaskAsynchronously(this.plugin, callback) }.start()
+        this.plugin.server.scheduler.runTaskAsynchronously(this.plugin, callback)
     }
 }
