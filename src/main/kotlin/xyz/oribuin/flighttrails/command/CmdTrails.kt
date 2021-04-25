@@ -4,6 +4,9 @@ import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.command.CommandSender
 import xyz.oribuin.flighttrails.FlightTrails
+import xyz.oribuin.flighttrails.command.sub.SubHelp
+import xyz.oribuin.flighttrails.command.sub.SubReload
+import xyz.oribuin.flighttrails.command.sub.SubSet
 import xyz.oribuin.flighttrails.command.sub.SubToggle
 import xyz.oribuin.flighttrails.enums.TrailColor
 import xyz.oribuin.flighttrails.manager.MessageManager
@@ -16,7 +19,8 @@ import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull
     usage = "/trails",
     permission = "flighttrails.use",
     aliases = ["flighttrails"],
-    playerOnly = false
+    playerOnly = false,
+    subcommands = [SubHelp::class, SubReload::class, SubSet::class, SubToggle::class]
 )
 
 class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
