@@ -63,7 +63,6 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
                 val leftWing = VectorUtils.rotateVector(Vector(-0.25, -0.5, distanceFromFeetCenter), it.location.yaw, it.location.pitch)
                 val rightWing = VectorUtils.rotateVector(Vector(-0.25, -0.5, -distanceFromFeetCenter), it.location.yaw, it.location.pitch)
 
-
                 this.spawnParticles(it, options, it.location.clone().subtract(leftWing))
                 this.spawnParticles(it, options, it.location.clone().subtract(rightWing))
             }
@@ -86,7 +85,7 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
         when (trail.particle) {
             Particle.REDSTONE -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, Particle.DustOptions(trail.particleColor, (this.plugin.config.get("particle-size") as Int? ?: 1).toFloat()))
 
-            Particle.SPELL_MOB, Particle.SPELL_MOB_AMBIENT -> player.world.spawnParticle(trail.particle, newLoc, 0, trail.particleColor.red / 255.0, trail.particleColor.green / 255.0, trail.particleColor.blue / 255.0, 0.0, 0.0)
+            Particle.SPELL_MOB, Particle.SPELL_MOB_AMBIENT -> player.world.spawnParticle(trail.particle, newLoc, 0, trail.particleColor.red / 255.0, trail.particleColor.green / 255.0, trail.particleColor.blue / 255.0, 1.0)
 
             Particle.BLOCK_CRACK, Particle.BLOCK_DUST, Particle.FALLING_DUST -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0, trail.blockData.createBlockData())
 

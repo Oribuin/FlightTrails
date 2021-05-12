@@ -36,8 +36,15 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
             val ssl = config.getBoolean("mysql.ssl")
 
             // Connect to MySQL
-            connector = MySQLConnector(this.plugin, hostName, port, dbname, username, password, ssl)
-            this.plugin.logger.info("Connected to MySQL for data saving ~ $hostName:$port")
+            try {
+                connector = MySQLConnector(this.plugin, hostName, port, dbname, username, password, ssl)
+                this.plugin.logger.info("Connected to MySQL for data saving ~ $hostName:$port")
+            } catch (ex: Exception) {
+                this.plugin.logger.severe("Unable to connect to MySQL Database, Disabling plugin...")
+                ex.printStackTrace()
+                this.plugin.server.pluginManager.disablePlugin(plugin)
+            }
+
         } else {
             // Create DB Files
             FileUtils.createFile(plugin, "FlightTrails.db")
