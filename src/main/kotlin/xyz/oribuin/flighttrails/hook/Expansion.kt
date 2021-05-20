@@ -29,10 +29,11 @@ class Expansion(private val plugin: FlightTrails) : PlaceholderExpansion() {
     }
 
     override fun getIdentifier(): String {
-        return this.plugin.description.name
+        return this.plugin.description.name.toLowerCase()
     }
 
     override fun getVersion(): String {
         return this.plugin.description.version
     }
+
 }

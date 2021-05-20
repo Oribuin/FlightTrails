@@ -4,8 +4,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.30'
 }
 
-group 'xyz.oribuin'
-version '2.0.4'
+group 'xyz.oribuin.flighttrails'
+version '2.0.5'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -17,7 +17,6 @@ compileJava {
 repositories {
     mavenCentral()
     mavenLocal()
-    jcenter()
 
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url 'https://repo.rosewooddev.io/repository/public/' }
@@ -25,15 +24,19 @@ repositories {
     maven { url 'https://repo.codemc.org/repository/maven-public' }
     maven { url 'https://jitpack.io' }
     maven { url 'https://maven.enginehub.org/repo/' }
+
+    flatDir {
+        dirs "libs"
+    }
+
 }
 
 dependencies {
-    shadow 'org.spigotmc:spigot:1.16.4'
-    shadow 'me.clip:placeholderapi:2.10.9'
-    shadow 'com.sk89q.worldguard:worldguard-bukkit:7.0.4'
+    compileOnly 'org.spigotmc:spigot:1.16.4'
+    compileOnly 'me.clip:placeholderapi:2.10.9'
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.4'
 
-    implementation fileTree(dir: 'implementation', includes: ['*.jar'])
-    implementation 'me.mattstudios.utils:matt-framework-gui:2.0.2'
+    implementation name: 'OriLib-1.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
@@ -47,19 +50,13 @@ shadowJar {
     archiveClassifier.set(null)
 
     // Relocate all required dependencies.
-    relocate('kotlin', 'xyz.oribuin.flighttrails.libs.kotlin')
-    relocate('org.jetbrains', 'xyz.oribuin.flighttrails.libs.jetbrains')
-    relocate('org.intellij', 'xyz.oribuin.flighttrails.libs.intellij')
-    relocate('xyz.oribuin.orilibrary', 'xyz.oribuin.flighttrails.libs.orilib')
-    relocate('org.slf4j', 'xyz.oribuin.flighttrails.libs.slf4j')
-    relocate('com.zaxxer', 'xyz.oribuin.flighttrails.libs.zaxxer')
-    relocate('org.reflections', 'xyz.oribuin.flighttrails.libs.reflections')
-    relocate('dev.me.mattstudios.mfgui', 'xyz.oribuin.flighttrails.libs.mfgui')
-    relocate('javassist', 'xyz.oribuin.flighttrails.libs.javassist')
-    relocate('io.github.bananapuncher714', 'xyz.oribuin.flighttrails.libs.nbteditor')
+    relocate("kotlin", "${project.group}.libs.kotlin")
+    relocate("org.jetbrains", "${project.group}.libs.jetbrains")
+    relocate("xyz.oribuin.orilibrary", "${project.group}.libs.orilib")
 
     // Okay minimize, don't fuck me over
     minimize()
 }
 
 sourceSets.main.java.srcDir("src/main/java")
+tasks.getByName("build").dependsOn("shadowJar")
