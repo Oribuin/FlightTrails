@@ -53,7 +53,7 @@ class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
             2 -> {
                 if (!args[0].equals("set", true)) return null
 
-                tabComplete.addAll(listOf("particle", "block", "item", "color", "note"))
+                tabComplete.addAll(listOf("particle", "block", "item", "color", "transition", "note"))
             }
 
             3 -> {
@@ -63,10 +63,11 @@ class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
                     "particle" -> tabComplete.addAll(Particle.values()
                         .filter { !this.plugin.config.getStringList("disabled-particles").contains(it.name) }
                         .filter { !it.name.contains("LEGACY") }
+                        .filter { it != Particle.VIBRATION }
                         .map { it.name.toLowerCase() })
                     "block" -> tabComplete.addAll(Material.values().filter { it.isBlock && !it.name.endsWith("AIR") }.map { it.name.toLowerCase() })
                     "item" -> tabComplete.addAll(Material.values().filter { it.isItem && !it.name.endsWith("AIR") }.map { it.name.toLowerCase() })
-                    "color", "colour" -> tabComplete.addAll(listOf("#HEX", *TrailColor.values().map { it.name.toLowerCase() }.toTypedArray()))
+                    "color", "colour", "transition" -> tabComplete.addAll(listOf("#HEX", *TrailColor.values().map { it.name.toLowerCase() }.toTypedArray()))
                     "note" -> for (i in 0..24) tabComplete.add(i.toString())
                 }
 

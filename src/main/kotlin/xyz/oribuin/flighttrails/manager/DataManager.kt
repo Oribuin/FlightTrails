@@ -6,16 +6,17 @@ import org.bukkit.Particle
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitTask
 import xyz.oribuin.flighttrails.FlightTrails
+import xyz.oribuin.flighttrails.migration.CreateTable
+import xyz.oribuin.flighttrails.migration.ModifyTable
 import xyz.oribuin.flighttrails.obj.TrailOptions
 import xyz.oribuin.flighttrails.util.PluginUtils
-import xyz.oribuin.flighttrails.util.PluginUtils.debug
 import xyz.oribuin.orilibrary.database.DatabaseConnector
 import xyz.oribuin.orilibrary.database.MySQLConnector
 import xyz.oribuin.orilibrary.database.SQLiteConnector
 import xyz.oribuin.orilibrary.manager.Manager
 import xyz.oribuin.orilibrary.util.FileUtils
-import java.sql.Connection
 import java.util.*
+import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
 class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
@@ -36,14 +37,8 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
             val ssl = config.getBoolean("mysql.ssl")
 
             // Connect to MySQL
-            try {
-                connector = MySQLConnector(this.plugin, hostName, port, dbname, username, password, ssl)
-                this.plugin.logger.info("Connected to MySQL for data saving ~ $hostName:$port")
-            } catch (ex: Exception) {
-                this.plugin.logger.severe("Unable to connect to MySQL Database, Disabling plugin...")
-                ex.printStackTrace()
-                this.plugin.server.pluginManager.disablePlugin(plugin)
-            }
+            connector = MySQLConnector(this.plugin, hostName, port, dbname, username, password, ssl)
+            this.plugin.logger.info("Connected to MySQL for data saving ~ $hostName:$port")
 
         } else {
             // Create DB Files
@@ -54,25 +49,27 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
             this.plugin.logger.info("Connected to SQLite for data saving ~ FlightTrails.db")
         }
 
-        createTables()
+        if (connector == null) {
+            this.plugin.logger.severe("Unable to connect to a database, Are you sure you entered correct MySQL Options?")
+            this.plugin.logger.severe("Disabling Plugin...")
+            this.plugin.server.pluginManager.disablePlugin(this.plugin)
+            return
+        }
+
+        runDataMigration()
     }
 
     /**
      * Create all the required SQL Tables for the plugin.
      */
-    private fun createTables() {
-        val queries = arrayOf(
-            "CREATE TABLE IF NOT EXISTS flighttrails_data (player VARCHAR(40), enabled BOOLEAN, particle LONGTEXT, color VARCHAR(7), blockData VARCHAR(50), itemData VARCHAR(50), note INT, PRIMARY KEY(player))"
-        )
+    private fun runDataMigration() {
 
-        async {
-            connector?.connect { connection: Connection ->
-                connection.createStatement().use { statement ->
-                    for (query in queries) statement.addBatch(query)
-                    statement.executeBatch()
-                }
-            }
+        connector?.connect { it ->
+            CompletableFuture.runAsync { CreateTable().migrate(connector, it) }
+                .thenRunAsync { ModifyTable().migrate(connector, it) }
+
         }
+
     }
 
     /**
@@ -86,20 +83,20 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
 
         async {
             connector?.connect { connection ->
-                val query = "REPLACE INTO flighttrails_data (player, enabled, particle, color, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                val query = "REPLACE INTO flighttrails_data (player, enabled, particle, color, transitionColor, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 
                 connection.prepareStatement(query).use { statement ->
                     statement.setString(1, uuid.toString())
                     statement.setBoolean(2, trail.enabled)
                     statement.setString(3, trail.particle.name)
                     statement.setString(4, PluginUtils.toHex(trail.particleColor))
-                    statement.setString(5, trail.blockData.name)
-                    statement.setString(6, trail.itemData.type.name)
-                    statement.setInt(7, trail.note)
+                    statement.setString(5, PluginUtils.toHex(trail.transitionColor))
+                    statement.setString(6, trail.blockData.name)
+                    statement.setString(7, trail.itemData.type.name)
+                    statement.setInt(8, trail.note)
                     statement.executeUpdate()
                 }
 
-                debug(this.plugin, "Executed Query: REPLACE INTO REPLACE INTO flighttrails_data (player, enabled, particle, color, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?, ?))")
             }
         }
 
@@ -133,14 +130,13 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
                 trail.enabled = result.getBoolean("enabled")
                 trail.particle = Particle.valueOf(result.getString("particle"))
                 trail.particleColor = PluginUtils.fromHex(result.getString("color"))
+                trail.transitionColor = PluginUtils.fromHex(result.getString("transitionColor"))
                 trail.blockData = Material.valueOf(result.getString("blockData"))
                 trail.itemData = ItemStack(Material.valueOf(result.getString("itemData")))
                 trail.note = result.getInt("note")
 
                 trailOptions = trail
                 cachedTrails[player.uniqueId] = trail
-
-                debug(this.plugin, "Executed Query: SELECT * FROM flighttrails_data WHERE player = \"${player.uniqueId}\"")
             }
         }
 
@@ -149,7 +145,7 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
 
 
     override fun disable() {
-        this.connector?.closeConnection()
+        (this.connector ?: return).closeConnection()
     }
 
     private fun async(callback: Consumer<BukkitTask>) {

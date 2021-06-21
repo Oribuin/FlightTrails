@@ -67,6 +67,7 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
 
                 val particle: Particle
 
+
                 try {
                     particle = Particle.valueOf(args[2].toUpperCase())
                 } catch (ex: Exception) {
@@ -74,7 +75,7 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
                     return
                 }
 
-                if (this.plugin.config.getStringList("disabled-particles").contains(particle.name)) {
+                if (particle == Particle.VIBRATION || this.plugin.config.getStringList("disabled-particles").contains(particle.name)) {
                     msg.sendMessage(sender, "invalid-particle")
                     return;
                 }
@@ -85,7 +86,7 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
                 data.saveTrailOptions(options)
             }
 
-            "color" -> {
+            "color", "colour" -> {
                 val color: Color
 
                 try {
@@ -97,6 +98,21 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
 
                 options.particleColor = color
                 msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "color").addPlaceholder("value", args[2].replace("#", "")).build())
+                data.saveTrailOptions(options)
+            }
+
+            "transition" -> {
+                val color: Color
+
+                try {
+                    color = if (args[2].startsWith("#")) PluginUtils.fromAwtColor(java.awt.Color.decode(args[2].toUpperCase())) else TrailColor.valueOf(args[2].toUpperCase()).color
+                } catch (ex: Exception) {
+                    msg.sendMessage(sender, "invalid-color")
+                    return
+                }
+
+                options.transitionColor = color
+                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "transition").addPlaceholder("value", args[2].replace("#", "")).build())
                 data.saveTrailOptions(options)
             }
 
