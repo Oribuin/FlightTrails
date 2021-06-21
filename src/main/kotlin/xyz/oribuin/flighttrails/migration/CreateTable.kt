@@ -6,8 +6,6 @@ import java.sql.Connection
 class CreateTable : DataMigration(1) {
 
     override fun migrate(connector: DatabaseConnector?, connection: Connection) {
-
-        println("Running create tables")
         connection.prepareStatement(
             "CREATE TABLE IF NOT EXISTS flighttrails_data (" +
                     "player VARCHAR(40)," +
