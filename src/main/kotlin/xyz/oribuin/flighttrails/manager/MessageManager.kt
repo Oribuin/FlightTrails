@@ -1,8 +1,11 @@
 package xyz.oribuin.flighttrails.manager
 
+import me.clip.placeholderapi.PlaceholderAPI
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.Player
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.orilibrary.manager.Manager
 import xyz.oribuin.orilibrary.util.FileUtils
@@ -15,89 +18,112 @@ class MessageManager(private val plugin: FlightTrails) : Manager(plugin) {
     lateinit var config: FileConfiguration
 
     override fun enable() {
-        FileUtils.createFile(plugin, MESSAGE_CONFIG)
-        config = YamlConfiguration.loadConfiguration(File(plugin.dataFolder, MESSAGE_CONFIG))
+        this.config = YamlConfiguration.loadConfiguration(FileUtils.createFile(this.plugin, "messages.yml"))
 
-        for (value in MsgSettings.values()) {
-            if (config.get(value.key) == null) {
-                config.set(value.key, value.defaultValue)
+        // Set any values that dont exist.
+        for (msg in Messages.values()) {
+
+            val key = msg.name.lowercase().replace("_", "-")
+
+            if (config.get(key) == null) {
+                config.set(key, msg.value)
             }
-            value.load(config)
+
         }
 
-        config.save(File(plugin.dataFolder, MESSAGE_CONFIG))
+        config.save(File(plugin.dataFolder, "messages.yml"))
+
     }
 
+    /**
+     * Send a configuration message without any placeholders
+     *
+     * @param receiver  The CommandSender who receives the message.
+     * @param messageId The message path
+     */
+    fun send(receiver: CommandSender, messageId: String) {
+        this.send(receiver, messageId, StringPlaceholders.empty())
+    }
 
-    fun sendMessage(sender: CommandSender, messageId: String, placeholders: StringPlaceholders = StringPlaceholders.empty()) {
-        if (config.getString(messageId) == null) {
-            sender.sendMessage(colorify("#ff4072$messageId is null in messages.yml"))
+    /**
+     * Send a configuration messageId with placeholders.
+     *
+     * @param receiver     The CommandSender who receives the messageId.
+     * @param messageId    The messageId path
+     * @param placeholders The Placeholders
+     */
+    fun send(receiver: CommandSender, messageId: String, placeholders: StringPlaceholders) {
+        val msg = this.config.getString(messageId)
+
+        if (msg == null) {
+            receiver.sendMessage(colorify("&c&lError &8| &fThis is an invalid message in the messages file, Please contact the server owner about this issue. (Id: $messageId)"))
             return
         }
 
-        if ((config.getString(messageId) ?: return).isEmpty()) return
-
-        val msg = colorify("${config.getString("prefix") ?: MsgSettings.PREFIX.defaultValue}" + placeholders.apply(config.getString(messageId) ?: "#ff4072$messageId is null in messages.yml"))
-        sender.sendMessage(msg)
+        receiver.sendMessage(colorify(apply(receiver, placeholders.apply(msg))))
     }
 
-    companion object {
-        private const val MESSAGE_CONFIG = "messages.yml"
+    /**
+     * Send a raw message to the receiver without any placeholders
+     *
+     *
+     * Use this to send a message to a player without the message being defined in a config.
+     *
+     * @param receiver The message receiver
+     * @param message  The raw message
+     */
+    fun sendRaw(receiver: CommandSender, message: String?) {
+        this.sendRaw(receiver, message, StringPlaceholders.empty())
+    }
+
+    /**
+     * Send a raw message to the receiver with placeholders.
+     *
+     *
+     * Use this to send a message to a player without the message being defined in a config.
+     *
+     * @param receiver     The message receiver
+     * @param message      The message
+     * @param placeholders Message Placeholders.
+     */
+    fun sendRaw(receiver: CommandSender, message: String?, placeholders: StringPlaceholders) {
+        receiver.sendMessage(colorify(apply(receiver, placeholders.apply(message))))
+    }
+
+    fun apply(sender: CommandSender, text: String): String {
+        return if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
+            text
+        else PlaceholderAPI.setPlaceholders(if (sender is Player) sender else null, text)
     }
 
     override fun disable() {
-        // Unused
+
     }
 
-    enum class MsgSettings(val key: String, val defaultValue: Any) {
+    /**
+     * Define all the configuration values.
+     */
+    enum class Messages(val value: String) {
+
         // Misc Stuff
-        PREFIX("prefix", "&b&lFlightTrails &8| &f"),
-        TRAILS_ENABLED("trails-enabled", "You have enabled your flight trails."),
-        TRAILS_DISABLED("trails-disabled", "You have disabled your flight trails."),
-        RELOAD("reload", "You have reloaded FlightTrails (%version%&f)"),
-        SET_VALUE("set-value", "You have set your trail %type% to %value%"),
+        PREFIX("&b&lFlightTrails &8| &f"),
+        TRAILS_ENABLED("You have enabled your flight trails."),
+        TRAILS_DISABLED("You have disabled your flight trails."),
+        RELOAD("You have reloaded FlightTrails (%version%&f)"),
+        SET_VALUE("You have set your trail %type% to %value%"),
 
         // Error Messages
-        INVALID_PLAYER("invalid-player", "&cPlease provide a valid player name."),
-        INVALID_PARTICLE("invalid-particle", "&cPlease provide a valid particle."),
-        INVALID_COLOR("invalid-color", "&cPlease provide a valid color."),
-        INVALID_BLOCK("invalid-block", "&cPlease provide a valid block."),
-        INVALID_ITEM("invalid-item", "&cPlease provide a valid item."),
-        INVALID_NOTE("invalid-note", "&cPlease provide a valid number between 0-24"),
+        INVALID_PLAYER("&cPlease provide a valid player name."),
+        INVALID_PARTICLE("&cPlease provide a valid particle."),
+        INVALID_COLOR("&cPlease provide a valid color."),
+        INVALID_BLOCK("&cPlease provide a valid block."),
+        INVALID_ITEM("&cPlease provide a valid item."),
+        INVALID_NOTE("&cPlease provide a valid number between 0-24"),
 
-        UNKNOWN_COMMAND("unknown-command", "&cPlease provide a valid command."),
-        INVALID_ARGUMENTS("invalid-arguments", "&cPlease provide valid arguments. Correct usage is %usage%"),
-        INVALID_PERMISSION("invalid-permission", "&cYou do not have permission for this command."),
-        PLAYER_ONLY("player-only", "&cOnly a player can execute this command.");
-
-        private var value: Any? = null
-
-        /**
-         * Gets the setting as a boolean
-         *
-         * @return The setting as a boolean
-         */
-        val boolean: Boolean
-            get() = value as Boolean
-
-        /**
-         * @return the setting as a String
-         */
-        val string: String
-            get() = value as String
-
-        /**
-         * @return the setting as a string list
-         */
-        val stringList: List<*>
-            get() = value as List<*>
-
-        /**
-         * Loads the value from the config and caches it
-         */
-        fun load(config: FileConfiguration) {
-            value = config[key]
-        }
-
+        UNKNOWN_COMMAND("&cPlease provide a valid command."),
+        INVALID_ARGUMENTS("&cPlease provide valid arguments. Correct usage is %usage%"),
+        INVALID_PERMISSION("&cYou do not have permission for this command."),
+        PLAYER_ONLY("&cOnly a player can execute this command.");
     }
+
 }

@@ -25,7 +25,7 @@ class SubToggle(private val plugin: FlightTrails, command: CmdTrails) : SubComma
 
         // Check if sender is player
         if (sender !is Player) {
-            msg.sendMessage(sender, "player-only")
+            msg.send(sender, "player-only")
             return
         }
 
@@ -33,8 +33,8 @@ class SubToggle(private val plugin: FlightTrails, command: CmdTrails) : SubComma
         options.enabled = !options.enabled
         data.saveTrailOptions(options)
 
-        if (options.enabled) msg.sendMessage(sender, "trails-enabled")
-        else msg.sendMessage(sender, "trails-disabled")
+        if (options.enabled) msg.send(sender, "trails-enabled")
+        else msg.send(sender, "trails-disabled")
     }
 
 }

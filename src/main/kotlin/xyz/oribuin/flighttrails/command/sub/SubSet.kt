@@ -32,7 +32,7 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
 
         // Check args
         if (args.size < 3) {
-            msg.sendMessage(sender, "invalid-arguments", StringPlaceholders.single("usage", this.annotation.usage))
+            msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.annotation.usage))
             return
         }
 
@@ -40,7 +40,7 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
         val player: Player = if (args.size == 4 && sender.hasPermission("flighttrails.set.other")) {
 
             if (Bukkit.getPlayer(args[3]) == null) {
-                msg.sendMessage(sender, "invalid-player")
+                msg.send(sender, "invalid-player")
                 return
             }
 
@@ -49,7 +49,7 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
         } else {
 
             if (sender !is Player) {
-                msg.sendMessage(sender, "player-only")
+                msg.send(sender, "player-only")
                 return
             }
 
@@ -62,26 +62,26 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
             options.enabled = true
         }
 
-        when (args[1].toLowerCase()) {
+        when (args[1].lowercase()) {
             "particle" -> {
 
                 val particle: Particle
 
 
                 try {
-                    particle = Particle.valueOf(args[2].toUpperCase())
+                    particle = Particle.valueOf(args[2].uppercase())
                 } catch (ex: Exception) {
-                    msg.sendMessage(sender, "invalid-particle")
+                    msg.send(sender, "invalid-particle")
                     return
                 }
 
                 if (particle == Particle.VIBRATION || this.plugin.config.getStringList("disabled-particles").contains(particle.name)) {
-                    msg.sendMessage(sender, "invalid-particle")
+                    msg.send(sender, "invalid-particle")
                     return;
                 }
 
                 options.particle = particle
-                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "particle").addPlaceholder("value", particle.name.toLowerCase().replace("_", " ")).build())
+                msg.send(player, "set-value", StringPlaceholders.builder("type", "particle").addPlaceholder("value", particle.name.lowercase().replace("_", " ")).build())
 
                 data.saveTrailOptions(options)
             }
@@ -90,14 +90,18 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
                 val color: Color
 
                 try {
-                    color = if (args[2].startsWith("#")) PluginUtils.fromAwtColor(java.awt.Color.decode(args[2].toUpperCase())) else TrailColor.valueOf(args[2].toUpperCase()).color
+                    color = if (args[2].startsWith("#"))
+                        PluginUtils.fromAwtColor(java.awt.Color.decode(args[2].uppercase()))
+                    else
+                        TrailColor.valueOf(args[2].uppercase()).color
+
                 } catch (ex: Exception) {
-                    msg.sendMessage(sender, "invalid-color")
+                    msg.send(sender, "invalid-color")
                     return
                 }
 
                 options.particleColor = color
-                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "color").addPlaceholder("value", args[2].replace("#", "")).build())
+                msg.send(player, "set-value", StringPlaceholders.builder("type", "color").addPlaceholder("value", args[2].replace("#", "")).build())
                 data.saveTrailOptions(options)
             }
 
@@ -105,39 +109,39 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
                 val color: Color
 
                 try {
-                    color = if (args[2].startsWith("#")) PluginUtils.fromAwtColor(java.awt.Color.decode(args[2].toUpperCase())) else TrailColor.valueOf(args[2].toUpperCase()).color
+                    color = if (args[2].startsWith("#")) PluginUtils.fromAwtColor(java.awt.Color.decode(args[2].uppercase())) else TrailColor.valueOf(args[2].uppercase()).color
                 } catch (ex: Exception) {
-                    msg.sendMessage(sender, "invalid-color")
+                    msg.send(sender, "invalid-color")
                     return
                 }
 
                 options.transitionColor = color
-                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "transition").addPlaceholder("value", args[2].replace("#", "")).build())
+                msg.send(player, "set-value", StringPlaceholders.builder("type", "transition").addPlaceholder("value", args[2].replace("#", "")).build())
                 data.saveTrailOptions(options)
             }
 
             "block" -> {
-                val material = Material.matchMaterial(args[2].toUpperCase())
+                val material = Material.matchMaterial(args[2].uppercase())
                 if (material == null || !material.isBlock || material.name.endsWith("AIR")) {
-                    msg.sendMessage(sender, "invalid-block")
+                    msg.send(sender, "invalid-block")
                     return
                 }
 
                 options.blockData = material
-                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "block").addPlaceholder("value", material.name.toLowerCase().replace("_", " ")).build())
+                msg.send(player, "set-value", StringPlaceholders.builder("type", "block").addPlaceholder("value", material.name.lowercase().replace("_", " ")).build())
 
                 data.saveTrailOptions(options)
             }
 
             "item" -> {
-                val material = Material.matchMaterial(args[2].toUpperCase())
+                val material = Material.matchMaterial(args[2].uppercase())
                 if (material == null || !material.isItem || material.name.endsWith("AIR")) {
-                    msg.sendMessage(sender, "invalid-item")
+                    msg.send(sender, "invalid-item")
                     return
                 }
 
                 options.itemData = ItemStack(material)
-                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "item").addPlaceholder("value", material.name.toLowerCase().replace("_", " ")).build())
+                msg.send(player, "set-value", StringPlaceholders.builder("type", "item").addPlaceholder("value", material.name.lowercase().replace("_", " ")).build())
 
                 data.saveTrailOptions(options)
             }
@@ -146,16 +150,16 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
                 val note = args[2].toIntOrNull()
 
                 if (note == null || note < 0 || note > 24) {
-                    msg.sendMessage(sender, "invalid-note")
+                    msg.send(sender, "invalid-note")
                     return
                 }
 
                 options.note = note
-                msg.sendMessage(player, "set-value", StringPlaceholders.builder("type", "note").addPlaceholder("value", note).build())
+                msg.send(player, "set-value", StringPlaceholders.builder("type", "note").addPlaceholder("value", note).build())
                 data.saveTrailOptions(options)
             }
 
-            else -> msg.sendMessage(sender, "invalid-arguments", StringPlaceholders.single("usage", this.annotation.usage))
+            else -> msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.annotation.usage))
         }
 
 

@@ -19,7 +19,7 @@ import xyz.oribuin.orilibrary.util.HexUtils
 class SubHelp(private val plugin: FlightTrails, cmd: CmdTrails) : SubCommand(plugin, cmd) {
 
     override fun executeArgument(sender: @NotNull CommandSender, args: Array<String>) {
-        val prefix = this.plugin.getManager(MessageManager::class.java).config.getString("prefix") ?: MessageManager.MsgSettings.PREFIX.defaultValue
+        val prefix = this.plugin.getManager(MessageManager::class.java).config.getString("prefix") ?: MessageManager.Messages.PREFIX.value
 
         val helpMessage = mutableListOf<String>()
         val subCommands = command.subCommands

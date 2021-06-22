@@ -23,21 +23,18 @@ class SubReload(private val plugin: FlightTrails, command: CmdTrails) : SubComma
     override fun executeArgument(sender: @NotNull CommandSender, args: Array<String>) {
 
         this.plugin.logger.warning("Reloading Plugin!")
-        val data = this.plugin.getManager(DataManager::class.java)
         val msg = this.plugin.getManager(MessageManager::class.java)
-
-        this.plugin.reloadConfig()
+        // Reload the plugin
+        this.plugin.reload()
 
         // Reload the data manager.
-        CompletableFuture.runAsync { data.disable() }.thenRunAsync { data.enable() }
-        CompletableFuture.runAsync { msg.disable() }.thenRunAsync { msg.enable() }
 
         // Cancel Task & Restart it.
         this.plugin.server.scheduler.cancelTasks(this.plugin)
         ParticleTask(this.plugin)
 
         // Send Message
-        this.plugin.getManager(MessageManager::class.java).sendMessage(sender, "reload", StringPlaceholders.single("version", this.plugin.description.version))
+        msg.send(sender, "reload", StringPlaceholders.single("version", this.plugin.description.version))
 
 
     }

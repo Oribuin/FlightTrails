@@ -30,7 +30,7 @@ class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
         if (strings.isNotEmpty()) {
             val msg = this.plugin.getManager(MessageManager::class.java)
 
-            val prefix = msg.config.getString("prefix") ?: MessageManager.MsgSettings.PREFIX.defaultValue.toString()
+            val prefix = msg.config.getString("prefix") ?: MessageManager.Messages.PREFIX.value
 
             val unknownCommand = prefix + msg.config.getString("unknown-command")
             val noPerm = prefix + msg.config.getString("invalid-permission")
@@ -59,15 +59,15 @@ class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
             3 -> {
                 if (!args[0].equals("set", true)) return null
 
-                when (args[1].toLowerCase()) {
+                when (args[1].lowercase()) {
                     "particle" -> tabComplete.addAll(Particle.values()
                         .filter { !this.plugin.config.getStringList("disabled-particles").contains(it.name) }
                         .filter { !it.name.contains("LEGACY") }
                         .filter { it != Particle.VIBRATION }
-                        .map { it.name.toLowerCase() })
-                    "block" -> tabComplete.addAll(Material.values().filter { it.isBlock && !it.name.endsWith("AIR") }.map { it.name.toLowerCase() })
-                    "item" -> tabComplete.addAll(Material.values().filter { it.isItem && !it.name.endsWith("AIR") }.map { it.name.toLowerCase() })
-                    "color", "colour", "transition" -> tabComplete.addAll(listOf("#HEX", *TrailColor.values().map { it.name.toLowerCase() }.toTypedArray()))
+                        .map { it.name.lowercase() })
+                    "block" -> tabComplete.addAll(Material.values().filter { it.isBlock && !it.name.endsWith("AIR") }.map { it.name.lowercase() })
+                    "item" -> tabComplete.addAll(Material.values().filter { it.isItem && !it.name.endsWith("AIR") }.map { it.name.lowercase() })
+                    "color", "colour", "transition" -> tabComplete.addAll(listOf("#HEX", *TrailColor.values().map { it.name.lowercase() }.toTypedArray()))
                     "note" -> for (i in 0..24) tabComplete.add(i.toString())
                 }
 

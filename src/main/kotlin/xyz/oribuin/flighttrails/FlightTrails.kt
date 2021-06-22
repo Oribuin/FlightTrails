@@ -25,7 +25,7 @@ class FlightTrails : OriPlugin() {
 
         // Load messages.yml
         val msg = this.getManager(MessageManager::class.java)
-        val prefix = msg.config.getString("prefix") ?: MessageManager.MsgSettings.PREFIX.defaultValue.toString()
+        val prefix = msg.config.getString("prefix") ?: MessageManager.Messages.PREFIX.value
 
         // Register Commands
         CmdTrails(this).register(prefix + msg.config.getString("player-only"), prefix + msg.config.getString("invalid-permission"))
