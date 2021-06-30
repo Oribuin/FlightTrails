@@ -60,7 +60,8 @@ class MessageManager(private val plugin: FlightTrails) : Manager(plugin) {
             return
         }
 
-        receiver.sendMessage(colorify(apply(receiver, placeholders.apply(msg))))
+        val prefix = this.config.getString("prefix") ?: Messages.PREFIX.value
+        receiver.sendMessage(colorify(apply(receiver, placeholders.apply(prefix + msg))))
     }
 
     /**

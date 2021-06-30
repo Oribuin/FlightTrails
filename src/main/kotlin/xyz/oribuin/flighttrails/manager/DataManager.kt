@@ -16,7 +16,6 @@ import xyz.oribuin.orilibrary.database.SQLiteConnector
 import xyz.oribuin.orilibrary.manager.Manager
 import xyz.oribuin.orilibrary.util.FileUtils
 import java.util.*
-import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
 class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
@@ -64,9 +63,12 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
      */
     private fun runDataMigration() {
 
-        connector?.connect { it ->
-            CompletableFuture.runAsync { CreateTable().migrate(connector, it) }
-                .thenRunAsync { ModifyTable().migrate(connector, it) }
+        async { _ ->
+
+            connector?.connect { it ->
+                CreateTable().migrate(connector, it)
+                ModifyTable().migrate(connector, it)
+            }
 
         }
 
