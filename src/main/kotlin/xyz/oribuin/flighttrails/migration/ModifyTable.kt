@@ -5,7 +5,7 @@ import java.lang.Exception
 import java.sql.Connection
 import java.sql.SQLException
 
-class ModifyTable(val tablePrefix: String) : DataMigration(2) {
+class ModifyTable(private val tablePrefix: String) : DataMigration() {
 
     override fun migrate(connector: DatabaseConnector?, connection: Connection) {
         try {

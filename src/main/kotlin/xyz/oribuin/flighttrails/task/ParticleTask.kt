@@ -13,6 +13,7 @@ import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.obj.TrailOptions
 import xyz.oribuin.flighttrails.util.VectorUtils
+import xyz.oribuin.orilibrary.util.NMSUtil
 
 class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
 
@@ -76,23 +77,23 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
         val newLoc = Location(loc.world, loc.x, loc.y - 0.1, loc.z)
 
         val list = plugin.config.getStringList("disabled-particles").toMutableList()
-        list.addAll(listOf(Particle.LEGACY_BLOCK_CRACK.name, Particle.LEGACY_BLOCK_DUST.name, Particle.LEGACY_FALLING_DUST.name, Particle.VIBRATION.name))
+        list.addAll(listOf("LEGACY_BLOCK_CRACK", "LEGACY_BLOCK_DUST", "LEGACY_FALLING_DUST", "VIBRATION"))
 
         if (list.contains(trail.particle.name))
             return
 
-        when (trail.particle) {
-            Particle.REDSTONE -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, Particle.DustOptions(trail.particleColor, (this.plugin.config.get("particle-size") as Int? ?: 1).toFloat()))
+        when (trail.particle.name) {
+            "REDSTONE" -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, Particle.DustOptions(trail.particleColor, (this.plugin.config.get("particle-size") as Int? ?: 1).toFloat()))
 
-            Particle.DUST_COLOR_TRANSITION -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, Particle.DustTransition(trail.particleColor, trail.transitionColor, (this.plugin.config.get("particle-size") as Int? ?: 1).toFloat()))
+            "DUST_COLOR_TRANSITION" -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, Particle.DustTransition(trail.particleColor, trail.transitionColor, (this.plugin.config.get("particle-size") as Int? ?: 1).toFloat()))
 
-            Particle.SPELL_MOB, Particle.SPELL_MOB_AMBIENT -> player.world.spawnParticle(trail.particle, newLoc, 0, trail.particleColor.red / 255.0, trail.particleColor.green / 255.0, trail.particleColor.blue / 255.0, 1.0)
+            "SPELL_MOB", "SPELL_MOB_AMBIENT" -> player.world.spawnParticle(trail.particle, newLoc, 0, trail.particleColor.red / 255.0, trail.particleColor.green / 255.0, trail.particleColor.blue / 255.0, 1.0)
 
-            Particle.BLOCK_CRACK, Particle.BLOCK_DUST, Particle.FALLING_DUST -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0, trail.blockData.createBlockData())
+            "BLOCK_CRACK", "BLOCK_DUST", "FALLING_DUST" -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0, trail.blockData.createBlockData())
 
-            Particle.ITEM_CRACK -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0, trail.itemData)
+            "ITEM_CRACK" -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0, trail.itemData)
 
-            Particle.NOTE -> player.world.spawnParticle(trail.particle, newLoc, 0, trail.note / 24.0, 0.0, 0.0, 1.0)
+            "NOTE" -> player.world.spawnParticle(trail.particle, newLoc, 0, trail.note / 24.0, 0.0, 0.0, 1.0)
 
             else -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0)
 

@@ -4,7 +4,7 @@ import xyz.oribuin.orilibrary.database.DatabaseConnector
 import java.sql.Connection
 import java.sql.SQLException
 
-abstract class DataMigration(val revision: Int) {
+abstract class DataMigration {
 
     /**
      * Migrates the database to this migration stage

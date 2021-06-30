@@ -3,7 +3,7 @@ package xyz.oribuin.flighttrails.migration
 import xyz.oribuin.orilibrary.database.DatabaseConnector
 import java.sql.Connection
 
-class CreateTable(val tablePrefix: String) : DataMigration(1) {
+class CreateTable(private val tablePrefix: String) : DataMigration() {
 
     override fun migrate(connector: DatabaseConnector?, connection: Connection) {
         connection.createStatement().use {
