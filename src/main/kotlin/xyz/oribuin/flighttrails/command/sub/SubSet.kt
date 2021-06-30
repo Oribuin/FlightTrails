@@ -67,7 +67,6 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
 
                 val particle: Particle
 
-
                 try {
                     particle = Particle.valueOf(args[2].uppercase())
                 } catch (ex: Exception) {
@@ -75,7 +74,7 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
                     return
                 }
 
-                if (particle == Particle.VIBRATION || this.plugin.config.getStringList("disabled-particles").contains(particle.name)) {
+                if (particle.name == "VIBRATION" || this.plugin.config.getStringList("disabled-particles").contains(particle.name)) {
                     msg.send(sender, "invalid-particle")
                     return;
                 }
