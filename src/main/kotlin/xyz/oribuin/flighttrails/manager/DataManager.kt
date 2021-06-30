@@ -23,8 +23,13 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
     private var connector: DatabaseConnector? = null
     private val cachedTrails = mutableMapOf<UUID, TrailOptions>()
 
+    lateinit var tablePrefix: String
+
     override fun enable() {
         val config = this.plugin.config
+
+        this.tablePrefix = this.plugin.config.getString("mysql.table-name") ?: "flighttrails_"
+
         if (config.getBoolean("mysql.enabled")) {
 
             // Define SQL Values
@@ -66,8 +71,8 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
         async { _ ->
 
             connector?.connect { it ->
-                CreateTable().migrate(connector, it)
-                ModifyTable().migrate(connector, it)
+                CreateTable(this.tablePrefix).migrate(connector, it)
+                ModifyTable(this.tablePrefix).migrate(connector, it)
             }
 
         }
@@ -85,7 +90,7 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
 
         async {
             connector?.connect { connection ->
-                val query = "REPLACE INTO flighttrails_data (player, enabled, particle, color, transitionColor, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+                val query = "REPLACE INTO ${tablePrefix}data (player, enabled, particle, color, transitionColor, blockData, itemData, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 
                 connection.prepareStatement(query).use { statement ->
                     statement.setString(1, uuid.toString())
@@ -120,7 +125,7 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
 
         var trailOptions: TrailOptions? = null
         connector?.connect { connection ->
-            val query = "SELECT * FROM flighttrails_data WHERE player = ?"
+            val query = "SELECT * FROM ${tablePrefix}data WHERE player = ?"
 
             connection.prepareStatement(query).use { statement ->
                 statement.setString(1, player.uniqueId.toString())
@@ -145,10 +150,10 @@ class DataManager(private val plugin: FlightTrails) : Manager(plugin) {
         return trailOptions
     }
 
-
     override fun disable() {
         (this.connector ?: return).closeConnection()
     }
+
 
     private fun async(callback: Consumer<BukkitTask>) {
         this.plugin.server.scheduler.runTaskAsynchronously(this.plugin, callback)

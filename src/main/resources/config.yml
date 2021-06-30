@@ -6,6 +6,7 @@ debug: false
 
 # Enable if you want to save everything in MySQL
 mysql:
+  table-prefix: flighttrails_
   enabled: false
   host: localhost
   port: 3306
