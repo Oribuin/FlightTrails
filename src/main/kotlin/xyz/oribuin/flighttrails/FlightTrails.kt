@@ -48,15 +48,12 @@ class FlightTrails : OriPlugin() {
 
     override fun onLoad() {
 
-        val plugin = this.server.pluginManager.getPlugin("WorldGuard")
-
-        if (plugin != null && plugin.isEnabled) {
+        if (this.server.pluginManager.getPlugin("WorldGuard") != null) {
             this.logger.info("Detected WorldGuard... Registering 'flighttrails-trail' flag!")
             val registry = WorldGuard.getInstance().flagRegistry
 
-            val flag = StateFlag("flighttrails-trails", true)
-            this.flag = flag
-            registry.register(flag)
+            this.flag = StateFlag("flighttrails-trails", true)
+            registry.register(this.flag)
 
             return
         }
