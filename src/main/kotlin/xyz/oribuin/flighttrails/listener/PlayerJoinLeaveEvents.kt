@@ -14,14 +14,14 @@ class PlayerJoinLeaveEvents(private val plugin: FlightTrails) : Listener {
 
     @EventHandler(ignoreCancelled = true)
     fun PlayerJoinEvent.onJoin() {
-        val options = data.getTrailOptions(player, sqlOnly = false)
+        val options = data.getTrailOptions(player)
         // Save any trail data if it doesn't exist.
         if (options == null) data.saveTrailOptions(TrailOptions(player.uniqueId))
     }
 
     @EventHandler(ignoreCancelled = true)
     fun PlayerQuitEvent.onQuit() {
-        val options = data.getTrailOptions(player, sqlOnly = false)
+        val options = data.getTrailOptions(player)
 
         // Check if the player has any options
         if (options == null) {

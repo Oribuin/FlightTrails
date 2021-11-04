@@ -41,7 +41,7 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
             // Check if can use trail in worldguard region
             if (!canUseTrailsWorldguard(it)) return@forEach
 
-            val options = data.getTrailOptions(it, sqlOnly = false) ?: return@forEach
+            val options = data.getTrailOptions(it) ?: return@forEach
 
             // Check if the player has trails enabled
             if (!options.enabled) return@forEach

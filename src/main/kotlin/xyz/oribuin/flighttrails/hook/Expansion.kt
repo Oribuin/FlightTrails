@@ -10,7 +10,7 @@ import xyz.oribuin.flighttrails.util.PluginUtils
 class Expansion(private val plugin: FlightTrails) : PlaceholderExpansion() {
 
     override fun onPlaceholderRequest(player: Player, params: String): String? {
-        val trail = this.plugin.getManager(DataManager::class.java).getTrailOptions(player, false) ?: TrailOptions(player.uniqueId)
+        val trail = this.plugin.getManager(DataManager::class.java).getTrailOptions(player) ?: TrailOptions(player.uniqueId)
 
         when (params) {
             "particle" -> return trail.particle.name

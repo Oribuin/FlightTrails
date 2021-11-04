@@ -21,14 +21,11 @@ class FlightTrails : OriPlugin() {
         if (this.isOutdated()) return
 
         // Load Data Manager Asynchronously.
-        this.server.scheduler.runTaskAsynchronously(this, Runnable { this.getManager(DataManager::class.java) })
-
-        // Load messages.yml
+        this.getManager(DataManager::class.java)
         val msg = this.getManager(MessageManager::class.java)
-        val prefix = msg.config.getString("prefix") ?: MessageManager.Messages.PREFIX.value
 
         // Register Commands
-        CmdTrails(this).register(prefix + msg.config.getString("player-only"), prefix + msg.config.getString("invalid-permission"))
+        CmdTrails(this).register({ msg.send(it, "player-only") }, { msg.send(it, "invalid-permission") })
 
         if (this.server.pluginManager.getPlugin("PlaceholderAPI") != null) {
             this.logger.info("Detected PlaceholderAPI... Registering Expansion")
@@ -40,10 +37,6 @@ class FlightTrails : OriPlugin() {
 
         // Register Tasks
         ParticleTask(this)
-    }
-
-    override fun disablePlugin() {
-
     }
 
     override fun onLoad() {
@@ -72,6 +65,9 @@ class FlightTrails : OriPlugin() {
         }
 
         return false
+    }
+
+    override fun disablePlugin() {
     }
 
 }

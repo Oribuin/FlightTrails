@@ -14,25 +14,23 @@ import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
 import xyz.oribuin.flighttrails.util.PluginUtils
 import xyz.oribuin.orilibrary.command.SubCommand
-import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull
 import xyz.oribuin.orilibrary.util.StringPlaceholders
 
 @SubCommand.Info(
     names = ["switch", "set"],
     usage = "/trails set <block/color/particle/item/note> <value>",
-    permission = "flighttrails.set",
-    command = CmdTrails::class
+    permission = "flighttrails.set"
 )
 @Suppress("UNUSED")
-class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(plugin, command) {
+class SubSet(private val plugin: FlightTrails) : SubCommand() {
 
-    override fun executeArgument(sender: @NotNull CommandSender, args: Array<String>) {
+    override fun executeArgument(sender: CommandSender, args: Array<String>) {
         val msg = this.plugin.getManager(MessageManager::class.java)
         val data = this.plugin.getManager(DataManager::class.java)
 
         // Check args
         if (args.size < 3) {
-            msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.annotation.usage))
+            msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.info.usage))
             return
         }
 
@@ -56,7 +54,7 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
             sender
         }
 
-        val options = data.getTrailOptions(player, false) ?: return
+        val options = data.getTrailOptions(player) ?: return
 
         if (!options.enabled) {
             options.enabled = true
@@ -158,7 +156,7 @@ class SubSet(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(
                 data.saveTrailOptions(options)
             }
 
-            else -> msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.annotation.usage))
+            else -> msg.send(sender, "invalid-arguments", StringPlaceholders.single("usage", this.info.usage))
         }
 
 

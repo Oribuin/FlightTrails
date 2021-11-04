@@ -1,6 +1,6 @@
 name: FlightTrails
 main: xyz.oribuin.flighttrails.FlightTrails
-version: '2.0.6'
+version: '2.0.7'
 authors: [ Oribuin ]
 api-version: '1.13'
 description: Fly with style with unique particles!

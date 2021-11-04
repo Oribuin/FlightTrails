@@ -8,18 +8,16 @@ import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
 import xyz.oribuin.flighttrails.obj.TrailOptions
 import xyz.oribuin.orilibrary.command.SubCommand
-import xyz.oribuin.orilibrary.libs.jetbrains.annotations.NotNull
 
 @SubCommand.Info(
     names = ["toggle"],
     usage = "/trails toggle",
-    permission = "flighttrails.use",
-    command = CmdTrails::class
+    permission = "flighttrails.use"
 )
 @Suppress("UNUSED")
-class SubToggle(private val plugin: FlightTrails, command: CmdTrails) : SubCommand(plugin, command) {
+class SubToggle(private val plugin: FlightTrails) : SubCommand() {
 
-    override fun executeArgument(sender: @NotNull CommandSender, args: Array<String>) {
+    override fun executeArgument(sender: CommandSender, args: Array<String>) {
         val msg = this.plugin.getManager(MessageManager::class.java)
         val data = this.plugin.getManager(DataManager::class.java)
 
