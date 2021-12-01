@@ -39,7 +39,7 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
             if (plugin.config.getBoolean("hide-if-invisible") && it.hasPotionEffect(PotionEffectType.INVISIBILITY)) return@forEach
 
             // Check if can use trail in worldguard region
-            if (!canUseTrailsWorldguard(it)) return@forEach
+            if (!this.canUseTrailsWorldguard(it)) return@forEach
 
             val options = data.getTrailOptions(it) ?: return@forEach
 
@@ -89,7 +89,7 @@ class ParticleTask(private val plugin: FlightTrails) : BukkitRunnable() {
 
             "SPELL_MOB", "SPELL_MOB_AMBIENT" -> player.world.spawnParticle(trail.particle, newLoc, 0, trail.particleColor.red / 255.0, trail.particleColor.green / 255.0, trail.particleColor.blue / 255.0, 1.0)
 
-            "BLOCK_CRACK", "BLOCK_DUST", "FALLING_DUST" -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0, trail.blockData.createBlockData())
+            "BLOCK_CRACK", "BLOCK_DUST", "FALLING_DUST", "BLOCK_MARKER" -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0, trail.blockData.createBlockData())
 
             "ITEM_CRACK" -> player.world.spawnParticle(trail.particle, newLoc, particleCount, 0.0, 0.0, 0.0, 0.0, trail.itemData)
 

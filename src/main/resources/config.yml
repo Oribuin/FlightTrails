@@ -35,6 +35,7 @@ disabled-worlds:
 disabled-particles:
   - 'FLASH'
   - 'MOB_APPEARANCE'
+  - 'BLOCK_MARKER'
 
 # Should there be particles for elytras
 elytra-particles: true

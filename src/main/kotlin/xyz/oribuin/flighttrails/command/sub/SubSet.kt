@@ -8,11 +8,10 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.oribuin.flighttrails.FlightTrails
-import xyz.oribuin.flighttrails.command.CmdTrails
 import xyz.oribuin.flighttrails.enums.TrailColor
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.manager.MessageManager
-import xyz.oribuin.flighttrails.util.PluginUtils
+import xyz.oribuin.flighttrails.util.fromHex
 import xyz.oribuin.orilibrary.command.SubCommand
 import xyz.oribuin.orilibrary.util.StringPlaceholders
 
@@ -21,7 +20,6 @@ import xyz.oribuin.orilibrary.util.StringPlaceholders
     usage = "/trails set <block/color/particle/item/note> <value>",
     permission = "flighttrails.set"
 )
-@Suppress("UNUSED")
 class SubSet(private val plugin: FlightTrails) : SubCommand() {
 
     override fun executeArgument(sender: CommandSender, args: Array<String>) {
@@ -55,10 +53,7 @@ class SubSet(private val plugin: FlightTrails) : SubCommand() {
         }
 
         val options = data.getTrailOptions(player) ?: return
-
-        if (!options.enabled) {
-            options.enabled = true
-        }
+        options.enabled = true
 
         when (args[1].lowercase()) {
             "particle" -> {
@@ -88,7 +83,7 @@ class SubSet(private val plugin: FlightTrails) : SubCommand() {
 
                 try {
                     color = if (args[2].startsWith("#"))
-                        PluginUtils.fromAwtColor(java.awt.Color.decode(args[2].uppercase()))
+                        args[2].uppercase().fromHex()
                     else
                         TrailColor.valueOf(args[2].uppercase()).color
 
@@ -98,6 +93,7 @@ class SubSet(private val plugin: FlightTrails) : SubCommand() {
                 }
 
                 options.particleColor = color
+                options.particle = Particle.REDSTONE
                 msg.send(player, "set-value", StringPlaceholders.builder("type", "color").addPlaceholder("value", args[2].replace("#", "")).build())
                 data.saveTrailOptions(options)
             }
@@ -106,13 +102,17 @@ class SubSet(private val plugin: FlightTrails) : SubCommand() {
                 val color: Color
 
                 try {
-                    color = if (args[2].startsWith("#")) PluginUtils.fromAwtColor(java.awt.Color.decode(args[2].uppercase())) else TrailColor.valueOf(args[2].uppercase()).color
+                    color = if (args[2].startsWith("#"))
+                        args[2].uppercase().fromHex()
+                    else
+                        TrailColor.valueOf(args[2].uppercase()).color
                 } catch (ex: Exception) {
                     msg.send(sender, "invalid-color")
                     return
                 }
 
                 options.transitionColor = color
+                options.particle = Particle.DUST_COLOR_TRANSITION
                 msg.send(player, "set-value", StringPlaceholders.builder("type", "transition").addPlaceholder("value", args[2].replace("#", "")).build())
                 data.saveTrailOptions(options)
             }
@@ -125,6 +125,7 @@ class SubSet(private val plugin: FlightTrails) : SubCommand() {
                 }
 
                 options.blockData = material
+                options.particle = Particle.FALLING_DUST
                 msg.send(player, "set-value", StringPlaceholders.builder("type", "block").addPlaceholder("value", material.name.lowercase().replace("_", " ")).build())
 
                 data.saveTrailOptions(options)

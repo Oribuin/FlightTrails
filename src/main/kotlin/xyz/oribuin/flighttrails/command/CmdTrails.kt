@@ -53,8 +53,9 @@ class CmdTrails(private val plugin: FlightTrails) : Command(plugin) {
 
                 when (args[1].lowercase()) {
                     "particle" -> tabComplete.addAll(Particle.values()
+                        .toMutableList()
                         .filter { !this.plugin.config.getStringList("disabled-particles").contains(it.name) }
-                        .filter { !it.name.contains("LEGACY") }
+                        .filter { !it.name.contains("LEGACY", true) }
                         .filter { !it.name.equals("VIBRATION", true) }
                         .map { it.name.lowercase() })
 

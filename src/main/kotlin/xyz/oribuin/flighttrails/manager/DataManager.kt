@@ -7,7 +7,8 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitTask
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.obj.TrailOptions
-import xyz.oribuin.flighttrails.util.PluginUtils
+import xyz.oribuin.flighttrails.util.fromHex
+import xyz.oribuin.flighttrails.util.toHex
 import xyz.oribuin.orilibrary.manager.DataHandler
 import java.util.*
 import java.util.function.Consumer
@@ -54,8 +55,8 @@ class DataManager(private val plugin: FlightTrails) : DataHandler(plugin) {
                     statement.setString(1, uuid.toString())
                     statement.setBoolean(2, trail.enabled)
                     statement.setString(3, trail.particle.name)
-                    statement.setString(4, PluginUtils.toHex(trail.particleColor))
-                    statement.setString(5, PluginUtils.toHex(trail.transitionColor))
+                    statement.setString(4, trail.particleColor.toHex())
+                    statement.setString(5, trail.transitionColor.toHex())
                     statement.setString(6, trail.blockData.name)
                     statement.setString(7, trail.itemData.type.name)
                     statement.setInt(8, trail.note)
@@ -95,8 +96,8 @@ class DataManager(private val plugin: FlightTrails) : DataHandler(plugin) {
                     val trail = TrailOptions(player.uniqueId)
                     trail.enabled = result.getBoolean("enabled")
                     trail.particle = Particle.valueOf(result.getString("particle"))
-                    trail.particleColor = PluginUtils.fromHex(result.getString("color"))
-                    trail.transitionColor = PluginUtils.fromHex(result.getString("transitionColor"))
+                    trail.particleColor = result.getString("color").fromHex()
+                    trail.transitionColor = result.getString("transitionColor").fromHex()
                     trail.blockData = Material.valueOf(result.getString("blockData"))
                     trail.itemData = ItemStack(Material.valueOf(result.getString("itemData")))
                     trail.note = result.getInt("note")

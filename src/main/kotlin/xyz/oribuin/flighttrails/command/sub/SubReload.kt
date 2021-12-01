@@ -15,17 +15,13 @@ import java.util.concurrent.CompletableFuture
     usage = "/trails reload",
     permission = "flighttrails.reload"
 )
-@Suppress("UNUSED")
 class SubReload(private val plugin: FlightTrails) : SubCommand() {
 
     override fun executeArgument(sender: CommandSender, args: Array<String>) {
-
-        this.plugin.logger.warning("Reloading Plugin!")
         val msg = this.plugin.getManager(MessageManager::class.java)
         // Reload the plugin
         this.plugin.reload()
 
-        // Reload the data manager.
 
         // Cancel Task & Restart it.
         this.plugin.server.scheduler.cancelTasks(this.plugin)

@@ -14,7 +14,6 @@ import xyz.oribuin.orilibrary.command.SubCommand
     usage = "/trails toggle",
     permission = "flighttrails.use"
 )
-@Suppress("UNUSED")
 class SubToggle(private val plugin: FlightTrails) : SubCommand() {
 
     override fun executeArgument(sender: CommandSender, args: Array<String>) {

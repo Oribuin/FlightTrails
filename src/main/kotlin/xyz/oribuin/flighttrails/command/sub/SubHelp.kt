@@ -14,7 +14,6 @@ import xyz.oribuin.orilibrary.util.HexUtils
     permission = "flighttrails.use",
     usage = "/trails help"
 )
-@Suppress("UNUSED")
 class SubHelp(private val plugin: FlightTrails) : SubCommand() {
 
     override fun executeArgument(sender: CommandSender, args: Array<String>) {

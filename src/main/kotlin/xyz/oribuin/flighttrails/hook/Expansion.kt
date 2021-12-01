@@ -5,7 +5,7 @@ import org.bukkit.entity.Player
 import xyz.oribuin.flighttrails.FlightTrails
 import xyz.oribuin.flighttrails.manager.DataManager
 import xyz.oribuin.flighttrails.obj.TrailOptions
-import xyz.oribuin.flighttrails.util.PluginUtils
+import xyz.oribuin.flighttrails.util.toHex
 
 class Expansion(private val plugin: FlightTrails) : PlaceholderExpansion() {
 
@@ -14,7 +14,7 @@ class Expansion(private val plugin: FlightTrails) : PlaceholderExpansion() {
 
         when (params) {
             "particle" -> return trail.particle.name
-            "color", "colour" -> return PluginUtils.toHex(trail.particleColor)
+            "color", "colour" -> trail.particleColor.toHex()
             "block" -> return trail.blockData.name
             "item" -> return trail.itemData.type.name
             "enabled" -> return trail.enabled.toString()
