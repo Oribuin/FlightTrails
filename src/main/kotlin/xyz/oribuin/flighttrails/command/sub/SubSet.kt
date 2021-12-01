@@ -125,7 +125,6 @@ class SubSet(private val plugin: FlightTrails) : SubCommand() {
                 }
 
                 options.blockData = material
-                options.particle = Particle.FALLING_DUST
                 msg.send(player, "set-value", StringPlaceholders.builder("type", "block").addPlaceholder("value", material.name.lowercase().replace("_", " ")).build())
 
                 data.saveTrailOptions(options)
